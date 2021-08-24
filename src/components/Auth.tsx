@@ -1,17 +1,74 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
+import { useCookies } from 'react-cookie';
 
 const Auth: React.FC = () => {
   const router = useRouter();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [isLogin, setIsLogin] = useState(true);
+  const [name, setName] = useState<string>('');
+  const [kana, setKana] = useState<string>('');
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [isLogin, setIsLogin] = useState<boolean>(true);
+  const [_, setCookie] = useCookies(['access_token']);
 
-  //TODO add cookie https://github.com/reactivestack/cookies/tree/master/packages/react-cookie
-  const authUser = (e: React.MouseEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    router.push('/select-group');
+  const login = async () => {
+    try {
+      await fetch(`${process.env.NEXT_PUBLIC_API_ROOT}/api/login/`, {
+        method: 'POST',
+        body: JSON.stringify({ email: email, password: password }),
+        // mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+        .then((res) => {
+          if (res.status === 400) {
+            throw 'authentication failed';
+          } else if (res.ok) {
+            const token = res.headers.get('X-Authentication-Token');
+            return token;
+          }
+        })
+        .then((token) => {
+          const options = { path: '/' };
+          setCookie('access_token', token, options);
+        });
+      router.push('/select-group');
+    } catch {
+      (err: string) => {
+        alert(err);
+      };
+    }
   };
+
+  const authUser = async (e: React.MouseEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (isLogin) {
+      login();
+    } else {
+      try {
+        await fetch(`${process.env.NEXT_PUBLIC_API_ROOT}/api/user/`, {
+          method: 'POST',
+          body: JSON.stringify({ name: name, kana: kana, email: email, password: password }),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }).then((res) => {
+          if (res.status === 400) {
+            throw 'authentication failed';
+          }
+        });
+
+        login();
+      } catch {
+        (err: string) => {
+          alert(err);
+        };
+      }
+    }
+  };
+
   return (
     <div className="max-w-md w-full space-y-8">
       <div>
@@ -37,6 +94,38 @@ const Auth: React.FC = () => {
         <input type="hidden" name="remember" value="true" />
         <div className="rounded-md shadow-sm -space-y-px">
           <div>
+            {!isLogin && (
+              <>
+                <div>
+                  <input
+                    name="name"
+                    type="text"
+                    autoComplete="name"
+                    required
+                    className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                    placeholder="名前"
+                    value={name}
+                    onChange={(e) => {
+                      setName(e.target.value);
+                    }}
+                  />
+                </div>
+                <div>
+                  <input
+                    name="kana"
+                    type="text"
+                    autoComplete="kana"
+                    required
+                    className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                    placeholder="ふりがな"
+                    value={kana}
+                    onChange={(e) => {
+                      setKana(e.target.value);
+                    }}
+                  />
+                </div>
+              </>
+            )}
             <input
               name="email"
               type="text"
@@ -72,7 +161,7 @@ const Auth: React.FC = () => {
               onClick={() => setIsLogin(!isLogin)}
               className="cursor-pointer font-medium text-blue-400 hover:text-indigo-500"
             >
-              create account
+              {isLogin ? 'create account' : 'sign in'}
             </span>
           </div>
         </div>
