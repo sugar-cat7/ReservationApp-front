@@ -1,7 +1,7 @@
 import Layout from '../components/Layout';
 import Group from '../components/Group';
 
-const selectGroup: React.FC = () => {
+const SelectGroup: React.FC = () => {
   return (
     <Layout title="select group">
       <Group></Group>
@@ -9,4 +9,4 @@ const selectGroup: React.FC = () => {
   );
 };
 
-export default selectGroup;
+export default SelectGroup;

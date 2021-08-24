@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { useCookies } from 'react-cookie';
-
+import Input from '../utils/Input';
+import Button from '../utils/Button';
 const Auth: React.FC = () => {
   const router = useRouter();
   const [name, setName] = useState<string>('');
@@ -22,7 +23,7 @@ const Auth: React.FC = () => {
         },
       })
         .then((res) => {
-          if (res.status === 400) {
+          if (res.status === 401) {
             throw 'authentication failed';
           } else if (res.ok) {
             const token = res.headers.get('X-Authentication-Token');
@@ -96,56 +97,41 @@ const Auth: React.FC = () => {
           <div>
             {!isLogin && (
               <>
-                <div>
-                  <input
-                    name="name"
-                    type="text"
-                    autoComplete="name"
-                    required
-                    className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                    placeholder="名前"
-                    value={name}
-                    onChange={(e) => {
-                      setName(e.target.value);
-                    }}
-                  />
-                </div>
-                <div>
-                  <input
-                    name="kana"
-                    type="text"
-                    autoComplete="kana"
-                    required
-                    className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                    placeholder="ふりがな"
-                    value={kana}
-                    onChange={(e) => {
-                      setKana(e.target.value);
-                    }}
-                  />
-                </div>
+                <Input
+                  name="name"
+                  type="text"
+                  autoComplete="name"
+                  placeholder="名前"
+                  value={name}
+                  onChange={(e) => {
+                    setName(e.target.value);
+                  }}
+                />
+                <Input
+                  name="kana"
+                  type="text"
+                  autoComplete="kana"
+                  placeholder="ふりがな"
+                  value={kana}
+                  onChange={(e) => {
+                    setKana(e.target.value);
+                  }}
+                />
               </>
             )}
-            <input
+            <Input
               name="email"
               type="text"
               autoComplete="email"
-              required
-              className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
               placeholder="Email address"
               value={email}
               onChange={(e) => {
                 setEmail(e.target.value);
               }}
             />
-          </div>
-          <div>
-            <input
+            <Input
               name="password"
               type="password"
-              autoComplete="password"
-              required
-              className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
               placeholder="Password"
               value={password}
               onChange={(e) => {
@@ -167,10 +153,7 @@ const Auth: React.FC = () => {
         </div>
 
         <div>
-          <button
-            type="submit"
-            className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-          >
+          <Button>
             <span className="absolute left-0 inset-y-0 flex items-center pl-3">
               <svg
                 className="h-5 w-5 text-indigo-500 group-hover:text-indigo-400"
@@ -187,7 +170,7 @@ const Auth: React.FC = () => {
               </svg>
             </span>
             {isLogin ? 'Sign in' : 'Create new user'}
-          </button>
+          </Button>
         </div>
       </form>
     </div>
