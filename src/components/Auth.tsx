@@ -41,9 +41,12 @@ const Auth: React.FC = () => {
           }
         })
         .then((data) => {
-          console.log('data', data);
-          console.log('id', data.id);
-          auth.signIn({ id: data.id, name: data.name, passwordDigest: data.password_digest });
+          auth.signIn({
+            id: data.id,
+            name: data.name,
+            email: data.email,
+            passwordDigest: data.password_digest,
+          });
         });
       router.push('/select-group');
     } catch {

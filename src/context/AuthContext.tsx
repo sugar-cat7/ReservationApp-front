@@ -3,6 +3,7 @@ import { createContext, useState, useContext } from 'react';
 type User = {
   id: string;
   name: string;
+  email: string;
   passwordDigest: string;
 };
 
@@ -16,7 +17,15 @@ type authContextType = {
 type SignInProps = {
   id: string;
   name: string;
+  email: string;
   passwordDigest: string;
+};
+
+const initialState = {
+  id: '0',
+  name: 'initial',
+  email: 'initial@com',
+  passwordDigest: 'password',
 };
 
 function createCtx<ContextType>() {
@@ -37,9 +46,9 @@ export const AuthProvider: React.FC = (props) => {
 };
 
 const useAuthCtx = (): authContextType => {
-  const [user, setUser] = useState<User | null>(null);
-  const signIn = ({ id, name, passwordDigest }: SignInProps) => {
-    setUser({ id: id, name: name, passwordDigest: passwordDigest });
+  const [user, setUser] = useState<User>(initialState);
+  const signIn = ({ id, name, email, passwordDigest }: SignInProps) => {
+    setUser({ id: id, name: name, email: email, passwordDigest: passwordDigest });
   };
   const signUp = () => {
     // Some sign up action
