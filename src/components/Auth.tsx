@@ -3,14 +3,18 @@ import { useRouter } from 'next/router';
 import { useCookies } from 'react-cookie';
 import Input from '../utils/Input';
 import Button from '../utils/Button';
+import { useAuth } from '../context/AuthContext';
+
 const Auth: React.FC = () => {
   const router = useRouter();
+  const auth = useAuth();
+
   const [name, setName] = useState<string>('');
   const [kana, setKana] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [isLogin, setIsLogin] = useState<boolean>(true);
-  const [_, setCookie] = useCookies(['access_token']);
+  const [cookie, setCookie, removeCookie] = useCookies(['access_token']);
 
   const login = async () => {
     try {
@@ -27,16 +31,26 @@ const Auth: React.FC = () => {
             throw 'authentication failed';
           } else if (res.ok) {
             const token = res.headers.get('X-Authentication-Token');
-            return token;
+            if (!token) {
+              throw 'Login failed.';
+            }
+            const options = { path: '/' };
+            setCookie('access_token', token, options);
+            const resJson = res.json();
+            return resJson;
           }
         })
-        .then((token) => {
-          const options = { path: '/' };
-          setCookie('access_token', token, options);
+        .then((data) => {
+          console.log('data', data);
+          console.log('id', data.id);
+          auth.signIn({ id: data.id, name: data.name, passwordDigest: data.password_digest });
         });
       router.push('/select-group');
     } catch {
       (err: string) => {
+        if (cookie) {
+          removeCookie('access_token');
+        }
         alert(err);
       };
     }

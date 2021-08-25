@@ -1,13 +1,19 @@
 import Head from 'next/head';
-import { CookiesProvider } from 'react-cookie';
-
+import { useAuth } from '../context/AuthContext';
+import { useCookies } from 'react-cookie';
+import { useRouter } from 'next/router';
 type Props = {
   title: string;
 };
 
 const Layout: React.FC<Props> = ({ children, title = 'default title' }) => {
-  return (
-    <CookiesProvider>
+  const { user } = useAuth();
+  const [cookies] = useCookies(['access_token']);
+  const router = useRouter();
+  const isReady = router.isReady;
+
+  const OverallLayout = () => {
+    return (
       <div className="flex justify-center items-center flex-col min-h-screen text-black font-mono bg-gray-200">
         <Head>
           <title>{title}</title>
@@ -22,8 +28,19 @@ const Layout: React.FC<Props> = ({ children, title = 'default title' }) => {
           @forest
         </footer>
       </div>
-    </CookiesProvider>
-  );
+    );
+  };
+
+  if (!isReady) {
+    return OverallLayout();
+  }
+  console.log(user, cookies);
+  console.log(router.pathname !== '/' && (!user || !cookies));
+  if (router.pathname !== '/' && (!user || !cookies)) {
+    router.push('/');
+  }
+
+  return OverallLayout();
 };
 
 export default Layout;
