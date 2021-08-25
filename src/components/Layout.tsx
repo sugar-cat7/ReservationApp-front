@@ -34,8 +34,7 @@ const Layout: React.FC<Props> = ({ children, title = 'default title' }) => {
   if (!isReady) {
     return OverallLayout();
   }
-  console.log(user, cookies);
-  console.log(router.pathname !== '/' && (!user || !cookies));
+
   if (router.pathname !== '/' && (!user || !cookies)) {
     router.push('/');
   }
