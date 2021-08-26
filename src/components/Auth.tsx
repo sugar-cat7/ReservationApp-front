@@ -30,22 +30,23 @@ const Auth: React.FC = () => {
           if (res.status === 401) {
             throw 'authentication failed';
           } else if (res.ok) {
-            const token = res.headers.get('X-Authentication-Token');
-            if (!token) {
-              throw 'Login failed.';
-            }
-            const options = { path: '/' };
-            setCookie('access_token', token, options);
             const resJson = res.json();
             return resJson;
           }
         })
         .then((data) => {
+          const user = data.user;
+          const token = data.token;
+          if (!token) {
+            throw 'Login failed.';
+          }
+          const options = { path: '/' };
+          setCookie('access_token', token, options);
           auth.signIn({
-            id: data.id,
-            name: data.name,
-            email: data.email,
-            passwordDigest: data.password_digest,
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            passwordDigest: user.password_digest,
           });
         });
       router.push('/select-group');
