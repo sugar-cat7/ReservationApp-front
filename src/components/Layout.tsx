@@ -2,6 +2,8 @@ import Head from 'next/head';
 import { useAuth } from '../context/AuthContext';
 import { useCookies } from 'react-cookie';
 import { useRouter } from 'next/router';
+import { Dropdown } from './Dropdown';
+
 type Props = {
   title: string;
 };
@@ -19,9 +21,11 @@ const Layout: React.FC<Props> = ({ children, title = 'default title' }) => {
         <Head>
           <title>{title}</title>
         </Head>
-        <header className="bg-gray-800 w-screen">
-          <nav className="bg-gray-800 w-screen">
-            <div className="h-14"></div>
+        <header className="bg-white w-screen ">
+          <nav className="bg-white w-screen ">
+            <div className="flex items-center pl-8 h-14 justify-end">
+              <div className="flex space-x-4">{router.pathname !== '/' && <Dropdown />}</div>
+            </div>
           </nav>
         </header>
         <main className="flex flex-1 justify-center items-center w-80 flex-col">{children}</main>
