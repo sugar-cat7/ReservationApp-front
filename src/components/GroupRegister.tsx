@@ -7,6 +7,7 @@ import { useCookies } from 'react-cookie';
 
 const GroupRegister: React.FC = () => {
   const [groupName, setGroupName] = useState<string>('');
+  const [groupPassword, setGroupPassword] = useState<string>('');
   const router = useRouter();
   const { user } = useAuth();
   const [cookie] = useCookies(['access_token']);
@@ -20,7 +21,7 @@ const GroupRegister: React.FC = () => {
     try {
       await fetch(`${process.env.NEXT_PUBLIC_API_ROOT}/api/organization/`, {
         method: 'POST',
-        body: JSON.stringify({ name: groupName, email: user.email, password: user.passwordDigest }),
+        body: JSON.stringify({ name: groupName, password: groupPassword }),
         // mode: 'cors',
         headers: {
           'Content-Type': 'application/json',
@@ -42,7 +43,7 @@ const GroupRegister: React.FC = () => {
   };
 
   return (
-    <>
+    <div className="max-w-md w-full space-y-8">
       <form className="mt-8 space-y-6" onSubmit={registerGroup}>
         <div className="rounded-md shadow-sm -space-y-px">
           <Input
@@ -55,10 +56,20 @@ const GroupRegister: React.FC = () => {
               setGroupName(e.target.value);
             }}
           />
+          <Input
+            name="groupPassword"
+            type="password"
+            autoComplete="groupPassword"
+            placeholder="パスワード"
+            value={groupPassword}
+            onChange={(e) => {
+              setGroupPassword(e.target.value);
+            }}
+          />
         </div>
         <Button>追加する</Button>
       </form>
-    </>
+    </div>
   );
 };
 
