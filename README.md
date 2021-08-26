@@ -8,7 +8,7 @@ make start
 
 - なんか動かなくなった時の対処法
 
-node_modules 消してもう一回`yarn install`すると大体治る
+yarn.lock, node_modules 消してもう一回`yarn install`すると大体治る
 
 ### CSS
 
