@@ -49,13 +49,12 @@ const Auth: React.FC = () => {
           });
         });
       router.push('/select-group');
-    } catch {
-      (err: string) => {
-        if (cookie) {
-          removeCookie('access_token');
-        }
-        alert(err);
-      };
+    } catch (err) {
+      if (cookie.access_token) {
+        removeCookie('access_token');
+      }
+      console.log(err.message);
+      alert(err);
     }
   };
 
