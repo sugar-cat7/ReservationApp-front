@@ -9,6 +9,7 @@ type Props = {
 const Layout: React.FC<Props> = ({ children, title = 'default title' }) => {
   const { user } = useAuth();
   const [cookies] = useCookies(['access_token']);
+
   const router = useRouter();
   const isReady = router.isReady;
 
@@ -31,11 +32,11 @@ const Layout: React.FC<Props> = ({ children, title = 'default title' }) => {
     );
   };
 
-  if (!isReady) {
-    return OverallLayout();
-  }
-
-  if (router.pathname !== '/' && (!user || !cookies)) {
+  //後で変えると思う
+  if (router.pathname !== '/' && (user?.id === ('0' || undefined) || !cookies.access_token)) {
+    if (!isReady) {
+      return OverallLayout();
+    }
     router.push('/');
   }
 
