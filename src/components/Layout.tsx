@@ -3,6 +3,7 @@ import { useAuth } from '../context/AuthContext';
 import { useCookies } from 'react-cookie';
 import { useRouter } from 'next/router';
 import { Dropdown } from './Dropdown';
+import { ChevronLeftIcon } from '@heroicons/react/solid';
 
 type Props = {
   title: string;
@@ -23,9 +24,23 @@ const Layout: React.FC<Props> = ({ children, title = 'default title' }) => {
         </Head>
         <header className="bg-white w-screen ">
           <nav className="bg-white w-screen ">
-            <div className="flex items-center pl-8 h-14 justify-end">
-              <div className="flex space-x-4">{router.pathname !== '/' && <Dropdown />}</div>
-            </div>
+            {router.pathname === '/' && (
+              <div className="flex items-center h-14 justify-center">{title}</div>
+            )}
+            {router.pathname !== '/' && (
+              <div className="flex items-center h-14 justify-between">
+                <ChevronLeftIcon
+                  className="h-8 w-6 ml-3"
+                  onClick={() => {
+                    router.back();
+                  }}
+                />
+                {title}
+                <div className="flex space-x-4">
+                  <Dropdown />
+                </div>
+              </div>
+            )}
           </nav>
         </header>
         <main className="flex flex-1 justify-center items-center w-80 flex-col">{children}</main>
