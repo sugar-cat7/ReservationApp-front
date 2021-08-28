@@ -3,8 +3,7 @@ import { createContext, useState, useContext } from 'react';
 type User = {
   id: string;
   name: string;
-  email: string;
-  passwordDigest: string;
+  access_token: string;
 };
 
 type authContextType = {
@@ -17,15 +16,13 @@ type authContextType = {
 type SignInProps = {
   id: string;
   name: string;
-  email: string;
-  passwordDigest: string;
+  access_token: string;
 };
 
 const initialState = {
   id: '0',
   name: 'initial',
-  email: 'initial@com',
-  passwordDigest: 'password',
+  access_token: '',
 };
 
 function createCtx<ContextType>() {
@@ -47,14 +44,20 @@ export const AuthProvider: React.FC = (props) => {
 
 const useAuthCtx = (): authContextType => {
   const [user, setUser] = useState<User>(initialState);
-  const signIn = ({ id, name, email, passwordDigest }: SignInProps) => {
-    setUser({ id: id, name: name, email: email, passwordDigest: passwordDigest });
+  const signIn = ({ id, name, access_token }: SignInProps) => {
+    setUser({ id: id, name: name, access_token: access_token });
+    sessionStorage.setItem('user_id', id);
+    sessionStorage.setItem('name', name);
+    sessionStorage.setItem('access_token', access_token);
   };
   const signUp = () => {
     // Some sign up action
   };
   const signOut = () => {
     // Some sign out action
+    sessionStorage.removeItem('user_id');
+    sessionStorage.removeItem('name');
+    sessionStorage.removeItem('access_token');
   };
   return { user, signIn, signUp, signOut };
 };

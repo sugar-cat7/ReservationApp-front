@@ -1,6 +1,6 @@
 import Head from 'next/head';
-import { useAuth } from '../context/AuthContext';
-import { useCookies } from 'react-cookie';
+// import { useAuth } from '../context/AuthContext';
+// import { useCookies } from 'react-cookie';
 import { useRouter } from 'next/router';
 import { Dropdown } from './Dropdown';
 import { ChevronLeftIcon } from '@heroicons/react/solid';
@@ -10,12 +10,11 @@ type Props = {
 };
 
 const Layout: React.FC<Props> = ({ children, title = 'default title' }) => {
-  const { user } = useAuth();
-  const [cookies] = useCookies(['access_token']);
+  // const { user } = useAuth();
+  // const [cookies] = useCookies(['access_token']);
 
   const router = useRouter();
   const isReady = router.isReady;
-
   const OverallLayout = () => {
     return (
       <div className="flex justify-center items-center flex-col min-h-screen text-black font-mono bg-gray-200">
@@ -52,10 +51,14 @@ const Layout: React.FC<Props> = ({ children, title = 'default title' }) => {
   };
 
   //後で変えると思う
-  if (router.pathname !== '/' && (user?.id === ('0' || undefined) || !cookies.access_token)) {
-    if (!isReady) {
-      return OverallLayout();
-    }
+  if (!isReady) {
+    return OverallLayout();
+  }
+  if (
+    router.pathname !== '/' &&
+    (sessionStorage.getItem('user_id') === ('0' || undefined) ||
+      !sessionStorage.getItem('access_token'))
+  ) {
     router.push('/');
   }
 
