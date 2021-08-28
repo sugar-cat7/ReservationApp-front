@@ -2,6 +2,8 @@ import { Fragment } from 'react';
 import { Menu, Transition } from '@headlessui/react';
 import { DotsVerticalIcon } from '@heroicons/react/solid';
 import Link from 'next/link';
+import { useAuth } from '../context/AuthContext';
+
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
 }
@@ -27,9 +29,16 @@ const DropdownProps = [
     name: 'ヘルプ',
     url: '#',
   },
+  {
+    id: 5,
+    name: 'ログアウト',
+    url: '/',
+  },
 ];
 
 export const Dropdown: React.FC = () => {
+  const auth = useAuth();
+
   return (
     <Menu as="div" className="relative inline-block text-left ">
       <div className="inline-flex align-middle mr-3">
@@ -54,6 +63,7 @@ export const Dropdown: React.FC = () => {
                 {({ active }) => (
                   <Link href={item.url}>
                     <a
+                      onClick={auth.signOut}
                       className={classNames(
                         active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
                         'block px-4 py-2 text-sm',

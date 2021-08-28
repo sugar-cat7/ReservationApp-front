@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
-import { useCookies } from 'react-cookie';
+// import { useCookies } from 'react-cookie';
 import Input from '../utils/Input';
 import Button from '../utils/Button';
 import { useAuth } from '../context/AuthContext';
@@ -14,7 +14,7 @@ const Auth: React.FC = () => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [isLogin, setIsLogin] = useState<boolean>(true);
-  const [cookie, setCookie, removeCookie] = useCookies(['access_token']);
+  // const [cookie, setCookie, removeCookie] = useCookies(['access_token']);
 
   const login = async () => {
     try {
@@ -38,23 +38,26 @@ const Auth: React.FC = () => {
           const user = data.user;
           const token = data.token;
           if (!token) {
-            throw 'Login failed.';
+            throw 'Fail! Fetch Access Token!';
           }
-          const options = { path: '/' };
-          setCookie('access_token', token, options);
+          // const options = { path: '/' };
+          // setCookie('access_token', token, options);
           auth.signIn({
             id: user.id,
             name: user.name,
-            email: user.email,
-            passwordDigest: user.password_digest,
+            access_token: token,
           });
         });
       router.push('/select-group');
     } catch (err) {
-      if (cookie.access_token) {
-        removeCookie('access_token');
+      if (sessionStorage.getItem('access_token')) {
+        // removeCookie('access_token');
+        sessionStorage.removeItem('access_token');
       }
-      console.log(err.message);
+      if (sessionStorage.getItem('id')) {
+        sessionStorage.removeItem('id');
+        sessionStorage.removeItem('name');
+      }
       alert(err);
     }
   };

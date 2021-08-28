@@ -3,14 +3,14 @@ import Input from '../utils/Input';
 import Button from '../utils/Button';
 import { useAuth } from '../context/AuthContext';
 import { useRouter } from 'next/router';
-import { useCookies } from 'react-cookie';
+// import { useCookies } from 'react-cookie';
 
 const GroupRegister: React.FC = () => {
   const [groupName, setGroupName] = useState<string>('');
   const [groupPassword, setGroupPassword] = useState<string>('');
   const router = useRouter();
   const { user } = useAuth();
-  const [cookie] = useCookies(['access_token']);
+  // const [cookie] = useCookies(['access_token']);
 
   if (!user) {
     return <div>ログインし直してください</div>;
@@ -25,7 +25,7 @@ const GroupRegister: React.FC = () => {
         // mode: 'cors',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `${cookie.access_token}`,
+          Authorization: `${sessionStorage.getItem('access_token')}`,
         },
       }).then((res) => {
         if (res.status === 401) {
@@ -35,10 +35,8 @@ const GroupRegister: React.FC = () => {
           router.push('/select-group');
         }
       });
-    } catch {
-      (err: string) => {
-        alert(err);
-      };
+    } catch (err) {
+      alert(err);
     }
   };
 
