@@ -13,8 +13,10 @@
   "dependencies": {
     "@headlessui/react": "^1.4.0",
     "@heroicons/react": "^1.0.4",
+    "@types/react-calendar": "^3.4.3",
     "next": "11.1.0",
     "react": "17.0.2",
+    "react-calendar": "^3.4.0",
     "react-cookie": "^4.1.1",
     "react-dom": "17.0.2"
   },
