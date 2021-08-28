@@ -13,6 +13,13 @@ const Group: React.FC = () => {
       >
         登録画面へ
       </Button>
+      <Button
+        onClick={() => {
+          router.push('/calendar');
+        }}
+      >
+        カレンダーへ
+      </Button>
     </div>
   );
 };
