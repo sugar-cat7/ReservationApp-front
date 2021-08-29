@@ -1,40 +1,59 @@
-import Calendar from 'react-calendar';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
-import 'react-calendar/dist/Calendar.css';
 import Modal from '../utils/Modal';
+import { Calendar, momentLocalizer } from 'react-big-calendar';
+import 'react-big-calendar/lib/css/react-big-calendar.css';
+import moment from 'moment';
+import 'moment/locale/ja';
+
+const localizer = momentLocalizer(moment);
+const formats = {
+  dateFormat: 'D',
+  dayFormat: 'D(ddd)',
+  monthHeaderFormat: 'YYYY年M月',
+  dayHeaderFormat: 'M月D日(ddd)',
+  dayRangeHeaderFormat: 'YYYY年M月',
+};
+
+type SlotInfo = {
+  start: string | Date;
+  end: string | Date;
+  slots: Date[] | string[];
+  action: 'select' | 'click' | 'doubleClick';
+};
 
 const FullCalendar: React.FC = () => {
-  const [date, setDate] = useState(new Date());
-  const [showModal, setShowModal] = useState(false);
-  const router = useRouter();
+  const [date, setDate] = useState<Date | string>(new Date());
+  const [showModal, setShowModal] = useState<boolean>(false);
 
-  const openModal = () => {
+  const handleSelect = (s: SlotInfo) => {
     setShowModal(true);
-    setDate(date);
-  };
-
-  const onClickDay = () => {
-    const year = date.getFullYear();
-    const month = date.getMonth() + 1;
-    const day = date.getDate();
-    const param = year + '-' + month + '-' + day;
-    router.push({
-      pathname: '/reservation/[date]',
-      query: { date: param },
-    });
+    setDate(s.start);
   };
 
   return (
     <>
-      <Calendar locale="ja-JP" onChange={setDate} onClickDay={openModal} value={date} />
-      <Modal
-        data={`${date.getFullYear() + '年' + (date.getMonth() + 1) + '月' + date.getDate() + '日'}
-        の予約を確認する`}
-        showModal={showModal}
-        onClickYes={onClickDay}
-        onClickNo={() => setShowModal(false)}
+      <Calendar
+        localizer={localizer}
+        events={[]}
+        startAccessor="start"
+        endAccessor="end"
+        style={{ height: 500, width: 360 }}
+        formats={formats}
+        defaultView="month"
+        views={['month', 'week', 'day']}
+        className="bg-white"
+        selectable
+        onSelectSlot={(s) => handleSelect(s)}
       />
+
+      <Modal
+        data={`予約を追加 ${date}`}
+        showModal={showModal}
+        onClickNo={() => setShowModal(false)}
+      >
+        ここにいい感じにformを作る
+      </Modal>
     </>
   );
 };
