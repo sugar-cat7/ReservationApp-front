@@ -35,7 +35,8 @@ const useStyles = makeStyles((theme: Theme) =>
 type Props = {
   startLabel: string;
   endLabel: string;
-  date: string;
+  startDate: string;
+  endDate: string;
   users: any[];
 };
 
@@ -45,7 +46,13 @@ type Option = {
   kana: string;
 };
 
-const DateAndTimePickers: React.FC<Props> = ({ startLabel, endLabel, date, users }) => {
+const DateAndTimePickers: React.FC<Props> = ({
+  startLabel,
+  endLabel,
+  startDate,
+  endDate,
+  users,
+}) => {
   const classes = useStyles();
 
   const [startTime, setStartTime] = useState<string>('');
@@ -97,7 +104,7 @@ const DateAndTimePickers: React.FC<Props> = ({ startLabel, endLabel, date, users
         label={startLabel}
         type="datetime-local"
         // defaultValue="2017-05-24T10:30"
-        defaultValue={date}
+        defaultValue={startDate}
         className={classes.textField}
         InputLabelProps={{
           shrink: true,
@@ -112,7 +119,7 @@ const DateAndTimePickers: React.FC<Props> = ({ startLabel, endLabel, date, users
         label={endLabel}
         type="datetime-local"
         // defaultValue="2017-05-24T10:30"
-        defaultValue={date}
+        defaultValue={endDate}
         className={classes.textField}
         InputLabelProps={{
           shrink: true,
