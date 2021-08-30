@@ -1,12 +1,12 @@
 import Layout from '../components/Layout';
-import Group from '../components/Group';
+import SelectGroup from '../components/SelectGroup';
 
-const SelectGroup: React.FC = () => {
+const SelectedGroup: React.FC = () => {
   return (
     <Layout title="select group">
-      <Group></Group>
+      <SelectGroup></SelectGroup>
     </Layout>
   );
 };
 
-export default SelectGroup;
+export default SelectedGroup;
