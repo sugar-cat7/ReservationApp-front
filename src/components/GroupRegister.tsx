@@ -27,14 +27,22 @@ const GroupRegister: React.FC = () => {
           'Content-Type': 'application/json',
           Authorization: `${sessionStorage.getItem('access_token')}`,
         },
-      }).then((res) => {
-        if (res.status === 401) {
-          throw 'authentication failed';
-        } else if (res.ok) {
+      })
+        .then((res) => {
+          if (res.status === 401) {
+            throw 'authentication failed';
+          } else if (res.ok) {
+            const resJson = res.json();
+            return resJson;
+          }
+        })
+        .then((data) => {
           alert('グループを追加しました');
-          router.push('/select-group');
-        }
-      });
+          router.push({
+            pathname: '/register-space/[orgId]',
+            query: { orgId: data.id },
+          });
+        });
     } catch (err) {
       alert(err);
     }
