@@ -1,6 +1,8 @@
 import Button from '../utils/Button';
 import { useRouter } from 'next/router';
-const Group: React.FC = () => {
+
+//TODO ここでグループを選ぶときに,そのグループのユーザー情報をcontextに持つようにする
+const SelectGroup: React.FC = () => {
   const router = useRouter();
   //TODO 登録されてるグループない場合の処理追加と普通に表示するように分ける
   return (
@@ -24,4 +26,4 @@ const Group: React.FC = () => {
   );
 };
 
-export default Group;
+export default SelectGroup;
