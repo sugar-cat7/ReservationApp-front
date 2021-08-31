@@ -27,24 +27,23 @@ type Props = {
     name: string;
     kana: string;
   }[];
+  reservations: {
+    title: string;
+    start: Date;
+    end: Date;
+  }[];
 };
-
+//グチャグチャになってきたので後で切り分けましょう
 //TODO 時間指定で予定取ってくるhooks定義して、eventsに入れる、spaceごとに色分けするとわかりやすい気がする
-const FullCalendar: React.FC<Props> = ({ users }) => {
+const FullCalendar: React.FC<Props> = ({ users, reservations }) => {
   const [startDate, setStartDate] = useState<Date | string>(new Date());
   const [endDate, setEndDate] = useState<Date | string>(new Date());
   const [showModal, setShowModal] = useState<boolean>(false);
   const [isMonthViewd, setIsMonthviewd] = useState<boolean>(true);
-
-  const handleSelect = (s: SlotInfo) => {
-    if (!isMonthViewd) {
-      setStartDate(s.start);
-      setEndDate(s.end);
-      setShowModal(true);
+  const getNowSelectedDateWithString = (date: Date | string) => {
+    if (typeof date === 'string') {
+      return date;
     }
-  };
-
-  const getNowDateWithString = (date: Date) => {
     const dt = date;
     const y = dt.getFullYear();
     const m = ('00' + (dt.getMonth() + 1)).slice(-2);
@@ -56,17 +55,25 @@ const FullCalendar: React.FC<Props> = ({ users }) => {
     return result;
   };
 
+  const handleSelect = (s: SlotInfo) => {
+    if (!isMonthViewd) {
+      setStartDate(s.start);
+      setEndDate(s.end);
+      setShowModal(true);
+    }
+  };
+
   return (
     <>
       <Calendar
         localizer={localizer}
-        events={[]}
+        events={reservations}
         startAccessor="start"
         endAccessor="end"
         style={{ height: 500, width: 360 }}
         formats={formats}
         defaultView="month"
-        views={['month', 'week', 'day']}
+        views={['month', 'day']}
         className="bg-white"
         selectable
         onSelectSlot={(s) => handleSelect(s)}
@@ -81,8 +88,8 @@ const FullCalendar: React.FC<Props> = ({ users }) => {
       {/* TODO スタイルは調整の余地あり */}
       <Modal data={`予約を追加`} showModal={showModal} onClickNo={() => setShowModal(false)}>
         <DateAndTimePickers
-          startDate={getNowDateWithString(startDate)}
-          endDate={getNowDateWithString(endDate)}
+          startDate={getNowSelectedDateWithString(startDate)}
+          endDate={getNowSelectedDateWithString(endDate)}
           startLabel="開始時間"
           endLabel="終了時間"
           users={users}

@@ -55,8 +55,8 @@ const DateAndTimePickers: React.FC<Props> = ({
 }) => {
   const classes = useStyles();
 
-  const [startTime, setStartTime] = useState<string>('');
-  const [endTime, setEndTime] = useState<string>('');
+  const [startTime, setStartTime] = useState<string>(startDate);
+  const [endTime, setEndTime] = useState<string>(endDate);
   const [number, setNumber] = useState<string>('');
   const [values, setValues] = useState<number[]>([]);
 
@@ -64,8 +64,8 @@ const DateAndTimePickers: React.FC<Props> = ({
     e.preventDefault();
     try {
       //TODO orgIdは団体選択画面から遷移するときにcontextで持っておくと良さそう
-      const orgId = 43; //need to change
-      const spaceId = 4; //need to change
+      const orgId = 1; //need to change
+      const spaceId = 1; //need to change
       await fetch(
         `${process.env.NEXT_PUBLIC_API_ROOT}/api/organization/${orgId}/space/${spaceId}/reservation`,
         {
@@ -105,6 +105,7 @@ const DateAndTimePickers: React.FC<Props> = ({
         type="datetime-local"
         // defaultValue="2017-05-24T10:30"
         defaultValue={startDate}
+        value={startTime}
         className={classes.textField}
         InputLabelProps={{
           shrink: true,
@@ -120,6 +121,7 @@ const DateAndTimePickers: React.FC<Props> = ({
         type="datetime-local"
         // defaultValue="2017-05-24T10:30"
         defaultValue={endDate}
+        value={endTime}
         className={classes.textField}
         InputLabelProps={{
           shrink: true,
@@ -135,7 +137,6 @@ const DateAndTimePickers: React.FC<Props> = ({
             人数
           </InputLabel>
           <NativeSelect
-            defaultValue={30}
             inputProps={{
               name: 'number',
               id: 'uncontrolled-native',
@@ -144,7 +145,7 @@ const DateAndTimePickers: React.FC<Props> = ({
               setNumber(e.target.value);
             }}
           >
-            {range(1, 8).map((i) => {
+            {range(0, 8).map((i) => {
               return (
                 <option key={i} value={i}>
                   {i}
@@ -163,7 +164,7 @@ const DateAndTimePickers: React.FC<Props> = ({
         getOptionLabel={(option: Option) => option.name}
         // getOptionLabel={(option) => option.title}
         renderInput={(params) => (
-          <TextField {...params} variant="standard" label="一緒に予約する人を選択" />
+          <TextField {...params} variant="standard" label="場所を使う人を選択" />
         )}
         onChange={(_, v) => {
           const ids: number[] = [];
