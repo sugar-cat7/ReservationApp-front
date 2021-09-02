@@ -1,0 +1,37 @@
+import useSWR from 'swr';
+const fetcher = (url: string) =>
+  fetch(url, {
+    headers: {
+      Authorization: `${sessionStorage.getItem('access_token')}`,
+    },
+  })
+    .then((res) => {
+      if (res.status === 401) {
+        throw 'authentication failed';
+      }
+      return res.json();
+    })
+    .catch((e) => console.log(e));
+
+type Props = {
+  myReservations: [];
+  isLoading: boolean;
+  isError: boolean;
+};
+export const useMyReservations = (): Props => {
+  const { data, error } = useSWR(
+    `${process.env.NEXT_PUBLIC_API_ROOT}/api/user/reservation`,
+    fetcher,
+  );
+
+  //   const { data2, error2 } = useSWR(
+  //     `${process.env.NEXT_PUBLIC_API_ROOT}/api/user/reservation`,
+  //     fetcher,
+  //   );
+  console.log('data', data);
+  return {
+    myReservations: data,
+    isLoading: !error && !data,
+    isError: error,
+  };
+};

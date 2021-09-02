@@ -17,7 +17,7 @@ const DropdownProps = [
   {
     id: 2,
     name: '自分の予定を確認',
-    url: '#',
+    url: 'my-reservation',
   },
   {
     id: 3,
@@ -62,15 +62,26 @@ export const Dropdown: React.FC = () => {
               <Menu.Item key={item.id}>
                 {({ active }) => (
                   <Link href={item.url}>
-                    <a
-                      onClick={auth.signOut}
-                      className={classNames(
-                        active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                        'block px-4 py-2 text-sm',
-                      )}
-                    >
-                      {item.name}
-                    </a>
+                    {item.url === '/' ? (
+                      <a
+                        onClick={auth.signOut}
+                        className={classNames(
+                          active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
+                          'block px-4 py-2 text-sm',
+                        )}
+                      >
+                        {item.name}
+                      </a>
+                    ) : (
+                      <a
+                        className={classNames(
+                          active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
+                          'block px-4 py-2 text-sm',
+                        )}
+                      >
+                        {item.name}
+                      </a>
+                    )}
                   </Link>
                 )}
               </Menu.Item>
