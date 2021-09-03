@@ -37,7 +37,11 @@ type Props = {
   endLabel: string;
   startDate: string;
   endDate: string;
-  users: any[];
+  users?: any[];
+  isEdit: boolean;
+  orgId: number;
+  spaceId: number;
+  reservationId?: number;
 };
 
 type Option = {
@@ -52,6 +56,10 @@ const DateAndTimePickers: React.FC<Props> = ({
   startDate,
   endDate,
   users,
+  orgId,
+  spaceId,
+  reservationId,
+  isEdit,
 }) => {
   const classes = useStyles();
 
@@ -64,8 +72,6 @@ const DateAndTimePickers: React.FC<Props> = ({
     e.preventDefault();
     try {
       //TODO orgIdは団体選択画面から遷移するときにcontextで持っておくと良さそう
-      const orgId = 1; //need to change
-      const spaceId = 1; //need to change
       await fetch(
         `${process.env.NEXT_PUBLIC_API_ROOT}/api/organization/${orgId}/space/${spaceId}/reservation`,
         {
@@ -96,8 +102,41 @@ const DateAndTimePickers: React.FC<Props> = ({
     }
   };
 
+  const editReservation = async (e: React.MouseEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+      await fetch(
+        `${process.env.NEXT_PUBLIC_API_ROOT}/api/organization/${orgId}/space/${spaceId}/reservation/${reservationId}`,
+        {
+          method: 'PUT',
+          // mode: 'cors',
+          body: JSON.stringify({
+            start_time: startTime,
+            end_time: endTime,
+          }),
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `${sessionStorage.getItem('access_token')}`,
+          },
+        },
+      ).then((res) => {
+        if (res.status === 401) {
+          throw 'authentication failed';
+        } else if (res.ok) {
+          alert('予約を変更しました');
+        }
+      });
+    } catch (err) {
+      alert(err);
+    }
+  };
+
   return (
-    <form className={classes.container} noValidate onSubmit={registerDate}>
+    <form
+      className={classes.container}
+      noValidate
+      onSubmit={isEdit ? editReservation : registerDate}
+    >
       {/* <form className={classes.container} noValidate> */}
       <TextField
         id="datetime-local"
@@ -130,49 +169,52 @@ const DateAndTimePickers: React.FC<Props> = ({
           setEndTime(e.target.value);
         }}
       />
-
-      <Box className={classes.box}>
-        <FormControl fullWidth>
-          <InputLabel variant="standard" htmlFor="uncontrolled-native">
-            人数
-          </InputLabel>
-          <NativeSelect
-            inputProps={{
-              name: 'number',
-              id: 'uncontrolled-native',
+      {users && (
+        <>
+          <Box className={classes.box}>
+            <FormControl fullWidth>
+              <InputLabel variant="standard" htmlFor="uncontrolled-native">
+                人数
+              </InputLabel>
+              <NativeSelect
+                inputProps={{
+                  name: 'number',
+                  id: 'uncontrolled-native',
+                }}
+                onChange={(e) => {
+                  setNumber(e.target.value);
+                }}
+              >
+                {range(0, 8).map((i) => {
+                  return (
+                    <option key={i} value={i}>
+                      {i}
+                    </option>
+                  );
+                })}
+              </NativeSelect>
+            </FormControl>
+          </Box>
+          <Autocomplete
+            className={classes.autoComplete}
+            multiple
+            id="tags-standard"
+            // options={top100Films}
+            options={users}
+            getOptionLabel={(option: Option) => option.name}
+            // getOptionLabel={(option) => option.title}
+            renderInput={(params) => (
+              <TextField {...params} variant="standard" label="場所を使う人を選択" />
+            )}
+            onChange={(_, v) => {
+              const ids: number[] = [];
+              v.map(({ id }) => ids.push(id));
+              setValues(ids);
             }}
-            onChange={(e) => {
-              setNumber(e.target.value);
-            }}
-          >
-            {range(0, 8).map((i) => {
-              return (
-                <option key={i} value={i}>
-                  {i}
-                </option>
-              );
-            })}
-          </NativeSelect>
-        </FormControl>
-      </Box>
-      <Autocomplete
-        className={classes.autoComplete}
-        multiple
-        id="tags-standard"
-        // options={top100Films}
-        options={users}
-        getOptionLabel={(option: Option) => option.name}
-        // getOptionLabel={(option) => option.title}
-        renderInput={(params) => (
-          <TextField {...params} variant="standard" label="場所を使う人を選択" />
-        )}
-        onChange={(_, v) => {
-          const ids: number[] = [];
-          v.map(({ id }) => ids.push(id));
-          setValues(ids);
-        }}
-      />
-      <Button>予定を追加する</Button>
+          />
+        </>
+      )}
+      {users ? <Button>予定を追加する</Button> : <Button>予定を変更する</Button>}
     </form>
   );
 };

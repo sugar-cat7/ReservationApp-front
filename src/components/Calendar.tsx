@@ -93,6 +93,9 @@ const FullCalendar: React.FC<Props> = ({ users, reservations }) => {
           startLabel="開始時間"
           endLabel="終了時間"
           users={users}
+          orgId={1} //need to change
+          spaceId={1} //need to change
+          isEdit={false}
         />
       </Modal>
     </>
