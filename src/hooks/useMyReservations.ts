@@ -28,7 +28,7 @@ export const useMyReservations = (): Props => {
   //     `${process.env.NEXT_PUBLIC_API_ROOT}/api/user/reservation`,
   //     fetcher,
   //   );
-  console.log('data', data);
+
   return {
     myReservations: data,
     isLoading: !error && !data,

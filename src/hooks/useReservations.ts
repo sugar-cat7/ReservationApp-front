@@ -19,7 +19,6 @@ type Props = {
   isError: boolean;
 };
 export const useReservations = (orgId: string, startTime: string, endTime: string): Props => {
-  console.log(orgId, startTime, endTime);
   const { data, error } = useSWR(
     `${process.env.NEXT_PUBLIC_API_ROOT}/api/organization/${orgId}/reservation?start_time=${startTime}&end_time=${endTime}`,
     fetcher,
