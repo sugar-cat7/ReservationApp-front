@@ -7,6 +7,7 @@ import { useRouter } from 'next/router';
 const RegisterSpace: React.FC = () => {
   const [spaceName, setSpaceName] = useState<string>('');
   const [spaceCapacity, setSpaceCapacity] = useState<string>('');
+  const [isAddSpace, setIsAddSpace] = useState<boolean>(false);
   const router = useRouter();
   const { user } = useAuth();
   const { orgId } = router.query;
@@ -31,7 +32,10 @@ const RegisterSpace: React.FC = () => {
           throw 'authentication failed';
         } else if (res.ok) {
           alert('スペースを追加しました');
-          router.push('/select-group');
+          // router.push('/select-group');
+          setIsAddSpace(true);
+          setSpaceName('');
+          setSpaceCapacity('');
         }
       });
     } catch (err) {
@@ -40,7 +44,11 @@ const RegisterSpace: React.FC = () => {
   };
 
   return (
-    <div className="max-w-md w-full space-y-8">
+    <div className="max-w-md w-full space-y-2">
+      <h1>1グループにつき複数のスペースを登録することができます。</h1>
+      <div>(例) </div>
+      <div>グループ:テニスサークル</div>
+      <div>場所:テニスコートA, テニスコートB</div>
       <form className="mt-8 space-y-6" onSubmit={registerSpace}>
         <div className="rounded-md shadow-sm -space-y-px">
           <Input
@@ -66,6 +74,15 @@ const RegisterSpace: React.FC = () => {
         </div>
         <Button>追加する</Button>
       </form>
+      {isAddSpace && (
+        <Button
+          onClick={() => {
+            router.push('/select-group');
+          }}
+        >
+          グループへ
+        </Button>
+      )}
     </div>
   );
 };
