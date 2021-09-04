@@ -21,16 +21,21 @@ const DropdownProps = [
   },
   {
     id: 3,
-    name: '設定',
+    name: '団体管理画面',
     url: '#',
   },
   {
     id: 4,
-    name: 'ヘルプ',
+    name: '設定',
     url: '#',
   },
   {
     id: 5,
+    name: 'ヘルプ',
+    url: '#',
+  },
+  {
+    id: 6,
     name: 'ログアウト',
     url: '/',
   },

@@ -12,22 +12,20 @@ const fetcher = (url: string) =>
       return res.json();
     })
     .catch((e) => console.log(e));
-
 type Props = {
-  reservations: [];
-  isLoading: boolean;
+  spaces: [];
+  isSpaceLoading: boolean;
   isError: boolean;
 };
-export const useReservations = (orgId: string, startTime: string, endTime: string): Props => {
+export const useOrgSpaces = (orgId: string): Props => {
   const { data, error } = useSWR(
-    // `${process.env.NEXT_PUBLIC_API_ROOT}/api/organization/${orgId}/reservation?start_time=${startTime}&end_time=${endTime}`,
-    `${process.env.NEXT_PUBLIC_API_ROOT}/api/organization/${orgId}/reservation`, //動かなくなったので
+    `${process.env.NEXT_PUBLIC_API_ROOT}/api/organization/${orgId}/space`,
     fetcher,
   );
 
   return {
-    reservations: data,
-    isLoading: !error && !data,
+    spaces: data,
+    isSpaceLoading: !error && !data,
     isError: error,
   };
 };
