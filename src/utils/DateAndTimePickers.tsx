@@ -7,6 +7,8 @@ import FormControl from '@material-ui/core/FormControl';
 import NativeSelect from '@material-ui/core/NativeSelect';
 import Button from '../utils/Button';
 import Autocomplete from '@material-ui/lab/Autocomplete';
+import MenuItem from '@material-ui/core/MenuItem';
+import Select from '@material-ui/core/Select';
 
 const range = (start: number, end: number) =>
   Array.from({ length: end - start + 1 }, (v, k) => k + start);
@@ -29,6 +31,11 @@ const useStyles = makeStyles((theme: Theme) =>
     autoComplete: {
       marginBottom: theme.spacing(3),
     },
+    formControl: {
+      // margin: theme.spacing(1),
+      minWidth: 100,
+      marginBottom: theme.spacing(2),
+    },
   }),
 );
 
@@ -40,8 +47,8 @@ type Props = {
   users?: any[];
   isEdit: boolean;
   orgId: number;
-  spaceId: number;
   reservationId?: number;
+  spaces?: any[];
 };
 
 type Option = {
@@ -57,9 +64,9 @@ const DateAndTimePickers: React.FC<Props> = ({
   endDate,
   users,
   orgId,
-  spaceId,
   reservationId,
   isEdit,
+  spaces,
 }) => {
   const classes = useStyles();
 
@@ -67,6 +74,20 @@ const DateAndTimePickers: React.FC<Props> = ({
   const [endTime, setEndTime] = useState<string>(endDate);
   const [number, setNumber] = useState<string>('');
   const [values, setValues] = useState<number[]>([]);
+  const [spaceId, setSpaceId] = React.useState<string | number>('');
+  const [open, setOpen] = React.useState(false);
+
+  const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+    setSpaceId(event.target.value as number);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
 
   const registerDate = async (e: React.MouseEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -195,6 +216,26 @@ const DateAndTimePickers: React.FC<Props> = ({
               </NativeSelect>
             </FormControl>
           </Box>
+          {spaces && (
+            <FormControl className={classes.formControl}>
+              <InputLabel id="demo-controlled-open-select-label">スペース</InputLabel>
+              <Select
+                labelId="demo-controlled-open-select-label"
+                id="demo-controlled-open-select"
+                open={open}
+                onClose={handleClose}
+                onOpen={handleOpen}
+                value={spaceId}
+                onChange={handleChange}
+              >
+                {spaces.map((s) => (
+                  <MenuItem key={s.id} value={s.id}>
+                    {s.name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          )}
           <Autocomplete
             className={classes.autoComplete}
             multiple

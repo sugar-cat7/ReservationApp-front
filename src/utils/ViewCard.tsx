@@ -5,6 +5,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import Paper from '@material-ui/core/Paper';
+import { useSpaceCondition } from '../context/ ReservationStateContext';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -14,7 +15,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     formControl: {
       margin: theme.spacing(1),
-      minWidth: 120,
+      width: 150,
     },
   }),
 );
@@ -27,13 +28,15 @@ type Props = {
 };
 
 const ViewCard: React.FC<Props> = ({ spaces }) => {
-  //TODO spaceの切り替えを発火に、現状の選択されているスペースのidをdispatch
+  const { selectSpace } = useSpaceCondition();
+
   const classes = useStyles();
-  const [space, setSpace] = React.useState<string | number>('');
+  const [space, setSpace] = React.useState<string | number>(0);
   const [open, setOpen] = React.useState(false);
 
   const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
     setSpace(event.target.value as number);
+    selectSpace(event.target.value);
   };
 
   const handleClose = () => {
@@ -46,10 +49,10 @@ const ViewCard: React.FC<Props> = ({ spaces }) => {
 
   return (
     <Paper className="w-full flex justify-between items-center p-2">
-      スペースを選択
+      <div className="w-2/4">表示スペースを選択</div>
       {spaces && (
         <FormControl className={classes.formControl}>
-          <InputLabel id="demo-controlled-open-select-label">Space</InputLabel>
+          <InputLabel id="demo-controlled-open-select-label">スペース</InputLabel>
           <Select
             labelId="demo-controlled-open-select-label"
             id="demo-controlled-open-select"
