@@ -5,6 +5,7 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 import moment from 'moment';
 import 'moment/locale/ja';
 import DateAndTimePickers from '../utils/DateAndTimePickers';
+import ViewCard from '../utils/ViewCard';
 
 const localizer = momentLocalizer(moment);
 const formats = {
@@ -32,10 +33,17 @@ type Props = {
     start: Date;
     end: Date;
   }[];
+  spaces: {
+    id: number;
+    name: string;
+  }[];
 };
 //グチャグチャになってきたので後で切り分けましょう
 //TODO 時間指定で予定取ってくるhooks定義して、eventsに入れる、spaceごとに色分けするとわかりやすい気がする
-const FullCalendar: React.FC<Props> = ({ users, reservations }) => {
+const FullCalendar: React.FC<Props> = ({ users, reservations, spaces }) => {
+  //TODO reducerを通して選択されている場所を取得
+  //今持ってるreservationにfilterをかけるspace idで
+
   const [startDate, setStartDate] = useState<Date | string>(new Date());
   const [endDate, setEndDate] = useState<Date | string>(new Date());
   const [showModal, setShowModal] = useState<boolean>(false);
@@ -65,16 +73,17 @@ const FullCalendar: React.FC<Props> = ({ users, reservations }) => {
 
   return (
     <>
+      <ViewCard spaces={spaces} />
       <Calendar
         localizer={localizer}
         events={reservations}
         startAccessor="start"
         endAccessor="end"
-        style={{ height: 500, width: 360 }}
+        style={{ height: 500, marginTop: 10 }}
         formats={formats}
         defaultView="month"
         views={['month', 'day']}
-        className="bg-white"
+        className="bg-white p-4"
         selectable
         onSelectSlot={(s) => handleSelect(s)}
         onView={(v) => {

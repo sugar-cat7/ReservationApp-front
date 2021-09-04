@@ -3,6 +3,7 @@ import Layout from '../components/Layout';
 import FullCalendar from '../components/Calendar';
 import { useOrgUsers } from '../hooks/useOrgUsers';
 import { useReservations } from '../hooks/useReservations';
+import { useOrgSpaces } from '../hooks/useOrgSpaces';
 
 type ReservationsProps = {
   title: string;
@@ -13,6 +14,7 @@ type ReservationsProps = {
 const orgId = '1'; //TODO need to change
 const Calendar = () => {
   const { users, isUserLoading } = useOrgUsers(orgId);
+  const { spaces, isSpaceLoading } = useOrgSpaces(orgId);
 
   const getDateWithString = (date: Date | string, isStart: boolean) => {
     if (typeof date === 'string') {
@@ -21,7 +23,7 @@ const Calendar = () => {
     const dt = date;
     let y: number;
     if (isStart) {
-      y = dt.getFullYear();
+      y = dt.getFullYear() - 1;
     } else {
       y = dt.getFullYear() + 1;
     }
@@ -37,7 +39,7 @@ const Calendar = () => {
   const { reservations, isLoading } = useReservations(orgId, s, e);
 
   const rv: ReservationsProps = [];
-  if (isLoading || isUserLoading) {
+  if (isLoading || isUserLoading || isSpaceLoading) {
     return <div>loding</div>;
   }
   let start: Date;
@@ -54,7 +56,7 @@ const Calendar = () => {
 
   return (
     <Layout title="calendar">
-      <FullCalendar users={users} reservations={rv} />
+      <FullCalendar users={users} reservations={rv} spaces={spaces} />
     </Layout>
   );
 };
