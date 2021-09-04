@@ -20,8 +20,8 @@ type Props = {
 };
 export const useReservations = (orgId: string, startTime: string, endTime: string): Props => {
   const { data, error } = useSWR(
-    // `${process.env.NEXT_PUBLIC_API_ROOT}/api/organization/${orgId}/reservation?start_time=${startTime}&end_time=${endTime}`,
-    `${process.env.NEXT_PUBLIC_API_ROOT}/api/organization/${orgId}/reservation`, //動かなくなったので
+    `${process.env.NEXT_PUBLIC_API_ROOT}/api/organization/${orgId}/reservation?start_time=${startTime}&end_time=${endTime}`,
+    // `${process.env.NEXT_PUBLIC_API_ROOT}/api/organization/${orgId}/reservation`, //動かなくなったので
     fetcher,
   );
 

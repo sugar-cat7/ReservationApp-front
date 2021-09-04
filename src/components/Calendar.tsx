@@ -6,6 +6,7 @@ import moment from 'moment';
 import 'moment/locale/ja';
 import DateAndTimePickers from '../utils/DateAndTimePickers';
 import ViewCard from '../utils/ViewCard';
+import { useSpaceCondition } from '../context/ ReservationStateContext';
 
 const localizer = momentLocalizer(moment);
 const formats = {
@@ -29,6 +30,7 @@ type Props = {
     kana: string;
   }[];
   reservations: {
+    space_id: number;
     title: string;
     start: Date;
     end: Date;
@@ -38,11 +40,24 @@ type Props = {
     name: string;
   }[];
 };
+type ReservationProps = {
+  space_id: number;
+  title: string;
+  start: Date;
+  end: Date;
+}[];
+
 //グチャグチャになってきたので後で切り分けましょう
 //TODO 時間指定で予定取ってくるhooks定義して、eventsに入れる、spaceごとに色分けするとわかりやすい気がする
 const FullCalendar: React.FC<Props> = ({ users, reservations, spaces }) => {
-  //TODO reducerを通して選択されている場所を取得
-  //今持ってるreservationにfilterをかけるspace idで
+  const { state } = useSpaceCondition();
+
+  let filteredReservations: ReservationProps;
+  if (state.spaceId !== 0) {
+    filteredReservations = reservations.filter((r) => r.space_id === state.spaceId);
+  } else {
+    filteredReservations = reservations;
+  }
 
   const [startDate, setStartDate] = useState<Date | string>(new Date());
   const [endDate, setEndDate] = useState<Date | string>(new Date());
@@ -76,7 +91,7 @@ const FullCalendar: React.FC<Props> = ({ users, reservations, spaces }) => {
       <ViewCard spaces={spaces} />
       <Calendar
         localizer={localizer}
-        events={reservations}
+        events={filteredReservations}
         startAccessor="start"
         endAccessor="end"
         style={{ height: 500, marginTop: 10 }}
@@ -103,8 +118,8 @@ const FullCalendar: React.FC<Props> = ({ users, reservations, spaces }) => {
           endLabel="終了時間"
           users={users}
           orgId={1} //need to change
-          spaceId={1} //need to change
           isEdit={false}
+          spaces={spaces}
         />
       </Modal>
     </>

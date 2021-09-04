@@ -4,8 +4,10 @@ import FullCalendar from '../components/Calendar';
 import { useOrgUsers } from '../hooks/useOrgUsers';
 import { useReservations } from '../hooks/useReservations';
 import { useOrgSpaces } from '../hooks/useOrgSpaces';
+import { ManagedSpaceConditionContext } from '../context/ ReservationStateContext';
 
 type ReservationsProps = {
+  space_id: number;
   title: string;
   start: Date;
   end: Date;
@@ -32,6 +34,7 @@ const Calendar = () => {
     const result = y + '-' + m + '-' + d;
     return result;
   };
+
   const nowDate = new Date();
   const s = getDateWithString(nowDate, true);
   const e = getDateWithString(nowDate, false);
@@ -44,11 +47,12 @@ const Calendar = () => {
   }
   let start: Date;
   let end: Date;
-  reservations.map(({ start_time, end_time }) => {
+  reservations.map(({ space_id, start_time, end_time }) => {
     start = new Date(start_time);
     end = new Date(end_time);
     rv.push({
       title: '',
+      space_id: space_id,
       start: start,
       end: end,
     });
@@ -56,7 +60,9 @@ const Calendar = () => {
 
   return (
     <Layout title="calendar">
-      <FullCalendar users={users} reservations={rv} spaces={spaces} />
+      <ManagedSpaceConditionContext>
+        <FullCalendar users={users} reservations={rv} spaces={spaces} />
+      </ManagedSpaceConditionContext>
     </Layout>
   );
 };
