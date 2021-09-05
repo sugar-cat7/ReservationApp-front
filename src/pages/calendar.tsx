@@ -7,10 +7,17 @@ import { useOrgSpaces } from '../hooks/useOrgSpaces';
 import { ManagedSpaceConditionContext } from '../context/ ReservationStateContext';
 
 type ReservationsProps = {
+  user_id: number;
+  reservation_id: number;
   space_id: number;
   title: string;
   start: Date;
   end: Date;
+}[];
+
+type CalenderBg = {
+  spaceId: number;
+  bgColor: string;
 }[];
 
 const orgId = '1'; //TODO need to change
@@ -47,21 +54,44 @@ const Calendar = () => {
   }
   let start: Date;
   let end: Date;
-  reservations.map(({ space_id, start_time, end_time }) => {
+  reservations.map(({ id, user_id, space_id, start_time, end_time }) => {
     start = new Date(start_time);
     end = new Date(end_time);
     rv.push({
       title: '',
+      reservation_id: id,
+      user_id: user_id,
       space_id: space_id,
       start: start,
       end: end,
     });
   });
 
+  const spaceColor: CalenderBg = [];
+  const tmp = Math.floor(255 / spaces.length);
+  let [r, g, b, i] = [0, 0, 0, 0];
+  spaces.map(({ id }) => {
+    if (r <= 255 && i % 3 === 0) {
+      r += tmp;
+      i += 1;
+    } else if (g <= 255 && i % 3 === 1) {
+      g += tmp;
+      i += 1;
+    } else {
+      b += tmp;
+      i += 1;
+    }
+
+    spaceColor.push({
+      spaceId: id,
+      bgColor: `rgba(${r}, ${g}, ${b}, 0.4)`,
+    });
+  });
+  // const bgColor =
   return (
     <Layout title="calendar">
       <ManagedSpaceConditionContext>
-        <FullCalendar users={users} reservations={rv} spaces={spaces} />
+        <FullCalendar users={users} reservations={rv} spaces={spaces} color={spaceColor} />
       </ManagedSpaceConditionContext>
     </Layout>
   );
