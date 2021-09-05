@@ -69,10 +69,9 @@ const DateAndTimePickers: React.FC<Props> = ({
   spaces,
 }) => {
   const classes = useStyles();
-
   const [startTime, setStartTime] = useState<string>(startDate);
   const [endTime, setEndTime] = useState<string>(endDate);
-  const [number, setNumber] = useState<string>('');
+  const [number, setNumber] = useState<number | string>(0);
   const [values, setValues] = useState<number[]>([]);
   const [spaceId, setSpaceId] = React.useState<string | number>('');
   const [open, setOpen] = React.useState(false);
@@ -206,7 +205,7 @@ const DateAndTimePickers: React.FC<Props> = ({
                   setNumber(e.target.value);
                 }}
               >
-                {range(0, 8).map((i) => {
+                {range(0, 10).map((i) => {
                   return (
                     <option key={i} value={i}>
                       {i}
@@ -255,7 +254,7 @@ const DateAndTimePickers: React.FC<Props> = ({
           />
         </>
       )}
-      {users ? <Button>予定を追加する</Button> : <Button>予定を変更する</Button>}
+      {isEdit ? <Button>予定を変更する</Button> : <Button>予定を追加する</Button>}
     </form>
   );
 };

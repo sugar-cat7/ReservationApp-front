@@ -25,9 +25,13 @@ type Props = {
     id: number;
     name: string;
   }[];
+  color: {
+    spaceId: number;
+    bgColor: string;
+  }[];
 };
 
-const ViewCard: React.FC<Props> = ({ spaces }) => {
+const ViewCard: React.FC<Props> = ({ spaces, color }) => {
   const { selectSpace } = useSpaceCondition();
 
   const classes = useStyles();
@@ -67,6 +71,12 @@ const ViewCard: React.FC<Props> = ({ spaces }) => {
             </MenuItem>
             {spaces.map((s) => (
               <MenuItem key={s.id} value={s.id}>
+                <span
+                  style={{
+                    backgroundColor: `${color.filter((c) => c.spaceId === s.id)[0].bgColor}`,
+                  }}
+                  className={`w-4 h-4 rounded-full  mr-2`}
+                />
                 {s.name}
               </MenuItem>
             ))}
