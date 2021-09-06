@@ -30,7 +30,11 @@ const RegisterSpace: React.FC = () => {
       }).then((res) => {
         if (res.status === 401) {
           throw 'authentication failed';
-        } else if (res.ok) {
+        }
+        if (res.status === 500) {
+          throw 'Internal Error!';
+        }
+        if (res.ok) {
           alert('スペースを追加しました');
           // router.push('/select-group');
           setIsAddSpace(true);

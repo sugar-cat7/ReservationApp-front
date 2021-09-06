@@ -9,9 +9,12 @@ const fetcher = (url: string) =>
       if (res.status === 401) {
         throw 'authentication failed';
       }
+      if (res.status === 500) {
+        throw 'Internal Error!';
+      }
       return res.json();
     })
-    .catch((e) => console.log(e));
+    .catch((e) => alert(e));
 type Props = {
   users: [];
   isUserLoading: boolean;

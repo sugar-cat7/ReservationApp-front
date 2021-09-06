@@ -29,7 +29,11 @@ const Auth: React.FC = () => {
         .then((res) => {
           if (res.status === 401) {
             throw 'authentication failed';
-          } else if (res.ok) {
+          }
+          if (res.status === 500) {
+            throw 'Internal Error!';
+          }
+          if (res.ok) {
             const resJson = res.json();
             return resJson;
           }
@@ -79,13 +83,14 @@ const Auth: React.FC = () => {
           if (res.status === 400) {
             throw 'authentication failed';
           }
+          if (res.status === 500) {
+            throw 'Internal Error!';
+          }
         });
 
         login();
-      } catch {
-        (err: string) => {
-          alert(err);
-        };
+      } catch (err: string) {
+        alert(err);
       }
     }
   };

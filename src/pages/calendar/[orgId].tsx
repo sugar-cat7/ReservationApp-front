@@ -55,6 +55,7 @@ const Calendar = () => {
   if (isLoading || isUserLoading || isSpaceLoading) {
     return <div>loding</div>;
   }
+
   let start: Date;
   let end: Date;
   reservations.map(({ id, user_id, space_id, start_time, end_time }) => {

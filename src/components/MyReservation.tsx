@@ -52,7 +52,11 @@ const MyReservation: React.FC<Props> = ({ myReservations }) => {
       ).then((res) => {
         if (res.status === 401) {
           throw 'authentication failed';
-        } else if (res.ok) {
+        }
+        if (res.status === 500) {
+          throw 'Internal Error!';
+        }
+        if (res.ok) {
           alert('予約を削除しました');
           setShowDeleteModal(false);
         }
