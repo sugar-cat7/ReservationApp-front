@@ -43,6 +43,7 @@ type Props = {
     spaceId: number;
     bgColor: string;
   }[];
+  orgId: number;
 };
 type ReservationProps = {
   space_id: number;
@@ -63,7 +64,7 @@ type Data = {
 
 //グチャグチャになってきたので後で切り分けましょう
 //TODO 時間指定で予定取ってくるhooks定義して、eventsに入れる、spaceごとに色分けするとわかりやすい気がする
-const FullCalendar: React.FC<Props> = ({ users, reservations, spaces, color }) => {
+const FullCalendar: React.FC<Props> = ({ users, reservations, spaces, color, orgId }) => {
   const { state } = useSpaceCondition();
   let filteredReservations: ReservationProps;
   if (state.spaceId !== 0) {
@@ -126,7 +127,6 @@ const FullCalendar: React.FC<Props> = ({ users, reservations, spaces, color }) =
     return result;
   };
 
-  const orgId = 1; // TODO need to change
   const onSelectEvent = async (e: React.MouseEvent<HTMLFormElement> & onSelectEventProps) => {
     try {
       await fetch(
@@ -215,7 +215,7 @@ const FullCalendar: React.FC<Props> = ({ users, reservations, spaces, color }) =
             startLabel="開始時間"
             endLabel="終了時間"
             users={users}
-            orgId={1} //need to change
+            orgId={orgId} //need to change
             isEdit={false}
             spaces={spaces}
           />

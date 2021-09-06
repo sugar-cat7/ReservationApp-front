@@ -100,7 +100,7 @@ const DateAndTimePickers: React.FC<Props> = ({
             numbers: number,
             start_time: startTime,
             end_time: endTime,
-            users: values, //need to change
+            users: values,
           }),
           // mode: 'cors',
           headers: {

@@ -1,10 +1,11 @@
 import React from 'react';
-import Layout from '../components/Layout';
-import FullCalendar from '../components/Calendar';
-import { useOrgUsers } from '../hooks/useOrgUsers';
-import { useReservations } from '../hooks/useReservations';
-import { useOrgSpaces } from '../hooks/useOrgSpaces';
-import { ManagedSpaceConditionContext } from '../context/ ReservationStateContext';
+import Layout from '../../components/Layout';
+import FullCalendar from '../../components/Calendar';
+import { useOrgUsers } from '../../hooks/useOrgUsers';
+import { useReservations } from '../../hooks/useReservations';
+import { useOrgSpaces } from '../../hooks/useOrgSpaces';
+import { ManagedSpaceConditionContext } from '../../context/ ReservationStateContext';
+import { useRouter } from 'next/router';
 
 type ReservationsProps = {
   user_id: number;
@@ -20,8 +21,10 @@ type CalenderBg = {
   bgColor: string;
 }[];
 
-const orgId = '1'; //TODO need to change
 const Calendar = () => {
+  const router = useRouter();
+  const { orgId } = router.query;
+
   const { users, isUserLoading } = useOrgUsers(orgId);
   const { spaces, isSpaceLoading } = useOrgSpaces(orgId);
 
@@ -71,10 +74,10 @@ const Calendar = () => {
   const tmp = Math.floor(255 / spaces.length);
   let [r, g, b, i] = [0, 0, 0, 0];
   spaces.map(({ id }) => {
-    if (r <= 255 && i % 3 === 0) {
+    if (i % 3 === 0) {
       r += tmp;
       i += 1;
-    } else if (g <= 255 && i % 3 === 1) {
+    } else if (i % 3 === 1) {
       g += tmp;
       i += 1;
     } else {
@@ -87,11 +90,17 @@ const Calendar = () => {
       bgColor: `rgba(${r}, ${g}, ${b}, 0.4)`,
     });
   });
-  // const bgColor =
+
   return (
     <Layout title="calendar">
       <ManagedSpaceConditionContext>
-        <FullCalendar users={users} reservations={rv} spaces={spaces} color={spaceColor} />
+        <FullCalendar
+          users={users}
+          reservations={rv}
+          spaces={spaces}
+          color={spaceColor}
+          orgId={orgId}
+        />
       </ManagedSpaceConditionContext>
     </Layout>
   );
