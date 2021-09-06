@@ -94,7 +94,13 @@ const Calendar = () => {
   return (
     <Layout title="calendar">
       <ManagedSpaceConditionContext>
-        <FullCalendar users={users} reservations={rv} spaces={spaces} color={spaceColor} />
+        <FullCalendar
+          users={users}
+          reservations={rv}
+          spaces={spaces}
+          color={spaceColor}
+          orgId={orgId}
+        />
       </ManagedSpaceConditionContext>
     </Layout>
   );
