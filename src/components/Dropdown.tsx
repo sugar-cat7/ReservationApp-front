@@ -37,7 +37,7 @@ const DropdownProps = [
   {
     id: 6,
     name: 'ログアウト',
-    url: '/',
+    url: 'login',
   },
 ];
 
