@@ -170,8 +170,10 @@ const DateAndTimePickers: React.FC<Props> = ({
           shrink: true,
         }}
         onChange={(e) => {
+          console.log(e.target.value);
           setStartTime(e.target.value);
         }}
+        required
       />
       <br />
       <TextField
@@ -188,6 +190,7 @@ const DateAndTimePickers: React.FC<Props> = ({
         onChange={(e) => {
           setEndTime(e.target.value);
         }}
+        required
       />
       {users && (
         <>
@@ -204,6 +207,7 @@ const DateAndTimePickers: React.FC<Props> = ({
                 onChange={(e) => {
                   setNumber(e.target.value);
                 }}
+                required
               >
                 {range(0, 10).map((i) => {
                   return (
@@ -226,6 +230,7 @@ const DateAndTimePickers: React.FC<Props> = ({
                 onOpen={handleOpen}
                 value={spaceId}
                 onChange={handleChange}
+                required
               >
                 {spaces.map((s) => (
                   <MenuItem key={s.id} value={s.id}>
