@@ -14,7 +14,7 @@ const Layout: React.FC<Props> = ({ children, title = 'default title' }) => {
   // const [cookies] = useCookies(['access_token']);
 
   const router = useRouter();
-  const isReady = router.isReady;
+  // const isReady = router.isReady;
   const OverallLayout = () => {
     return (
       <div className="flex justify-center items-center flex-col min-h-screen text-black font-mono bg-gray-200">
@@ -50,17 +50,19 @@ const Layout: React.FC<Props> = ({ children, title = 'default title' }) => {
     );
   };
 
-  //後で変えると思う
-  if (!isReady) {
-    return OverallLayout();
-  }
-  if (
-    router.pathname !== '/' &&
-    (sessionStorage.getItem('user_id') === ('0' || undefined) ||
-      !sessionStorage.getItem('access_token'))
-  ) {
-    router.push('/');
-  }
+  // if (!isReady) {
+  //   return OverallLayout();
+  // }
+  // if (
+  //   router.pathname !== '/' &&
+  //   router.pathname !== '/login' &&
+  //   (sessionStorage.getItem('user_id') === ('0' || undefined) ||
+  //     !sessionStorage.getItem('access_token') ||
+  //     !sessionStorage.getItem('user_id') ||
+  //     !sessionStorage.getItem('name'))
+  // ) {
+  //   router.push('/login');
+  // }
 
   return OverallLayout();
 };

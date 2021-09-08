@@ -75,6 +75,7 @@ const GroupRegister: React.FC = () => {
             onChange={(e) => {
               setGroupPassword(e.target.value);
             }}
+            PassFlag
           />
         </div>
         <Button>追加する</Button>

@@ -14,6 +14,7 @@ const Auth: React.FC = () => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [isLogin, setIsLogin] = useState<boolean>(true);
+
   // const [cookie, setCookie, removeCookie] = useCookies(['access_token']);
 
   const login = async () => {
@@ -154,15 +155,18 @@ const Auth: React.FC = () => {
                 setEmail(e.target.value);
               }}
             />
-            <Input
-              name="password"
-              type="password"
-              placeholder="Password"
-              value={password}
-              onChange={(e) => {
-                setPassword(e.target.value);
-              }}
-            />
+            <div className="relative">
+              <Input
+                name="password"
+                type="password"
+                placeholder="Password"
+                value={password}
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                }}
+                PassFlag
+              />
+            </div>
           </div>
         </div>
 
