@@ -33,14 +33,22 @@ const Calendar = () => {
       return date;
     }
     const dt = date;
-    let y: number;
+    const y = dt.getFullYear();
+    // const m = dt.getMonth() + 1;
+    let d: number;
+    let m: number;
     if (isStart) {
-      y = dt.getFullYear() - 1;
+      // y = dt.getFullYear() - 1;
+      d = 1;
+      m = dt.getMonth() + 1;
     } else {
-      y = dt.getFullYear() + 1;
+      // y = dt.getFullYear() + 1;
+
+      m = dt.getMonth() + 2;
+      d = dt.getDate();
     }
-    const m = dt.getMonth() + 1;
-    const d = dt.getDate();
+
+    // const d = dt.getDate();
     const result = y + '-' + m + '-' + d;
     return result;
   };
@@ -48,7 +56,7 @@ const Calendar = () => {
   const nowDate = new Date();
   const s = getDateWithString(nowDate, true);
   const e = getDateWithString(nowDate, false);
-  //とりあえず一年分一括して取ってくる
+  //とりあえず１ヶ月先まで一括して取ってくる
   const { reservations, isLoading } = useReservations(orgId, s, e);
 
   const rv: ReservationsProps = [];
