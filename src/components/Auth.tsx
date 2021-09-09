@@ -97,7 +97,7 @@ const Auth: React.FC = () => {
   };
 
   return (
-    <div className="max-w-md w-full space-y-8">
+    <div className="max-w-md w-full space-y-8 lg:w-screen">
       <div>
         <svg
           xmlns="http://www.w3.org/2000/svg"

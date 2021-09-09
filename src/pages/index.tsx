@@ -6,7 +6,8 @@ import { useRouter } from 'next/router';
 const Home: React.FC = () => {
   const router = useRouter();
   return (
-    <Layout title="ようこそ">
+    // <Layout title="ようこそ">
+    <>
       <h1>後で実装予定</h1>
       <Button
         onClick={() => {
@@ -15,7 +16,8 @@ const Home: React.FC = () => {
       >
         ログインページへ
       </Button>
-    </Layout>
+    </>
+    // </Layout>
   );
 };
 

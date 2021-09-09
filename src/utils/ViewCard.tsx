@@ -52,7 +52,7 @@ const ViewCard: React.FC<Props> = ({ spaces, color }) => {
   };
 
   return (
-    <Paper className="w-full flex justify-between items-center p-2">
+    <Paper className="w-full flex justify-between items-center p-2 lg:w-96">
       <div className="w-2/4">表示スペースを選択</div>
       {spaces && (
         <FormControl className={classes.formControl}>

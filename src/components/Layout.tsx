@@ -26,7 +26,7 @@ const Layout: React.FC<Props> = ({ children, title = 'default title' }) => {
             {router.pathname === '/' && (
               <div className="flex items-center h-14 justify-center">{title}</div>
             )}
-            {router.pathname !== '/' && (
+            {router.pathname !== '/login' && (
               <div className="flex items-center h-14 justify-between">
                 <ChevronLeftIcon
                   className="h-8 w-6 ml-3"

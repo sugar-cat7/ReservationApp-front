@@ -12,12 +12,12 @@ const DropdownProps = [
   {
     id: 1,
     name: 'グループ登録',
-    url: 'register-group',
+    url: '/register-group',
   },
   {
     id: 2,
     name: '自分の予定を確認',
-    url: 'my-reservation',
+    url: '/my-reservation',
   },
   {
     id: 3,
@@ -37,7 +37,7 @@ const DropdownProps = [
   {
     id: 6,
     name: 'ログアウト',
-    url: 'login',
+    url: '/login',
   },
 ];
 

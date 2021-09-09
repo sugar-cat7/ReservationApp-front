@@ -53,7 +53,7 @@ const GroupRegister: React.FC = () => {
   };
 
   return (
-    <div className="max-w-md w-full space-y-8">
+    <div className="max-w-md w-full space-y-8 lg:w-screen">
       <form className="mt-8 space-y-6" onSubmit={registerGroup}>
         <div className="rounded-md shadow-sm -space-y-px">
           <Input
