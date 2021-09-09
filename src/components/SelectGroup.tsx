@@ -64,11 +64,11 @@ const SelectGroup: React.FC = () => {
       </div>
 
       {organizations.length ? (
-        <div className="absolute top-44">
+        <div className="absolute top-44 h-4/6 overflow-y-auto">
           <div>参加しているグループ</div>
           {organizations.map(({ id, name }: orgProps) => (
             <div
-              className="max-w-md mx-auto bg-white rounded-xl  shadow-md overflow-hidden md:max-w-2xl  hover:bg-gray hover:shadow-lg hover:border-transparent mb-4"
+              className="max-w-md mx-auto bg-white rounded-xl  shadow-md overflow-hidden md:max-w-2xl  hover:bg-gray hover:shadow-lg hover:border-transparent mb-4 lg:w-screen"
               onClick={() => {
                 router.push({
                   pathname: '/calendar/[orgId]',

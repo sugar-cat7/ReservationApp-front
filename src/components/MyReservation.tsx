@@ -3,6 +3,11 @@ import { XCircleIcon } from '@heroicons/react/solid';
 import Modal from '../utils/Modal';
 import { useState } from 'react';
 import DateAndTimePickers from '../utils/DateAndTimePickers';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+import { useUserOrg } from '../hooks/useUserOrg';
 
 type Props = {
   myReservations: {
@@ -27,7 +32,13 @@ const MyReservation: React.FC<Props> = ({ myReservations }) => {
   const [rvId, setRvId] = useState<number>(0);
   const [startDate, setStartDate] = useState<string>('');
   const [endDate, setEndDate] = useState<string>('');
+  const [groupId, setGroupId] = useState<number | string>(0);
+  const { organizations, isLoading } = useUserOrg();
 
+  if (isLoading) {
+    return <div>Loding</div>;
+  }
+  console.log('org', organizations);
   const getDateJP = (date: string) => {
     const [ymd, time] = date.split('T');
     const [y, m, d] = ymd.split('-');
@@ -87,59 +98,90 @@ const MyReservation: React.FC<Props> = ({ myReservations }) => {
     setSpaceId(spaceId);
     setRvId(rvId);
   };
-
+  let filteredMyReservations: Props['myReservations'];
+  if (groupId === 0) {
+    filteredMyReservations = myReservations;
+  } else {
+    filteredMyReservations = myReservations.filter((m) => m.organization_id === groupId);
+  }
   return (
     <>
-      {myReservations.map((r) => (
-        <div
-          key={r.id}
-          className="flex w-80 border-b-2 border-gray-400 justify-between items-center mb-2"
-        >
-          <div>
-            {r.organization_name}
-            <div className="text-gray-400">
-              <div>場所:{r.space_name}</div>
-              <div>時間:{getDateJP(r.start_time)}</div>
+      <div className="absolute top-20 flex items-center">
+        <div>予約の絞り込み</div>
+        <FormControl sx={{ m: 1, minWidth: 120 }}>
+          <InputLabel id="select-group-label">グループを選択</InputLabel>
+          <Select
+            labelId="select-group-label"
+            id="select-group-label"
+            value={groupId}
+            label="group"
+            onChange={(e) => {
+              setGroupId(e.target.value);
+            }}
+          >
+            <MenuItem value={0}>
+              <em>全て</em>
+            </MenuItem>
+            {organizations.map(({ id, name }) => (
+              <MenuItem key={id} value={id}>
+                {name}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </div>
+      <div className="absolute top-44 h-4/6 overflow-y-auto">
+        {filteredMyReservations.map((r) => (
+          <div
+            key={r.id}
+            className="flex w-80 border-b-2 border-gray-400 justify-between items-center mb-2 lg:w-96"
+          >
+            <div>
+              {r.organization_name}
+              <div className="text-gray-400">
+                <div>場所:{r.space_name}</div>
+                <div>時間:{getDateJP(r.start_time)}</div>
+              </div>
+            </div>
+            <div className="flex">
+              <PencilIcon
+                className="h-7 w-7"
+                onClick={() =>
+                  onChangeProps(r.organization_id, r.space_id, r.id, true, r.start_time, r.end_time)
+                }
+              />
+              {/* TODO orgId変える */}
+              <XCircleIcon
+                className="h-7 w-7"
+                onClick={() => onChangeProps(r.organization_id, r.space_id, r.id, false)}
+              />
             </div>
           </div>
-          <div className="flex">
-            <PencilIcon
-              className="h-7 w-7"
-              onClick={() =>
-                onChangeProps(r.organization_id, r.space_id, r.id, true, r.start_time, r.end_time)
-              }
-            />
-            {/* TODO orgId変える */}
-            <XCircleIcon
-              className="h-7 w-7"
-              onClick={() => onChangeProps(r.organization_id, r.space_id, r.id, false)}
-            />
-          </div>
-        </div>
-      ))}
-      <Modal
-        data="予定を削除しますか？"
-        showModal={showDeleteModal}
-        onClickNo={() => setShowDeleteModal(false)}
-        onClickYes={() => deleteReservation(orgId, spaceId, rvId)}
-      />
-      <Modal
-        data="予定を変更しますか？"
-        showModal={showEditModal}
-        onClickNo={() => setShowEditModal(false)}
-      >
-        <DateAndTimePickers
-          startDate={startDate}
-          endDate={endDate}
-          startLabel="開始時間"
-          endLabel="終了時間"
-          orgId={orgId}
-          spaceId={spaceId}
-          reservationId={rvId}
-          isEdit={true}
-          // users={users}
+        ))}
+        <Modal
+          data="予定を削除しますか？"
+          showModal={showDeleteModal}
+          onClickNo={() => setShowDeleteModal(false)}
+          onClickYes={() => deleteReservation(orgId, spaceId, rvId)}
         />
-      </Modal>
+        <Modal
+          data="予定を変更しますか？"
+          showModal={showEditModal}
+          onClickNo={() => setShowEditModal(false)}
+        >
+          <DateAndTimePickers
+            startDate={startDate}
+            endDate={endDate}
+            startLabel="開始時間"
+            endLabel="終了時間"
+            orgId={orgId}
+            // spaceId={spaceId}
+            reservationId={rvId}
+            isEdit={true}
+            // users={users}
+          />
+        </Modal>
+      </div>
     </>
   );
 };

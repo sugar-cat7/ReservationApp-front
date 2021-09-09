@@ -168,11 +168,11 @@ const FullCalendar: React.FC<Props> = ({ users, reservations, spaces, color, org
         events={filteredReservations}
         startAccessor="start"
         endAccessor="end"
-        style={{ height: 500, marginTop: 10 }}
+        style={{ height: 550, marginTop: 10 }}
         formats={formats}
         defaultView="month"
         views={['month', 'day']}
-        className="bg-white p-4"
+        className="bg-white p-4 lg:w-max"
         onSelectEvent={(event) => onSelectEvent(event)}
         onSelectSlot={(s) => handleSelect(s)}
         onView={(v) => {

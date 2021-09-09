@@ -48,7 +48,7 @@ const RegisterSpace: React.FC = () => {
   };
 
   return (
-    <div className="max-w-md w-full space-y-2">
+    <div className="max-w-md w-full space-y-2 lg:w-screen">
       <h1>1グループにつき複数のスペースを登録することができます。</h1>
       <div>(例) </div>
       <div>グループ:テニスサークル</div>
