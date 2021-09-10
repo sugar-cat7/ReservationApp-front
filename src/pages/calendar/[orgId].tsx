@@ -23,7 +23,7 @@ type CalenderBg = {
 
 const Calendar = () => {
   const router = useRouter();
-  const { orgId } = router.query;
+  const { orgId, orgName } = router.query;
 
   const { users, isUserLoading } = useOrgUsers(orgId);
   const { spaces, isSpaceLoading } = useOrgSpaces(orgId);
@@ -101,7 +101,7 @@ const Calendar = () => {
   });
 
   return (
-    <Layout title="calendar">
+    <Layout title="予定カレンダー">
       <ManagedSpaceConditionContext>
         <FullCalendar
           users={users}
@@ -109,6 +109,7 @@ const Calendar = () => {
           spaces={spaces}
           color={spaceColor}
           orgId={orgId}
+          orgName={orgName}
         />
       </ManagedSpaceConditionContext>
     </Layout>

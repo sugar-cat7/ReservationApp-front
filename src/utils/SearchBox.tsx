@@ -48,7 +48,6 @@ const SearchBox: React.FC<Props> = ({ setModal, setSearchedOrg }) => {
         return res.json();
       })
       .then((data) => {
-        // console.log(data);
         setSearchedOrg(data);
       })
       .catch((e) => alert(e));

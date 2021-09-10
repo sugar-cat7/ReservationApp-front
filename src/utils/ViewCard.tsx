@@ -29,9 +29,10 @@ type Props = {
     spaceId: number;
     bgColor: string;
   }[];
+  orgName?: string | string[];
 };
 
-const ViewCard: React.FC<Props> = ({ spaces, color }) => {
+const ViewCard: React.FC<Props> = ({ spaces, color, orgName }) => {
   const { selectSpace } = useSpaceCondition();
 
   const classes = useStyles();
@@ -52,8 +53,13 @@ const ViewCard: React.FC<Props> = ({ spaces, color }) => {
   };
 
   return (
-    <Paper className="w-full flex justify-between items-center p-2 lg:w-96">
-      <div className="w-2/4">表示スペースを選択</div>
+    <Paper className="w-full grid grid-cols-2 justify-between items-center p-2 sm:w-96">
+      <div>
+        <div>
+          グループ: <span className="text-indigo-500 font-semibold">{orgName}</span>
+        </div>
+        <div>表示スペースを選択→</div>
+      </div>
       {spaces && (
         <FormControl className={classes.formControl}>
           <InputLabel id="demo-controlled-open-select-label">スペース</InputLabel>

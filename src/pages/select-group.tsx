@@ -3,7 +3,7 @@ import SelectGroup from '../components/SelectGroup';
 
 const SelectedGroup: React.FC = () => {
   return (
-    <Layout title="select group">
+    <Layout title="グループ選択">
       <SelectGroup></SelectGroup>
     </Layout>
   );

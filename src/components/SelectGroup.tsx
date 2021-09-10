@@ -59,7 +59,7 @@ const SelectGroup: React.FC = () => {
   return (
     <>
       <div className="absolute top-20">
-        <div>グループを検索</div>
+        <div>追加したいグループを検索</div>
         <SearchBox setModal={() => setShowModal(true)} setSearchedOrg={setSearchedOrg} />
       </div>
 
@@ -68,11 +68,11 @@ const SelectGroup: React.FC = () => {
           <div>参加しているグループ</div>
           {organizations.map(({ id, name }: orgProps) => (
             <div
-              className="max-w-md mx-auto bg-white rounded-xl  shadow-md overflow-hidden md:max-w-2xl  hover:bg-gray hover:shadow-lg hover:border-transparent mb-4 lg:w-screen"
+              className="max-w-md mx-auto bg-white rounded-xl  shadow-md overflow-hidden md:max-w-2xl  hover:bg-gray hover:shadow-lg hover:border-transparent mb-4 sm:w-screen"
               onClick={() => {
                 router.push({
                   pathname: '/calendar/[orgId]',
-                  query: { orgId: id },
+                  query: { orgId: id, orgName: name },
                 });
               }}
               key={id}

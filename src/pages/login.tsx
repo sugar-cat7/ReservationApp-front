@@ -4,7 +4,7 @@ import Layout from '../components/Layout';
 
 const Login: React.FC = () => {
   return (
-    <Layout title="login page">
+    <Layout title="ログイン">
       <Auth></Auth>
     </Layout>
   );
