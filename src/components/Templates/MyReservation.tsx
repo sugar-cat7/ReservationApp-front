@@ -1,13 +1,15 @@
 import { PencilIcon } from '@heroicons/react/solid';
 import { XCircleIcon } from '@heroicons/react/solid';
-import Modal from '../utils/Modal';
+import Modal from '../Atoms/Modal';
 import { useState } from 'react';
-import DateAndTimePickers from '../utils/DateAndTimePickers';
+import DateAndTimePickers from '../Organiams/DateAndTimePickers';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-import { useUserOrg } from '../hooks/useUserOrg';
+import { useUserOrg } from '../../hooks/useUserOrg';
+import api from '../../utils/fetch';
+import { getDateJP } from '../../utils/selectedDateConverter';
 
 type Props = {
   myReservations: {
@@ -40,42 +42,11 @@ const MyReservation: React.FC<Props> = ({ myReservations }) => {
     return <div>Loding</div>;
   }
 
-  const getDateJP = (date: string) => {
-    const [ymd, time] = date.split('T');
-    const [y, m, d] = ymd.split('-');
-    const [t] = time.split('.');
-    const [hour, minutes] = t.split(':');
-    const result = y + '年' + m + '月' + d + '日 ' + hour + ':' + minutes;
-    return result;
-  };
-
   const deleteReservation = async (orgId: string, spaceId: number, rvId: number) => {
-    try {
-      await fetch(
-        `${process.env.NEXT_PUBLIC_API_ROOT}/api/organization/${orgId}/space/${spaceId}/reservation/${rvId}`,
-        {
-          method: 'DELETE',
-          // mode: 'cors',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `${sessionStorage.getItem('access_token')}`,
-          },
-        },
-      ).then((res) => {
-        if (res.status === 401) {
-          throw 'authentication failed';
-        }
-        if (res.status === 500) {
-          throw 'Internal Error!';
-        }
-        if (res.ok) {
-          alert('予約を削除しました');
-          setShowDeleteModal(false);
-        }
-      });
-    } catch (err) {
-      alert(err);
-    }
+    await api
+      .delete(`/api/organization/${orgId}/space/${spaceId}/reservation/${rvId}`)
+      .then(() => alert('削除しました'))
+      .catch((err) => alert(err));
   };
 
   const onChangeProps = (
@@ -187,7 +158,7 @@ const MyReservation: React.FC<Props> = ({ myReservations }) => {
             startLabel="開始時間"
             endLabel="終了時間"
             orgId={orgId}
-            // spaceId={spaceId}
+            rSpaceId={spaceId}
             reservationId={rvId}
             isEdit={true}
             // users={users}

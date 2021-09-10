@@ -1,16 +1,15 @@
 import { useState } from 'react';
-import Input from '../utils/Input';
-import Button from '../utils/Button';
-import { useAuth } from '../context/AuthContext';
+import Input from '../Atoms/Input';
+import Button from '../Atoms/Button';
+import { useAuth } from '../../context/AuthContext';
 import { useRouter } from 'next/router';
-// import { useCookies } from 'react-cookie';
+import api from '../../utils/fetch';
 
 const GroupRegister: React.FC = () => {
   const [groupName, setGroupName] = useState<string>('');
   const [groupPassword, setGroupPassword] = useState<string>('');
   const router = useRouter();
   const { user } = useAuth();
-  // const [cookie] = useCookies(['access_token']);
 
   if (!user) {
     return <div>ログインし直してください</div>;
@@ -18,38 +17,18 @@ const GroupRegister: React.FC = () => {
 
   const registerGroup = async (e: React.MouseEvent<HTMLFormElement>) => {
     e.preventDefault();
-    try {
-      await fetch(`${process.env.NEXT_PUBLIC_API_ROOT}/api/organization/`, {
-        method: 'POST',
-        body: JSON.stringify({ name: groupName, password: groupPassword }),
-        // mode: 'cors',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `${sessionStorage.getItem('access_token')}`,
-        },
-      })
-        .then((res) => {
-          if (res.status === 401) {
-            throw 'authentication failed';
-          }
-          if (res.status === 500) {
-            throw 'Internal Error!';
-          }
-          if (res.ok) {
-            const resJson = res.json();
-            return resJson;
-          }
-        })
-        .then((data) => {
-          alert('グループを追加しました');
-          router.push({
-            pathname: '/register-space/[orgId]',
-            query: { orgId: data.id },
-          });
+    await api
+      .post(`/api/organization/`, { name: groupName, password: groupPassword })
+      .then((data) => {
+        alert('グループを追加しました');
+        router.push({
+          pathname: '/register-space/[orgId]',
+          query: { orgId: data.id },
         });
-    } catch (err) {
-      alert(err);
-    }
+      })
+      .catch((err) => {
+        alert(err);
+      });
   };
 
   return (

@@ -1,6 +1,5 @@
 import React from 'react';
-import Layout from '../components/Layout';
-import Button from '../utils/Button';
+import Button from '../components/Atoms/Button';
 import { useRouter } from 'next/router';
 
 const Home: React.FC = () => {

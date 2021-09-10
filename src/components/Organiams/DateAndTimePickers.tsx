@@ -5,10 +5,11 @@ import Box from '@material-ui/core/Box';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import NativeSelect from '@material-ui/core/NativeSelect';
-import Button from '../utils/Button';
+import Button from '../Atoms/Button';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
+import api from '../../utils/fetch';
 
 const range = (start: number, end: number) =>
   Array.from({ length: end - start + 1 }, (v, k) => k + start);
@@ -50,6 +51,7 @@ type Props = {
   orgName?: string | string[] | undefined;
   reservationId?: number;
   spaces?: any[];
+  rSpaceId?: number;
 };
 
 type Option = {
@@ -69,14 +71,15 @@ const DateAndTimePickers: React.FC<Props> = ({
   reservationId,
   isEdit,
   spaces,
+  rSpaceId,
 }) => {
   const classes = useStyles();
   const [startTime, setStartTime] = useState<string>(startDate);
   const [endTime, setEndTime] = useState<string>(endDate);
   const [number, setNumber] = useState<number | string>(0);
   const [values, setValues] = useState<number[]>([]);
-  const [spaceId, setSpaceId] = React.useState<string | number>('');
-  const [open, setOpen] = React.useState(false);
+  const [spaceId, setSpaceId] = useState<string | number>('');
+  const [open, setOpen] = useState(false);
 
   const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
     setSpaceId(event.target.value as number);
@@ -92,65 +95,31 @@ const DateAndTimePickers: React.FC<Props> = ({
 
   const registerDate = async (e: React.MouseEvent<HTMLFormElement>) => {
     e.preventDefault();
-    try {
-      //TODO orgIdは団体選択画面から遷移するときにcontextで持っておくと良さそう
-      await fetch(
-        `${process.env.NEXT_PUBLIC_API_ROOT}/api/organization/${orgId}/space/${spaceId}/reservation`,
-        {
-          method: 'POST',
-          body: JSON.stringify({
-            numbers: number,
-            start_time: startTime,
-            end_time: endTime,
-            users: values,
-          }),
-          // mode: 'cors',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `${sessionStorage.getItem('access_token')}`,
-          },
-        },
-      ).then((res) => {
-        if (res.status === 401) {
-          throw 'authentication failed';
-        } else if (res.ok) {
-          alert('予約しました');
-        } else {
-          throw '予期せぬエラーが発生しました';
-        }
+    await api
+      .post(`/api/organization/${orgId}/space/${spaceId}/reservation`, {
+        numbers: number,
+        start_time: startTime,
+        end_time: endTime,
+        users: values,
+      })
+      .then(() => alert('予定を追加しました'))
+      .catch((err) => {
+        alert(err);
       });
-    } catch (err) {
-      alert(err);
-    }
   };
 
   const editReservation = async (e: React.MouseEvent<HTMLFormElement>) => {
     e.preventDefault();
-    try {
-      await fetch(
-        `${process.env.NEXT_PUBLIC_API_ROOT}/api/organization/${orgId}/space/${spaceId}/reservation/${reservationId}`,
-        {
-          method: 'PUT',
-          // mode: 'cors',
-          body: JSON.stringify({
-            start_time: startTime,
-            end_time: endTime,
-          }),
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `${sessionStorage.getItem('access_token')}`,
-          },
-        },
-      ).then((res) => {
-        if (res.status === 401) {
-          throw 'authentication failed';
-        } else if (res.ok) {
-          alert('予約を変更しました');
-        }
+    // console.log(e);
+    await api
+      .put(`/api/organization/${orgId}/space/${rSpaceId}/reservation/${reservationId}`, {
+        start_time: startTime,
+        end_time: endTime,
+      })
+      .then(() => alert('予約を変更しました'))
+      .catch((err) => {
+        alert(err);
       });
-    } catch (err) {
-      alert(err);
-    }
   };
 
   return (

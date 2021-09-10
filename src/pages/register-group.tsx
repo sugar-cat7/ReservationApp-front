@@ -1,5 +1,5 @@
-import Layout from '../components/Layout';
-import GroupRegister from '../components/GroupRegister';
+import Layout from '../components/Templates/Layout';
+import GroupRegister from '../components/Templates/GroupRegister';
 
 const RegisterGroup: React.FC = () => {
   return (

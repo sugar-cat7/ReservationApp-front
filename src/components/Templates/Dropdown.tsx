@@ -2,7 +2,7 @@ import { Fragment } from 'react';
 import { Menu, Transition } from '@headlessui/react';
 import { DotsVerticalIcon } from '@heroicons/react/solid';
 import Link from 'next/link';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../../context/AuthContext';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');

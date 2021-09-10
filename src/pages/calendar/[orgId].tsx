@@ -1,11 +1,12 @@
 import React from 'react';
-import Layout from '../../components/Layout';
-import FullCalendar from '../../components/Calendar';
+import Layout from '../../components/Templates/Layout';
+import FullCalendar from '../../components/Templates/Calendar';
 import { useOrgUsers } from '../../hooks/useOrgUsers';
 import { useReservations } from '../../hooks/useReservations';
 import { useOrgSpaces } from '../../hooks/useOrgSpaces';
 import { ManagedSpaceConditionContext } from '../../context/ ReservationStateContext';
 import { useRouter } from 'next/router';
+import { getDateWithString } from '../../utils/selectedDateConverter';
 
 type ReservationsProps = {
   user_id: number;
@@ -27,31 +28,6 @@ const Calendar = () => {
 
   const { users, isUserLoading } = useOrgUsers(orgId);
   const { spaces, isSpaceLoading } = useOrgSpaces(orgId);
-
-  const getDateWithString = (date: Date | string, isStart: boolean) => {
-    if (typeof date === 'string') {
-      return date;
-    }
-    const dt = date;
-    const y = dt.getFullYear();
-    // const m = dt.getMonth() + 1;
-    let d: number;
-    let m: number;
-    if (isStart) {
-      // y = dt.getFullYear() - 1;
-      d = 1;
-      m = dt.getMonth() + 1;
-    } else {
-      // y = dt.getFullYear() + 1;
-
-      m = dt.getMonth() + 2;
-      d = dt.getDate();
-    }
-
-    // const d = dt.getDate();
-    const result = y + '-' + m + '-' + d;
-    return result;
-  };
 
   const nowDate = new Date();
   const s = getDateWithString(nowDate, true);
