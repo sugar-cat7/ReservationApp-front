@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import Input from '../Atoms/Input';
 import Button from '../Atoms/Button';
 import { useAuth } from '../../context/AuthContext';
+import api from '../../utils/fetch';
 
 const Auth: React.FC = () => {
   const router = useRouter();
@@ -18,53 +19,24 @@ const Auth: React.FC = () => {
   // const [cookie, setCookie, removeCookie] = useCookies(['access_token']);
 
   const login = async () => {
-    try {
-      await fetch(`${process.env.NEXT_PUBLIC_API_ROOT}/api/login/`, {
-        method: 'POST',
-        body: JSON.stringify({ email: email, password: password }),
-        // mode: 'cors',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-        .then((res) => {
-          if (res.status === 401) {
-            throw 'authentication failed';
-          }
-          if (res.status === 500) {
-            throw 'Internal Error!';
-          }
-          if (res.ok) {
-            const resJson = res.json();
-            return resJson;
-          }
-        })
-        .then((data) => {
-          const user = data.user;
-          const token = data.token;
-          if (!token) {
-            throw 'Fail! Fetch Access Token!';
-          }
-          // const options = { path: '/' };
-          // setCookie('access_token', token, options);
-          auth.signIn({
-            id: user.id,
-            name: user.name,
-            access_token: token,
-          });
+    await api
+      .post(`/api/login/`, { email: email, password: password })
+      .then((data) => {
+        const user = data.user;
+        const token = data.token;
+        if (!token) {
+          throw 'Fail! Fetch Access Token!';
+        }
+        auth.signIn({
+          id: user.id,
+          name: user.name,
+          access_token: token,
         });
-      router.push('/select-group');
-    } catch (err) {
-      if (sessionStorage.getItem('access_token')) {
-        // removeCookie('access_token');
-        sessionStorage.removeItem('access_token');
-      }
-      if (sessionStorage.getItem('id')) {
-        sessionStorage.removeItem('id');
-        sessionStorage.removeItem('name');
-      }
-      alert(err);
-    }
+        router.push('/select-group');
+      })
+      .catch((err) => {
+        alert(err);
+      });
   };
 
   const authUser = async (e: React.MouseEvent<HTMLFormElement>) => {
@@ -73,26 +45,10 @@ const Auth: React.FC = () => {
     if (isLogin) {
       login();
     } else {
-      try {
-        await fetch(`${process.env.NEXT_PUBLIC_API_ROOT}/api/user/`, {
-          method: 'POST',
-          body: JSON.stringify({ name: name, kana: kana, email: email, password: password }),
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        }).then((res) => {
-          if (res.status === 400) {
-            throw 'authentication failed';
-          }
-          if (res.status === 500) {
-            throw 'Internal Error!';
-          }
-        });
-
-        login();
-      } catch (err) {
-        alert(err);
-      }
+      await api
+        .post(`/api/user/`, { name: name, kana: kana, email: email, password: password }, true)
+        .then(() => login())
+        .catch((err) => alert(err));
     }
   };
 

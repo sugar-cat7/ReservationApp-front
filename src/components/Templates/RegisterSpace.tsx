@@ -3,6 +3,7 @@ import Input from '../Atoms/Input';
 import Button from '../Atoms/Button';
 import { useAuth } from '../../context/AuthContext';
 import { useRouter } from 'next/router';
+import api from '../../utils/fetch';
 
 const RegisterSpace: React.FC = () => {
   const [spaceName, setSpaceName] = useState<string>('');
@@ -18,33 +19,17 @@ const RegisterSpace: React.FC = () => {
 
   const registerSpace = async (e: React.MouseEvent<HTMLFormElement>) => {
     e.preventDefault();
-    try {
-      await fetch(`${process.env.NEXT_PUBLIC_API_ROOT}/api/organization/${orgId}/space`, {
-        method: 'POST',
-        body: JSON.stringify({ name: spaceName, capacity: spaceCapacity }),
-        // mode: 'cors',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `${sessionStorage.getItem('access_token')}`,
-        },
-      }).then((res) => {
-        if (res.status === 401) {
-          throw 'authentication failed';
-        }
-        if (res.status === 500) {
-          throw 'Internal Error!';
-        }
-        if (res.ok) {
-          alert('スペースを追加しました');
-          // router.push('/select-group');
-          setIsAddSpace(true);
-          setSpaceName('');
-          setSpaceCapacity('');
-        }
+    await api
+      .post(`/api/organization/${orgId}/space`, { name: spaceName, capacity: spaceCapacity })
+      .then(() => {
+        alert('スペースを追加しました');
+        setIsAddSpace(true);
+        setSpaceName('');
+        setSpaceCapacity('');
+      })
+      .catch((err) => {
+        alert(err);
       });
-    } catch (err) {
-      alert(err);
-    }
   };
 
   return (

@@ -4,6 +4,8 @@ import InputBase from '@material-ui/core/InputBase';
 import IconButton from '@material-ui/core/IconButton';
 import SearchIcon from '@material-ui/icons/Search';
 import { useState } from 'react';
+import api from '../../utils/fetch';
+
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
@@ -33,20 +35,8 @@ const SearchBox: React.FC<Props> = ({ setModal, setSearchedOrg }) => {
   const fetchData = async (e: React.MouseEvent<HTMLDivElement>) => {
     e.preventDefault();
     setModal();
-    await fetch(`${process.env.NEXT_PUBLIC_API_ROOT}/api/organization?search=${serchOrg}`, {
-      headers: {
-        Authorization: `${sessionStorage.getItem('access_token')}`,
-      },
-    })
-      .then((res) => {
-        if (res.status === 401) {
-          throw 'authentication failed';
-        }
-        if (res.status === 500) {
-          throw 'Internal Error!';
-        }
-        return res.json();
-      })
+    await api
+      .get(`/api/organization?search=${serchOrg}`)
       .then((data) => {
         setSearchedOrg(data);
       })

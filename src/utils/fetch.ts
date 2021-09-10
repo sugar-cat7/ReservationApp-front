@@ -1,3 +1,5 @@
+import { FetchError } from './fetchError';
+
 const api = {
   get: async (url: string) => {
     const response = await fetch(process.env.NEXT_PUBLIC_API_ROOT + url, {
@@ -7,6 +9,10 @@ const api = {
         Authorization: `${sessionStorage.getItem('access_token')}`,
       },
     });
+    if (response.status !== 200) {
+      const errMsg = FetchError(response.status);
+      throw new Error(errMsg);
+    }
     if (!response.ok) {
       const err = await response.json();
       throw new Error(err);
@@ -14,15 +20,31 @@ const api = {
     return await response.json();
   },
 
-  post: async (url: string, data: { [key: string]: string }) => {
+  post: async (url: string, data: { [key: string]: any }, isCreateUser?: boolean) => {
+    let headers;
+    switch (isCreateUser) {
+      case true:
+        headers = {
+          'Content-Type': 'application/json',
+        };
+        break;
+      default:
+        headers = {
+          'Content-Type': 'application/json',
+          Authorization: `${sessionStorage.getItem('access_token')}`,
+        };
+        break;
+    }
+
     const response = await fetch(process.env.NEXT_PUBLIC_API_ROOT + url, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `${sessionStorage.getItem('access_token')}`,
-      },
+      headers: headers,
       body: JSON.stringify(data),
     });
+    if (response.status !== 200) {
+      const errMsg = FetchError(response.status);
+      throw new Error(errMsg);
+    }
     if (!response.ok) {
       const err = await response.json();
       throw new Error(err);
@@ -30,20 +52,42 @@ const api = {
     return await response.json();
   },
 
-  put: async (url: string, data: { [key: string]: string }) => {
+  put: async (url: string, data: { [key: string]: any }) => {
     const response = await fetch(process.env.NEXT_PUBLIC_API_ROOT + url, {
-      method: 'POST',
+      method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
         Authorization: `${sessionStorage.getItem('access_token')}`,
       },
       body: JSON.stringify(data),
     });
+
+    if (response.status !== 200) {
+      const errMsg = FetchError(response.status);
+      throw new Error(errMsg);
+    }
     if (!response.ok) {
       const err = await response.json();
       throw new Error(err);
     }
-    return await response.json();
+  },
+
+  delete: async (url: string) => {
+    const response = await fetch(process.env.NEXT_PUBLIC_API_ROOT + url, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `${sessionStorage.getItem('access_token')}`,
+      },
+    });
+    if (response.status !== 200) {
+      const errMsg = FetchError(response.status);
+      throw new Error(errMsg);
+    }
+    if (!response.ok) {
+      const err = await response.json();
+      throw new Error(err);
+    }
   },
 };
 

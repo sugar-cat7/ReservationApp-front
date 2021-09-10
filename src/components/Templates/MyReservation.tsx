@@ -8,6 +8,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { useUserOrg } from '../../hooks/useUserOrg';
+import api from '../../utils/fetch';
 
 type Props = {
   myReservations: {
@@ -50,32 +51,10 @@ const MyReservation: React.FC<Props> = ({ myReservations }) => {
   };
 
   const deleteReservation = async (orgId: string, spaceId: number, rvId: number) => {
-    try {
-      await fetch(
-        `${process.env.NEXT_PUBLIC_API_ROOT}/api/organization/${orgId}/space/${spaceId}/reservation/${rvId}`,
-        {
-          method: 'DELETE',
-          // mode: 'cors',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `${sessionStorage.getItem('access_token')}`,
-          },
-        },
-      ).then((res) => {
-        if (res.status === 401) {
-          throw 'authentication failed';
-        }
-        if (res.status === 500) {
-          throw 'Internal Error!';
-        }
-        if (res.ok) {
-          alert('予約を削除しました');
-          setShowDeleteModal(false);
-        }
-      });
-    } catch (err) {
-      alert(err);
-    }
+    await api
+      .delete(`/api/organization/${orgId}/space/${spaceId}/reservation/${rvId}`)
+      .then(() => alert('削除しました'))
+      .catch((err) => alert(err));
   };
 
   const onChangeProps = (
@@ -187,7 +166,7 @@ const MyReservation: React.FC<Props> = ({ myReservations }) => {
             startLabel="開始時間"
             endLabel="終了時間"
             orgId={orgId}
-            // spaceId={spaceId}
+            rSpaceId={spaceId}
             reservationId={rvId}
             isEdit={true}
             // users={users}

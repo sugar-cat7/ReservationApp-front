@@ -5,6 +5,7 @@ import { useState } from 'react';
 import Modal from '../Atoms/Modal';
 import SearchBox from '../Organiams/SearchBox';
 import Input from '../Atoms/Input';
+import api from '../../utils/fetch';
 
 type orgProps = {
   id: number;
@@ -23,30 +24,15 @@ const SelectGroup: React.FC = () => {
 
   const registerGroup = async (e: React.MouseEvent<HTMLFormElement>) => {
     e.preventDefault();
-    try {
-      await fetch(`${process.env.NEXT_PUBLIC_API_ROOT}/api/user/organization/${selectedOrg.id}`, {
-        method: 'POST',
-        body: JSON.stringify({ password: orgPassword }),
-        // mode: 'cors',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `${sessionStorage.getItem('access_token')}`,
-        },
-      }).then((res) => {
-        if (res.status === 401) {
-          throw 'authentication failed';
-        }
-        if (res.status === 500) {
-          throw 'Internal Error!';
-        }
-        if (res.ok) {
-          alert('グループを追加しました');
-          setShowModal(false);
-        }
+    await api
+      .post(`/api/user/organization/${selectedOrg.id}`, { password: orgPassword })
+      .then(() => {
+        alert('予定を追加しました');
+        setShowModal(false);
+      })
+      .catch((err) => {
+        alert(err);
       });
-    } catch (err) {
-      alert(err);
-    }
   };
 
   if (isLoading) {

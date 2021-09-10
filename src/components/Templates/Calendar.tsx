@@ -7,6 +7,7 @@ import 'moment/locale/ja';
 import DateAndTimePickers from '../Organiams/DateAndTimePickers';
 import ViewCard from '../Organiams/ViewCard';
 import { useSpaceCondition } from '../../context/ ReservationStateContext';
+import api from '../../utils/fetch';
 
 const localizer = momentLocalizer(moment);
 const formats = {
@@ -137,35 +138,12 @@ const FullCalendar: React.FC<Props> = ({ users, reservations, spaces, color, org
   };
 
   const onSelectEvent = async (e: React.MouseEvent<HTMLFormElement> & onSelectEventProps) => {
-    try {
-      await fetch(
-        `${process.env.NEXT_PUBLIC_API_ROOT}/api/organization/${orgId}/space/${e.space_id}/reservation/${e.reservation_id}`,
-        {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `${sessionStorage.getItem('access_token')}`,
-          },
-        },
-      )
-        .then((res) => {
-          if (res.status === 401) {
-            throw 'authentication failed';
-          }
-          if (res.status === 500) {
-            throw 'Internal Error!';
-          }
-          if (res.ok) {
-            const resJson = res.json();
-            return resJson;
-          }
-        })
-        .then((data) => {
-          selectHandler(data);
-        });
-    } catch (err) {
-      alert(err);
-    }
+    await api
+      .get(`/api/organization/${orgId}/space/${e.space_id}/reservation/${e.reservation_id}`)
+      .then((data) => {
+        selectHandler(data);
+      })
+      .catch((err) => alert(err));
   };
 
   return (
