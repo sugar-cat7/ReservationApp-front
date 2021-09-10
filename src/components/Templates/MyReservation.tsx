@@ -9,6 +9,7 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { useUserOrg } from '../../hooks/useUserOrg';
 import api from '../../utils/fetch';
+import { getDateJP } from '../../utils/selectedDateConverter';
 
 type Props = {
   myReservations: {
@@ -40,15 +41,6 @@ const MyReservation: React.FC<Props> = ({ myReservations }) => {
   if (isLoading) {
     return <div>Loding</div>;
   }
-
-  const getDateJP = (date: string) => {
-    const [ymd, time] = date.split('T');
-    const [y, m, d] = ymd.split('-');
-    const [t] = time.split('.');
-    const [hour, minutes] = t.split(':');
-    const result = y + '年' + m + '月' + d + '日 ' + hour + ':' + minutes;
-    return result;
-  };
 
   const deleteReservation = async (orgId: string, spaceId: number, rvId: number) => {
     await api

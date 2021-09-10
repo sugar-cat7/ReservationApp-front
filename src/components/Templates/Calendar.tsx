@@ -8,6 +8,7 @@ import DateAndTimePickers from '../Organiams/DateAndTimePickers';
 import ViewCard from '../Organiams/ViewCard';
 import { useSpaceCondition } from '../../context/ ReservationStateContext';
 import api from '../../utils/fetch';
+import { getNowSelectedDateWithString, getDateJP } from '../../utils/selectedDateConverter';
 
 const localizer = momentLocalizer(moment);
 const formats = {
@@ -65,8 +66,6 @@ type Data = {
   users: number[];
 };
 
-//グチャグチャになってきたので後で切り分けましょう
-//TODO 時間指定で予定取ってくるhooks定義して、eventsに入れる、spaceごとに色分けするとわかりやすい気がする
 const FullCalendar: React.FC<Props> = ({ users, reservations, spaces, color, orgId, orgName }) => {
   const { state } = useSpaceCondition();
   let filteredReservations: ReservationProps;
@@ -88,26 +87,6 @@ const FullCalendar: React.FC<Props> = ({ users, reservations, spaces, color, org
     endTime: '',
     users: [],
   });
-  console.log(data);
-  const getNowSelectedDateWithString = (date: Date | string) => {
-    if (typeof date === 'string') {
-      if (date.includes('.')) {
-        const [d] = date.split('.');
-        return d;
-      }
-      return date;
-    }
-
-    const dt = date;
-    const y = dt.getFullYear();
-    const m = ('00' + (dt.getMonth() + 1)).slice(-2);
-    const d = ('00' + dt.getDate()).slice(-2);
-
-    const hour_str = ('00' + date.getHours()).slice(-2);
-    const minute_str = ('00' + date.getMinutes()).slice(-2);
-    const result = y + '-' + m + '-' + d + 'T' + hour_str + ':' + minute_str;
-    return result;
-  };
 
   const handleSelect = (s: SlotInfo) => {
     if (!isMonthViewd) {
@@ -127,14 +106,6 @@ const FullCalendar: React.FC<Props> = ({ users, reservations, spaces, color, org
     });
     setIsReservationGet(true);
     setShowModal(true);
-  };
-  const getDateJP = (date: string) => {
-    const [ymd, time] = date.split('T');
-    const [y, m, d] = ymd.split('-');
-    const [t] = time.split('.');
-    const [hour, minutes] = t.split(':');
-    const result = y + '年' + m + '月' + d + '日 ' + hour + ':' + minutes;
-    return result;
   };
 
   const onSelectEvent = async (e: React.MouseEvent<HTMLFormElement> & onSelectEventProps) => {
@@ -176,10 +147,6 @@ const FullCalendar: React.FC<Props> = ({ users, reservations, spaces, color, org
           const backgroundColor = color.filter((c) => c.spaceId === event.space_id);
           return {
             style: {
-              // display: 'grid',
-              // gridTemplateRows: '200px 100px',
-              // gridTemplateColumns: '200px 100px 100px',
-              // gridAutoFlow: 'column',
               border: '0px',
               backgroundColor: backgroundColor[0].bgColor,
             },

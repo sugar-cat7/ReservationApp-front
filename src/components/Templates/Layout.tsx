@@ -50,20 +50,6 @@ const Layout: React.FC<Props> = ({ children, title = 'default title' }) => {
     );
   };
 
-  // if (!isReady) {
-  //   return OverallLayout();
-  // }
-  // if (
-  //   router.pathname !== '/' &&
-  //   router.pathname !== '/login' &&
-  //   (sessionStorage.getItem('user_id') === ('0' || undefined) ||
-  //     !sessionStorage.getItem('access_token') ||
-  //     !sessionStorage.getItem('user_id') ||
-  //     !sessionStorage.getItem('name'))
-  // ) {
-  //   router.push('/login');
-  // }
-
   return OverallLayout();
 };
 
