@@ -1,20 +1,5 @@
 import useSWR from 'swr';
-const fetcher = (url: string) =>
-  fetch(url, {
-    headers: {
-      Authorization: `${sessionStorage.getItem('access_token')}`,
-    },
-  })
-    .then((res) => {
-      if (res.status === 401) {
-        throw 'authentication failed';
-      }
-      if (res.status === 500) {
-        throw 'Internal Error!';
-      }
-      return res.json();
-    })
-    .catch((e) => alert(e));
+import api from '../utils/fetch';
 
 type Props = {
   organizations: [];
@@ -23,10 +8,7 @@ type Props = {
 };
 
 export const useUserOrg = (): Props => {
-  const { data, error } = useSWR(
-    `${process.env.NEXT_PUBLIC_API_ROOT}/api/user/organization`,
-    fetcher,
-  );
+  const { data, error } = useSWR(`/api/user/organization`, api.get);
 
   return {
     organizations: data,
