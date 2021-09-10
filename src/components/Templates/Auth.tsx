@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 // import { useCookies } from 'react-cookie';
-import Input from '../utils/Input';
-import Button from '../utils/Button';
-import { useAuth } from '../context/AuthContext';
+import Input from '../Atoms/Input';
+import Button from '../Atoms/Button';
+import { useAuth } from '../../context/AuthContext';
 
 const Auth: React.FC = () => {
   const router = useRouter();

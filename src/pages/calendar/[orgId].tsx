@@ -1,6 +1,6 @@
 import React from 'react';
-import Layout from '../../components/Layout';
-import FullCalendar from '../../components/Calendar';
+import Layout from '../../components/Templates/Layout';
+import FullCalendar from '../../components/Templates/Calendar';
 import { useOrgUsers } from '../../hooks/useOrgUsers';
 import { useReservations } from '../../hooks/useReservations';
 import { useOrgSpaces } from '../../hooks/useOrgSpaces';

@@ -1,5 +1,5 @@
-import Layout from '../components/Layout';
-import SelectGroup from '../components/SelectGroup';
+import Layout from '../components/Templates/Layout';
+import SelectGroup from '../components/Templates/SelectGroup';
 
 const SelectedGroup: React.FC = () => {
   return (

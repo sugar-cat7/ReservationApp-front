@@ -1,13 +1,13 @@
 import { PencilIcon } from '@heroicons/react/solid';
 import { XCircleIcon } from '@heroicons/react/solid';
-import Modal from '../utils/Modal';
+import Modal from '../Atoms/Modal';
 import { useState } from 'react';
-import DateAndTimePickers from '../utils/DateAndTimePickers';
+import DateAndTimePickers from '../Organiams/DateAndTimePickers';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-import { useUserOrg } from '../hooks/useUserOrg';
+import { useUserOrg } from '../../hooks/useUserOrg';
 
 type Props = {
   myReservations: {

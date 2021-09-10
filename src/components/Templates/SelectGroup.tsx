@@ -1,10 +1,10 @@
-import Button from '../utils/Button';
+import Button from '../Atoms/Button';
 import { useRouter } from 'next/router';
-import { useUserOrg } from '../hooks/useUserOrg';
+import { useUserOrg } from '../../hooks/useUserOrg';
 import { useState } from 'react';
-import Modal from '../utils/Modal';
-import SearchBox from '../utils/SearchBox';
-import Input from '../utils/Input';
+import Modal from '../Atoms/Modal';
+import SearchBox from '../Organiams/SearchBox';
+import Input from '../Atoms/Input';
 
 type orgProps = {
   id: number;

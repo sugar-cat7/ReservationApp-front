@@ -1,12 +1,12 @@
 import { useState } from 'react';
-import Modal from '../utils/Modal';
+import Modal from '../Atoms/Modal';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import moment from 'moment';
 import 'moment/locale/ja';
-import DateAndTimePickers from '../utils/DateAndTimePickers';
-import ViewCard from '../utils/ViewCard';
-import { useSpaceCondition } from '../context/ ReservationStateContext';
+import DateAndTimePickers from '../Organiams/DateAndTimePickers';
+import ViewCard from '../Organiams/ViewCard';
+import { useSpaceCondition } from '../../context/ ReservationStateContext';
 
 const localizer = momentLocalizer(moment);
 const formats = {

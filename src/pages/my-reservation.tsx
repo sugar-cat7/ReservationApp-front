@@ -1,5 +1,5 @@
-import Layout from '../components/Layout';
-import MyReservation from '../components/MyReservation';
+import Layout from '../components/Templates/Layout';
+import MyReservation from '../components/Templates/MyReservation';
 import { useMyReservations } from '../hooks/useMyReservations';
 
 const MyReservations: React.FC = () => {

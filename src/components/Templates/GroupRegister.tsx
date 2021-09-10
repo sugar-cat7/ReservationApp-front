@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import Input from '../utils/Input';
-import Button from '../utils/Button';
-import { useAuth } from '../context/AuthContext';
+import Input from '../Atoms/Input';
+import Button from '../Atoms/Button';
+import { useAuth } from '../../context/AuthContext';
 import { useRouter } from 'next/router';
 // import { useCookies } from 'react-cookie';
 
