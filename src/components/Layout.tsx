@@ -19,7 +19,7 @@ const Layout: React.FC<Props> = ({ children, title = 'default title' }) => {
     return (
       <div className="flex justify-center items-center flex-col min-h-screen text-black font-mono bg-gray-200">
         <Head>
-          <title>{title}</title>
+          <title>予定管理くん</title>
         </Head>
         <header className="bg-white w-screen ">
           <nav className="bg-white w-screen ">

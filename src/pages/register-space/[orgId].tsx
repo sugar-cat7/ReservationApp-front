@@ -2,7 +2,7 @@ import RegisterSpace from '../../components/RegisterSpace';
 import Layout from '../../components/Layout';
 const RegisterSpaces: React.FC = () => {
   return (
-    <Layout title="register-space">
+    <Layout title="スペース追加">
       <RegisterSpace />
     </Layout>
   );

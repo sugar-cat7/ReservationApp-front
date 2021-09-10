@@ -4,6 +4,7 @@ import { useMyReservations } from '../hooks/useMyReservations';
 
 const MyReservations: React.FC = () => {
   const { myReservations, isLoading } = useMyReservations();
+
   return (
     <Layout title="自分の予約確認">
       {!isLoading && <MyReservation myReservations={myReservations}></MyReservation>}

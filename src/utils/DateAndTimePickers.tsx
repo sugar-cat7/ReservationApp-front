@@ -46,7 +46,8 @@ type Props = {
   endDate: string;
   users?: any[];
   isEdit: boolean;
-  orgId: number;
+  orgId: string | string[] | undefined;
+  orgName?: string | string[] | undefined;
   reservationId?: number;
   spaces?: any[];
 };
@@ -64,6 +65,7 @@ const DateAndTimePickers: React.FC<Props> = ({
   endDate,
   users,
   orgId,
+  orgName,
   reservationId,
   isEdit,
   spaces,
@@ -170,7 +172,6 @@ const DateAndTimePickers: React.FC<Props> = ({
           shrink: true,
         }}
         onChange={(e) => {
-          console.log(e.target.value);
           setStartTime(e.target.value);
         }}
         required

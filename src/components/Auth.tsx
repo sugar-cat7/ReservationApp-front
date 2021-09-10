@@ -90,14 +90,14 @@ const Auth: React.FC = () => {
         });
 
         login();
-      } catch (err: string) {
+      } catch (err) {
         alert(err);
       }
     }
   };
 
   return (
-    <div className="max-w-md w-full space-y-8 lg:w-screen">
+    <div className="max-w-md w-full space-y-8 sm:w-screen">
       <div>
         <svg
           xmlns="http://www.w3.org/2000/svg"

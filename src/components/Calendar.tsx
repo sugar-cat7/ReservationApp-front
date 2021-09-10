@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState } from 'react';
 import Modal from '../utils/Modal';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
@@ -43,7 +43,8 @@ type Props = {
     spaceId: number;
     bgColor: string;
   }[];
-  orgId: number;
+  orgId: string | string[] | undefined;
+  orgName: string | string[] | undefined;
 };
 type ReservationProps = {
   space_id: number;
@@ -60,11 +61,12 @@ type Data = {
   space_name: string;
   start_time: string;
   end_time: string;
+  users: number[];
 };
 
 //グチャグチャになってきたので後で切り分けましょう
 //TODO 時間指定で予定取ってくるhooks定義して、eventsに入れる、spaceごとに色分けするとわかりやすい気がする
-const FullCalendar: React.FC<Props> = ({ users, reservations, spaces, color, orgId }) => {
+const FullCalendar: React.FC<Props> = ({ users, reservations, spaces, color, orgId, orgName }) => {
   const { state } = useSpaceCondition();
   let filteredReservations: ReservationProps;
   if (state.spaceId !== 0) {
@@ -78,8 +80,14 @@ const FullCalendar: React.FC<Props> = ({ users, reservations, spaces, color, org
   const [showModal, setShowModal] = useState<boolean>(false);
   const [isMonthViewd, setIsMonthviewd] = useState<boolean>(true);
   const [isReservationGet, setIsReservationGet] = useState<boolean>(false);
-  const [data, setData] = useState({ orgName: '', spaceName: '', startTime: '', endTime: '' });
-
+  const [data, setData] = useState({
+    orgName: '',
+    spaceName: '',
+    startTime: '',
+    endTime: '',
+    users: [],
+  });
+  console.log(data);
   const getNowSelectedDateWithString = (date: Date | string) => {
     if (typeof date === 'string') {
       if (date.includes('.')) {
@@ -114,6 +122,7 @@ const FullCalendar: React.FC<Props> = ({ users, reservations, spaces, color, org
       spaceName: d.space_name,
       startTime: d.start_time,
       endTime: d.end_time,
+      users: users.filter(({ id }) => d.users.includes(id)),
     });
     setIsReservationGet(true);
     setShowModal(true);
@@ -161,18 +170,21 @@ const FullCalendar: React.FC<Props> = ({ users, reservations, spaces, color, org
 
   return (
     <>
-      <ViewCard spaces={spaces} color={color} />
+      <ViewCard spaces={spaces} color={color} orgName={orgName} />
       <Calendar
         selectable
         localizer={localizer}
         events={filteredReservations}
         startAccessor="start"
         endAccessor="end"
-        style={{ height: 550, marginTop: 10 }}
+        style={{
+          height: 550,
+          marginTop: 10,
+        }}
         formats={formats}
         defaultView="month"
         views={['month', 'day']}
-        className="bg-white p-4 lg:w-max"
+        className="bg-white p-4 sm:w-max"
         onSelectEvent={(event) => onSelectEvent(event)}
         onSelectSlot={(s) => handleSelect(s)}
         onView={(v) => {
@@ -211,6 +223,14 @@ const FullCalendar: React.FC<Props> = ({ users, reservations, spaces, color, org
             <div>スペース名: {data.spaceName}</div>
             <div>開始時間: {getDateJP(data.startTime)}</div>
             <div>終了時間: {getDateJP(data.endTime)}</div>
+            <div>
+              予約している人:
+              {data.users.map(({ id, name }) => (
+                <span key={id} className="mr-2">
+                  {name}
+                </span>
+              ))}
+            </div>
           </div>
         ) : (
           <DateAndTimePickers
@@ -219,7 +239,8 @@ const FullCalendar: React.FC<Props> = ({ users, reservations, spaces, color, org
             startLabel="開始時間"
             endLabel="終了時間"
             users={users}
-            orgId={orgId} //need to change
+            orgId={orgId}
+            orgName={orgName}
             isEdit={false}
             spaces={spaces}
           />

@@ -19,15 +19,16 @@ type Props = {
     start_time: string;
     space_name: string;
     updated_at: string;
-    organization_id: number;
+    organization_id: string;
     organization_name: string;
+    users: number[];
   }[];
 };
 
 const MyReservation: React.FC<Props> = ({ myReservations }) => {
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
   const [showEditModal, setShowEditModal] = useState<boolean>(false);
-  const [orgId, setOrgId] = useState<number>(0);
+  const [orgId, setOrgId] = useState<string>('');
   const [spaceId, setSpaceId] = useState<number>(0);
   const [rvId, setRvId] = useState<number>(0);
   const [startDate, setStartDate] = useState<string>('');
@@ -38,7 +39,7 @@ const MyReservation: React.FC<Props> = ({ myReservations }) => {
   if (isLoading) {
     return <div>Loding</div>;
   }
-  console.log('org', organizations);
+
   const getDateJP = (date: string) => {
     const [ymd, time] = date.split('T');
     const [y, m, d] = ymd.split('-');
@@ -48,7 +49,7 @@ const MyReservation: React.FC<Props> = ({ myReservations }) => {
     return result;
   };
 
-  const deleteReservation = async (orgId: number, spaceId: number, rvId: number) => {
+  const deleteReservation = async (orgId: string, spaceId: number, rvId: number) => {
     try {
       await fetch(
         `${process.env.NEXT_PUBLIC_API_ROOT}/api/organization/${orgId}/space/${spaceId}/reservation/${rvId}`,
@@ -78,7 +79,7 @@ const MyReservation: React.FC<Props> = ({ myReservations }) => {
   };
 
   const onChangeProps = (
-    orgId: number,
+    orgId: string,
     spaceId: number,
     rvId: number,
     isEdit: boolean,
@@ -104,6 +105,7 @@ const MyReservation: React.FC<Props> = ({ myReservations }) => {
   } else {
     filteredMyReservations = myReservations.filter((m) => m.organization_id === groupId);
   }
+
   return (
     <>
       <div className="absolute top-20 flex items-center">
@@ -131,10 +133,11 @@ const MyReservation: React.FC<Props> = ({ myReservations }) => {
         </FormControl>
       </div>
       <div className="absolute top-44 h-4/6 overflow-y-auto">
+        <div className="mb-2">※複数人での予約の場合変更できません</div>
         {filteredMyReservations.map((r) => (
           <div
             key={r.id}
-            className="flex w-80 border-b-2 border-gray-400 justify-between items-center mb-2 lg:w-96"
+            className="flex w-80 border-b-2 border-gray-400 justify-between items-center mb-2 sm:w-96"
           >
             <div>
               {r.organization_name}
@@ -144,12 +147,21 @@ const MyReservation: React.FC<Props> = ({ myReservations }) => {
               </div>
             </div>
             <div className="flex">
-              <PencilIcon
-                className="h-7 w-7"
-                onClick={() =>
-                  onChangeProps(r.organization_id, r.space_id, r.id, true, r.start_time, r.end_time)
-                }
-              />
+              {r.users.length < 2 && (
+                <PencilIcon
+                  className="h-7 w-7"
+                  onClick={() =>
+                    onChangeProps(
+                      r.organization_id,
+                      r.space_id,
+                      r.id,
+                      true,
+                      r.start_time,
+                      r.end_time,
+                    )
+                  }
+                />
+              )}
               {/* TODO orgId変える */}
               <XCircleIcon
                 className="h-7 w-7"
