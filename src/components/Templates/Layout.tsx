@@ -21,8 +21,8 @@ const Layout: React.FC<Props> = ({ children, title = 'default title' }) => {
         <Head>
           <title>予定管理くん</title>
         </Head>
-        <header className="bg-white w-screen ">
-          <nav className="bg-white w-screen ">
+        <header className="bg-white w-screen">
+          <nav className="text-white w-screen bg-gray-700 font-bold">
             {router.pathname === '/' && (
               <div className="flex items-center h-14 justify-center">{title}</div>
             )}
@@ -43,8 +43,8 @@ const Layout: React.FC<Props> = ({ children, title = 'default title' }) => {
           </nav>
         </header>
         <main className="flex flex-1 justify-center items-center w-80 flex-col">{children}</main>
-        <footer className="w-full h-6 flex justify-center items-center text-gray-500 text-sm">
-          @forest
+        <footer className="w-full h-6 flex justify-center items-center text-gray-500 text-xs">
+          © 2021 Forest|Japan
         </footer>
       </div>
     );
