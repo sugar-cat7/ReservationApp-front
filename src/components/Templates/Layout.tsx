@@ -36,7 +36,7 @@ const Layout: React.FC<Props> = ({ children, title = 'default title' }) => {
                 />
                 {title}
                 <div className="flex space-x-4">
-                  <Dropdown />
+                  {!router.pathname.includes('/info') && <Dropdown />}
                 </div>
               </div>
             )}

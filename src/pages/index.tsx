@@ -32,21 +32,16 @@ const helpLink = [
   },
   {
     id: 2,
-    link: '#',
-    text: 'プライバシーポリシー',
+    link: '/info/terms',
+    text: '利用規約',
   },
   {
     id: 3,
     link: '#',
-    text: '利用規約',
-  },
-  {
-    id: 4,
-    link: '#',
     text: 'お問い合わせ',
   },
   {
-    id: 5,
+    id: 4,
     link: '/login',
     text: 'ログイン',
   },
