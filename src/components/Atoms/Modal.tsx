@@ -1,4 +1,5 @@
 import { XCircleIcon } from '@heroicons/react/solid';
+
 type ModalProps = {
   data: string;
   showModal: boolean;
@@ -11,11 +12,15 @@ const Modal: React.FC<ModalProps> = ({ data, showModal, onClickYes, onClickNo, c
     <>
       {showModal ? (
         <>
-          <div className="justify-center items-center flex flex-wrap overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
+          <div
+            className="justify-center items-center flex flex-wrap overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none"
+            onClick={onClickNo}
+          >
             <div className="relative w-auto my-6 mx-auto max-w-3xl">
-              {/*content*/}
-
-              <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
+              <div
+                className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none"
+                onClick={(e) => e.stopPropagation()}
+              >
                 {/*header*/}
                 <XCircleIcon className="h-6 w-6 z-1 absolute -top-1 -right-1" onClick={onClickNo} />
                 <div className="relative p-6 flex justify-between">
