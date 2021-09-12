@@ -12,6 +12,7 @@ const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => {
     if (
       router.pathname !== '/' &&
       router.pathname !== '/login' &&
+      !router.pathname.includes('/info') &&
       (sessionStorage.getItem('user_id') === ('0' || undefined) ||
         !sessionStorage.getItem('access_token') ||
         !sessionStorage.getItem('user_id') ||
