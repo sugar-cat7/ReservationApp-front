@@ -9,7 +9,7 @@ const Mysetting: React.FC = () => {
   if (isLoading) {
     return <div>Loding</div>;
   }
-  console.log(user);
+
   return (
     <Layout title="設定">
       <Setting user={user} />

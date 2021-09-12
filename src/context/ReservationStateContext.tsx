@@ -24,7 +24,14 @@ const reducer: Reducer<NewState, ActionType> = (state, action) => {
   }
 };
 
-export const SpaceConditionContext = createContext<State | Dispatch<ActionType>>(initialState);
+// export const SpaceConditionContext = createContext<State | Dispatch<ActionType>>(initialState);
+export const SpaceConditionContext = createContext<{
+  state: NewState;
+  selectSpace: (id: number) => void;
+}>({
+  state: initialState,
+  selectSpace: () => null,
+});
 
 // Context Object の Provider（提供側）コンポーネントを返す
 const SpaceConditionProvider: React.FC = (props) => {

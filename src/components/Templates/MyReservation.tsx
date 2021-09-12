@@ -95,11 +95,12 @@ const MyReservation: React.FC<Props> = ({ myReservations }) => {
             <MenuItem value={0}>
               <em>全て</em>
             </MenuItem>
-            {organizations.map(({ id, name }) => (
-              <MenuItem key={id} value={id}>
-                {name}
-              </MenuItem>
-            ))}
+            {organizations &&
+              organizations.map(({ id, name }) => (
+                <MenuItem key={id} value={id}>
+                  {name}
+                </MenuItem>
+              ))}
           </Select>
         </FormControl>
       </div>
