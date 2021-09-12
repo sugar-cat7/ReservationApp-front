@@ -27,7 +27,7 @@ const DropdownProps = [
   {
     id: 4,
     name: '設定',
-    url: '#',
+    url: '/mypage',
   },
   {
     id: 5,

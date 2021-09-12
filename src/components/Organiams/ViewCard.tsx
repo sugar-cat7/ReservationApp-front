@@ -5,7 +5,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import Paper from '@material-ui/core/Paper';
-import { useSpaceCondition } from '../../context/ ReservationStateContext';
+import { useSpaceCondition } from '../../context/ReservationStateContext';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -41,7 +41,7 @@ const ViewCard: React.FC<Props> = ({ spaces, color, orgName }) => {
 
   const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
     setSpace(event.target.value as number);
-    selectSpace(event.target.value);
+    selectSpace(event.target.value as number);
   };
 
   const handleClose = () => {

@@ -6,7 +6,7 @@ import moment from 'moment';
 import 'moment/locale/ja';
 import DateAndTimePickers from '../Organiams/DateAndTimePickers';
 import ViewCard from '../Organiams/ViewCard';
-import { useSpaceCondition } from '../../context/ ReservationStateContext';
+import { useSpaceCondition } from '../../context/ReservationStateContext';
 import api from '../../utils/fetch';
 import { getNowSelectedDateWithString, getDateJP } from '../../utils/selectedDateConverter';
 
@@ -16,7 +16,7 @@ const formats = {
   dayFormat: 'D(ddd)',
   monthHeaderFormat: 'YYYY年M月',
   dayHeaderFormat: 'M月D日(ddd)',
-  dayRangeHeaderFormat: 'YYYY年M月',
+  dayRangeHeaderFormat: () => 'YYYY年M月',
 };
 
 type SlotInfo = {
@@ -57,6 +57,9 @@ type ReservationProps = {
 type onSelectEventProps = {
   space_id: number;
   reservation_id: number;
+  title: string;
+  start: Date;
+  end: Date;
 };
 type Data = {
   organization_name: string;
@@ -85,7 +88,7 @@ const FullCalendar: React.FC<Props> = ({ users, reservations, spaces, color, org
     spaceName: '',
     startTime: '',
     endTime: '',
-    users: [],
+    users: [{ id: 0, name: '', kana: '' }],
   });
 
   const handleSelect = (s: SlotInfo) => {
@@ -108,9 +111,10 @@ const FullCalendar: React.FC<Props> = ({ users, reservations, spaces, color, org
     setShowModal(true);
   };
 
-  const onSelectEvent = async (e: React.MouseEvent<HTMLFormElement> & onSelectEventProps) => {
+  const onSelectEvent = async ({ space_id, reservation_id }: onSelectEventProps) => {
+    // console.log(e);
     await api
-      .get(`/api/organization/${orgId}/space/${e.space_id}/reservation/${e.reservation_id}`)
+      .get(`/api/organization/${orgId}/space/${space_id}/reservation/${reservation_id}`)
       .then((data) => {
         selectHandler(data);
       })
@@ -134,6 +138,7 @@ const FullCalendar: React.FC<Props> = ({ users, reservations, spaces, color, org
         defaultView="month"
         views={['month', 'day']}
         className="bg-white p-4 sm:w-max"
+        // @ts-expect-error 無理やりidを渡しているため
         onSelectEvent={(event) => onSelectEvent(event)}
         onSelectSlot={(s) => handleSelect(s)}
         onView={(v) => {

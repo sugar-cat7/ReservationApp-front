@@ -38,8 +38,11 @@ const SelectGroup: React.FC = () => {
   if (isLoading) {
     return <div>loding</div>;
   }
-
-  const userOrgId: number[] = organizations.map(({ id }) => id);
+  let userOrgId: number[] | undefined;
+  if (organizations) {
+    userOrgId = organizations.map(({ id }) => id);
+  }
+  console.log(organizations);
 
   //TODO 登録されてるグループない場合の処理追加と普通に表示するように分ける
   return (
@@ -49,7 +52,7 @@ const SelectGroup: React.FC = () => {
         <SearchBox setModal={() => setShowModal(true)} setSearchedOrg={setSearchedOrg} />
       </div>
 
-      {organizations.length ? (
+      {organizations ? (
         <div className="absolute top-44 h-4/6 overflow-y-auto">
           <div>参加しているグループ</div>
           {organizations.map(({ id, name }: orgProps) => (
@@ -58,7 +61,7 @@ const SelectGroup: React.FC = () => {
               onClick={() => {
                 router.push({
                   pathname: '/calendar/[orgId]',
-                  query: { orgId: id, orgName: name },
+                  query: { orgId: id },
                 });
               }}
               key={id}
@@ -87,7 +90,7 @@ const SelectGroup: React.FC = () => {
           showOrgList
             ? '検索結果'
             : `${selectedOrg.name}${
-                userOrgId.includes(selectedOrg.id) ? 'にすでに参加しています' : 'に参加する？'
+                userOrgId?.includes(selectedOrg.id) ? 'にすでに参加しています' : 'に参加する？'
               }`
         }
         showModal={showModal}
@@ -100,7 +103,7 @@ const SelectGroup: React.FC = () => {
           searchedOrg.map(({ id, name }: orgProps) => (
             <div
               className={`${
-                !userOrgId.includes(id) ? 'bg-white' : 'bg-gray-200'
+                !userOrgId?.includes(id) ? 'bg-white' : 'bg-gray-200'
               } w-72 mx-auto rounded-xl  shadow-md overflow-hidden md:max-w-2xl  hover:bg-gray hover:shadow-lg hover:border-transparent mr-4 ml-4 mb-4`}
               key={id}
               onClick={() => {
@@ -119,7 +122,7 @@ const SelectGroup: React.FC = () => {
           ))
         ) : (
           <>
-            {userOrgId.includes(selectedOrg.id) ? (
+            {userOrgId?.includes(selectedOrg.id) ? (
               <div></div>
             ) : (
               <form className="ml-8 mr-8 mb-8 space-y-6" onSubmit={registerGroup}>
