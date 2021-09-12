@@ -1,3 +1,8 @@
+### 何のアプリ？
+![スクリーンショット 2021-09-11 3 00 11](https://user-images.githubusercontent.com/69241625/132897491-2ba20899-0f53-4dce-be5b-5f26d1bf9930.png)
+
+
+
 ## Getting Started
 
 - 起動
@@ -56,7 +61,7 @@ const HogeComponent: React.FC = () => {
 
 vscode の extention で eslint と prettier 入れてね
 
-### Design
+### 仮Design
 
 ![image](https://user-images.githubusercontent.com/69241625/130506096-a55de645-093b-46df-8dff-c532997fc64b.png)
 
