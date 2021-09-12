@@ -1,8 +1,13 @@
 import { FetchError } from './fetchError';
 
+const API_ROOT =
+  process.env.NODE_ENV == 'development'
+    ? process.env.NEXT_PUBLIC_LOCAL_API_ROOT
+    : process.env.NEXT_PUBLIC_PROD_API_ROOT;
+
 const api = {
   get: async (url: string) => {
-    const response = await fetch(process.env.NEXT_PUBLIC_API_ROOT + url, {
+    const response = await fetch(API_ROOT + url, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -36,7 +41,7 @@ const api = {
         break;
     }
 
-    const response = await fetch(process.env.NEXT_PUBLIC_API_ROOT + url, {
+    const response = await fetch(API_ROOT + url, {
       method: 'POST',
       headers: headers,
       body: JSON.stringify(data),
@@ -53,7 +58,7 @@ const api = {
   },
 
   put: async (url: string, data: { [key: string]: any }) => {
-    const response = await fetch(process.env.NEXT_PUBLIC_API_ROOT + url, {
+    const response = await fetch(API_ROOT + url, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -73,7 +78,7 @@ const api = {
   },
 
   delete: async (url: string) => {
-    const response = await fetch(process.env.NEXT_PUBLIC_API_ROOT + url, {
+    const response = await fetch(API_ROOT + url, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
