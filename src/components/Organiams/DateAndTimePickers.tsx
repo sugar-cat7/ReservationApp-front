@@ -110,7 +110,7 @@ const DateAndTimePickers: React.FC<Props> = ({
 
   const editReservation = async (e: React.MouseEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // console.log(e);
+
     await api
       .put(`/api/organization/${orgId}/space/${rSpaceId}/reservation/${reservationId}`, {
         start_time: startTime,
