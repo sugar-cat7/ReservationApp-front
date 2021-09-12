@@ -69,7 +69,7 @@ const Calendar = () => {
       b += tmp;
       i += 1;
     }
-    console.log(`rgba(${r}, ${g}, ${b}, 0.4)`);
+
     spaceColor.push({
       spaceId: id,
       bgColor: `rgba(${r}, ${g}, ${b}, 0.5)`,
