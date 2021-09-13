@@ -45,7 +45,10 @@ const MyReservation: React.FC<Props> = ({ myReservations }) => {
   const deleteReservation = async (orgId: string, spaceId: number, rvId: number) => {
     await api
       .delete(`/api/organization/${orgId}/space/${spaceId}/reservation/${rvId}`)
-      .then(() => alert('削除しました'))
+      .then(() => {
+        alert('削除しました');
+        setShowDeleteModal(false);
+      })
       .catch((err) => alert(err));
   };
 
@@ -105,7 +108,7 @@ const MyReservation: React.FC<Props> = ({ myReservations }) => {
         </FormControl>
       </div>
       <div className="absolute top-44 h-4/6 overflow-y-auto">
-        <div className="mb-2">※複数人での予約の場合変更できません</div>
+        <div className="mb-2">※複数人での予約の場合、編集はできません</div>
         {filteredMyReservations.map((r) => (
           <div
             key={r.id}
@@ -156,8 +159,6 @@ const MyReservation: React.FC<Props> = ({ myReservations }) => {
           <DateAndTimePickers
             startDate={startDate}
             endDate={endDate}
-            startLabel="開始時間"
-            endLabel="終了時間"
             orgId={orgId}
             rSpaceId={spaceId}
             reservationId={rvId}

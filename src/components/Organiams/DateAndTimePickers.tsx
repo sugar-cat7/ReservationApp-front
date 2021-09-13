@@ -120,7 +120,7 @@ const DateAndTimePickers: React.FC<Props> = ({
     e.preventDefault();
     await api
       .post(`/api/organization/${orgId}/space/${modalData.spaceId}/reservation`, {
-        title: modalData.title,
+        // title: modalData.title,
         numbers: modalData.number,
         start_time: modalData.startDate,
         end_time: modalData.endDate,
@@ -138,7 +138,7 @@ const DateAndTimePickers: React.FC<Props> = ({
 
     await api
       .put(`/api/organization/${orgId}/space/${rSpaceId}/reservation/${reservationId}`, {
-        title: modalData.title,
+        memo: modalData.memo,
         start_time: modalData.startDate,
         end_time: modalData.endDate,
       })
@@ -155,7 +155,7 @@ const DateAndTimePickers: React.FC<Props> = ({
       noValidate
       onSubmit={isEdit ? editReservation : registerDate}
     >
-      <TextField
+      {/* <TextField
         id="title"
         label="タイトル"
         type="text"
@@ -169,7 +169,7 @@ const DateAndTimePickers: React.FC<Props> = ({
           setModalData({ ...modalData, title: e.target.value });
         }}
         required
-      />
+      /> */}
       <br />
       <TextField
         id="datetime-local"
