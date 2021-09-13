@@ -9,7 +9,7 @@ type Props = {
 
 export const useUser = (): Props => {
   const { data, error } = useSWR(`/api/login/user`, api.get);
-  console.log(data);
+
   return {
     user: data,
     isLoading: !error && !data,

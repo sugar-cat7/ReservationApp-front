@@ -42,9 +42,8 @@ const SelectGroup: React.FC = () => {
   if (organizations) {
     userOrgId = organizations.map(({ id }) => id);
   }
-  console.log(organizations);
 
-  //TODO 登録されてるグループない場合の処理追加と普通に表示するように分ける
+  //TODO プライベートグループの表示出しわけ
   return (
     <>
       <div className="absolute top-20">
@@ -52,7 +51,7 @@ const SelectGroup: React.FC = () => {
         <SearchBox setModal={() => setShowModal(true)} setSearchedOrg={setSearchedOrg} />
       </div>
 
-      {organizations ? (
+      {organizations.length > 0 ? (
         <div className="absolute top-44 h-4/6 overflow-y-auto">
           <div>参加しているグループ</div>
           {organizations.map(({ id, name }: orgProps) => (
