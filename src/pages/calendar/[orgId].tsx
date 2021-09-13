@@ -38,9 +38,9 @@ const Calendar = () => {
   const { reservations, isLoading } = useReservations(strOrdId, s, e);
   const { org, isOrgLoading } = useOrg(strOrdId);
 
-  const isLoding = isLoading || isSpaceLoading || isOrgLoading || !orgId;
+  const isOverAllLoading = isLoading || isSpaceLoading || isOrgLoading || !orgId;
 
-  if (isLoding) {
+  if (isOverAllLoading) {
     return (
       <Layout title="予定カレンダー">
         <Loading />
