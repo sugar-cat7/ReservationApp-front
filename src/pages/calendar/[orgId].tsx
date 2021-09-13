@@ -16,6 +16,7 @@ type ReservationsProps = {
   title: string;
   start: Date;
   end: Date;
+  memo: string;
 }[];
 
 type CalenderBg = {
@@ -47,61 +48,78 @@ const Calendar = () => {
       </Layout>
     );
   }
-  const rv: ReservationsProps = [];
 
-  let start: Date;
-  let end: Date;
-  reservations.map(({ id, user_id, space_id, start_time, end_time }) => {
-    start = new Date(start_time);
-    end = new Date(end_time);
-    rv.push({
-      title: '',
-      reservation_id: id,
-      user_id: user_id,
-      space_id: space_id,
-      start: start,
-      end: end,
+  if (reservations) {
+    const rv: ReservationsProps = [];
+
+    let start: Date;
+    let end: Date;
+    reservations.map(({ id, user_id, space_id, start_time, end_time, title, memo }) => {
+      start = new Date(start_time);
+      end = new Date(end_time);
+      rv.push({
+        title: memo,
+        memo: memo,
+        reservation_id: id,
+        user_id: user_id,
+        space_id: space_id,
+        start: start,
+        end: end,
+      });
     });
-  });
 
-  const spaceColor: CalenderBg = [];
-  const tmp = Math.floor(255 / spaces.length);
-  let [r, g, b, i] = [0, 0, 0, 0];
-  spaces.map(({ id }) => {
-    if (i % 3 === 0) {
-      r += tmp;
-      i += 1;
-    } else if (i % 3 === 1) {
-      g += tmp;
-      i += 1;
-    } else {
-      b += tmp;
-      i += 1;
-    }
+    const spaceColor: CalenderBg = [];
+    const tmp = Math.floor(255 / spaces.length);
+    let [r, g, b, i] = [0, 0, 0, 0];
+    spaces.map(({ id }) => {
+      if (i % 3 === 0) {
+        r += tmp;
+        i += 1;
+      } else if (i % 3 === 1) {
+        g += tmp;
+        i += 1;
+      } else {
+        b += tmp;
+        i += 1;
+      }
 
-    spaceColor.push({
-      spaceId: id,
-      bgColor: `rgba(${r}, ${g}, ${b}, 0.5)`,
+      spaceColor.push({
+        spaceId: id,
+        bgColor: `rgba(${r}, ${g}, ${b}, 0.5)`,
+      });
+      if (i <= 2) {
+        [r, g, b] = [0, 0, 0];
+      }
     });
-    if (i <= 2) {
-      [r, g, b] = [0, 0, 0];
-    }
-  });
 
-  return (
+    return (
+      <Layout title="予定カレンダー">
+        <ManagedSpaceConditionContext>
+          <FullCalendar
+            users={org.users}
+            reservations={rv}
+            spaces={spaces}
+            color={spaceColor}
+            orgId={orgId}
+            orgName={org.name}
+          />
+        </ManagedSpaceConditionContext>
+      </Layout>
+    );
+  } else {
     <Layout title="予定カレンダー">
       <ManagedSpaceConditionContext>
         <FullCalendar
           users={org.users}
-          reservations={rv}
+          reservations={[]}
+          color={[]}
           spaces={spaces}
-          color={spaceColor}
           orgId={orgId}
           orgName={org.name}
         />
       </ManagedSpaceConditionContext>
-    </Layout>
-  );
+    </Layout>;
+  }
 };
 
 export default Calendar;

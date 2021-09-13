@@ -38,8 +38,13 @@ type Props = {
     end: Date;
   }[];
   spaces: {
+    capacity: number;
+    // description: null;
     id: number;
+    // image_url: null;
     name: string;
+    organization_id: number;
+    // rule: null;
   }[];
   color: {
     spaceId: number;
@@ -62,6 +67,7 @@ type onSelectEventProps = {
   end: Date;
 };
 type Data = {
+  memo: string;
   organization_name: string;
   space_name: string;
   start_time: string;
@@ -84,6 +90,7 @@ const FullCalendar: React.FC<Props> = ({ users, reservations, spaces, color, org
   const [isMonthViewd, setIsMonthviewd] = useState<boolean>(true);
   const [isReservationGet, setIsReservationGet] = useState<boolean>(false);
   const [data, setData] = useState({
+    memo: '',
     orgName: '',
     spaceName: '',
     startTime: '',
@@ -101,6 +108,7 @@ const FullCalendar: React.FC<Props> = ({ users, reservations, spaces, color, org
 
   const selectHandler = (d: Data) => {
     setData({
+      memo: d.memo,
       orgName: d.organization_name,
       spaceName: d.space_name,
       startTime: d.start_time,
@@ -112,7 +120,6 @@ const FullCalendar: React.FC<Props> = ({ users, reservations, spaces, color, org
   };
 
   const onSelectEvent = async ({ space_id, reservation_id }: onSelectEventProps) => {
-    // console.log(e);
     await api
       .get(`/api/organization/${orgId}/space/${space_id}/reservation/${reservation_id}`)
       .then((data) => {
@@ -168,11 +175,13 @@ const FullCalendar: React.FC<Props> = ({ users, reservations, spaces, color, org
         }}
       >
         {isReservationGet ? (
+          // TODO デザイン変更
           <div className="w-80 p-4">
             <div>グループ名: {data.orgName}</div>
             <div>スペース名: {data.spaceName}</div>
             <div>開始時間: {getDateJP(data.startTime)}</div>
             <div>終了時間: {getDateJP(data.endTime)}</div>
+            <div>memo: {data.memo}</div>
             <div>
               予約している人:
               {data.users.map(({ id, name }) => (
@@ -186,8 +195,6 @@ const FullCalendar: React.FC<Props> = ({ users, reservations, spaces, color, org
           <DateAndTimePickers
             startDate={getNowSelectedDateWithString(startDate)}
             endDate={getNowSelectedDateWithString(endDate)}
-            startLabel="開始時間"
-            endLabel="終了時間"
             users={users}
             orgId={orgId}
             orgName={orgName}
