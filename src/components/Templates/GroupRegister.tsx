@@ -6,8 +6,12 @@ import { useRouter } from 'next/router';
 import api from '../../utils/fetch';
 
 const GroupRegister: React.FC = () => {
-  const [groupName, setGroupName] = useState<string>('');
-  const [groupPassword, setGroupPassword] = useState<string>('');
+  const [group, setGroup] = useState({
+    groupName: '',
+    description: '',
+    groupPassword: '',
+    isPublic: false,
+  });
   const router = useRouter();
   const { user } = useAuth();
 
@@ -18,7 +22,11 @@ const GroupRegister: React.FC = () => {
   const registerGroup = async (e: React.MouseEvent<HTMLFormElement>) => {
     e.preventDefault();
     await api
-      .post(`/api/organization/`, { name: groupName, password: groupPassword })
+      .post(`/api/organization/`, {
+        name: group.groupName,
+        password: group.groupPassword,
+        description: group.description,
+      })
       .then((data) => {
         alert('グループを追加しました');
         router.push({
@@ -39,25 +47,45 @@ const GroupRegister: React.FC = () => {
           <Input
             name="groupName"
             type="text"
-            autoComplete="groupName"
             placeholder="グループ名"
-            value={groupName}
+            value={group.groupName}
             onChange={(e) => {
-              setGroupName(e.target.value);
+              setGroup({ ...group, groupName: e.target.value });
             }}
           />
           <Input
             name="groupPassword"
             type="password"
-            autoComplete="groupPassword"
             placeholder="パスワード"
-            value={groupPassword}
+            value={group.groupPassword}
             onChange={(e) => {
-              setGroupPassword(e.target.value);
+              setGroup({ ...group, groupPassword: e.target.value });
             }}
             PassFlag
           />
+          <Input
+            name="description"
+            type="text"
+            placeholder="ひとこと、メモ"
+            value={group.description}
+            onChange={(e) => {
+              setGroup({ ...group, description: e.target.value });
+            }}
+          />
         </div>
+        <div>
+          <input
+            type="checkbox"
+            id="public"
+            name="public"
+            className="mr-2"
+            onClick={() => setGroup({ ...group, isPublic: !group.isPublic })}
+          />
+          このグループを一般に公開しますか？
+          <br />
+          ※管理画面から変更できます
+        </div>
+
         <Button>追加する</Button>
       </form>
     </div>
