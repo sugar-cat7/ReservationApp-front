@@ -22,7 +22,7 @@ const DropdownProps = [
   {
     id: 3,
     name: '団体管理画面',
-    url: '#',
+    url: `${process.env.NEXT_PUBLIC_PROD_API_ROOT}`,
   },
   {
     id: 4,
