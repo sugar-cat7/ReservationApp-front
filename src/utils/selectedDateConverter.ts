@@ -20,12 +20,29 @@ export const getNowSelectedDateWithString = (date: Date | string) => {
 };
 
 //日本語に変換
-export const getDateJP = (date: string) => {
+export const getDateJPFull = (date: string) => {
   const [ymd, time] = date.split('T');
   const [y, m, d] = ymd.split('-');
   const [t] = time.split('.');
   const [hour, minutes] = t.split(':');
   const result = y + '年' + m + '月' + d + '日 ' + hour + ':' + minutes;
+  return result;
+};
+
+export const getDateJPMonth = (date: string) => {
+  const [ymd, time] = date.split('T');
+  const [y, m, d] = ymd.split('-');
+  const [t] = time.split('.');
+  const [hour, minutes] = t.split(':');
+  const result = m + '月' + d + '日 ' + hour + ':' + minutes;
+  return result;
+};
+
+export const getDateJPHour = (date: string) => {
+  const [ymd, time] = date.split('T');
+  const [t] = time.split('.');
+  const [hour, minutes] = t.split(':');
+  const result = hour + ':' + minutes;
   return result;
 };
 

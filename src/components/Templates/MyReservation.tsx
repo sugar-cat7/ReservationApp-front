@@ -9,7 +9,7 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { useUserOrg } from '../../hooks/useUserOrg';
 import api from '../../utils/fetch';
-import { getDateJP } from '../../utils/selectedDateConverter';
+import { getDateJPFull } from '../../utils/selectedDateConverter';
 
 type Props = {
   myReservations: {
@@ -118,7 +118,7 @@ const MyReservation: React.FC<Props> = ({ myReservations }) => {
               {r.organization_name}
               <div className="text-gray-400">
                 <div>場所:{r.space_name}</div>
-                <div>時間:{getDateJP(r.start_time)}</div>
+                <div>時間:{getDateJPFull(r.start_time)}</div>
               </div>
             </div>
             <div className="flex">

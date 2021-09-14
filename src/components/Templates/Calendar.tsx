@@ -8,7 +8,8 @@ import DateAndTimePickers from '../Organiams/DateAndTimePickers';
 import ViewCard from '../Organiams/ViewCard';
 import { useSpaceCondition } from '../../context/ReservationStateContext';
 import api from '../../utils/fetch';
-import { getNowSelectedDateWithString, getDateJP } from '../../utils/selectedDateConverter';
+import { getNowSelectedDateWithString } from '../../utils/selectedDateConverter';
+import DetailReservation from '../Organiams/DetailReservation';
 
 const localizer = momentLocalizer(moment);
 const formats = {
@@ -175,22 +176,7 @@ const FullCalendar: React.FC<Props> = ({ users, reservations, spaces, color, org
         }}
       >
         {isReservationGet ? (
-          // TODO デザイン変更
-          <div className="w-80 p-4">
-            <div>グループ名: {data.orgName}</div>
-            <div>スペース名: {data.spaceName}</div>
-            <div>開始時間: {getDateJP(data.startTime)}</div>
-            <div>終了時間: {getDateJP(data.endTime)}</div>
-            <div>memo: {data.memo}</div>
-            <div>
-              予約している人:
-              {data.users.map(({ id, name }) => (
-                <span key={id} className="mr-2">
-                  {name}
-                </span>
-              ))}
-            </div>
-          </div>
+          <DetailReservation {...data} />
         ) : (
           <DateAndTimePickers
             startDate={getNowSelectedDateWithString(startDate)}
