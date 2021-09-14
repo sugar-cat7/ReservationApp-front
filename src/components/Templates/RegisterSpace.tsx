@@ -8,6 +8,7 @@ import api from '../../utils/fetch';
 const RegisterSpace: React.FC = () => {
   const [spaceName, setSpaceName] = useState<string>('');
   const [spaceCapacity, setSpaceCapacity] = useState<string>('');
+  const [description, setDescription] = useState<string>('');
   const [isAddSpace, setIsAddSpace] = useState<boolean>(false);
   const router = useRouter();
   const { user } = useAuth();
@@ -20,7 +21,11 @@ const RegisterSpace: React.FC = () => {
   const registerSpace = async (e: React.MouseEvent<HTMLFormElement>) => {
     e.preventDefault();
     await api
-      .post(`/api/organization/${orgId}/space`, { name: spaceName, capacity: spaceCapacity })
+      .post(`/api/organization/${orgId}/space`, {
+        name: spaceName,
+        capacity: spaceCapacity,
+        description: description,
+      })
       .then(() => {
         alert('スペースを追加しました');
         setIsAddSpace(true);
@@ -58,6 +63,15 @@ const RegisterSpace: React.FC = () => {
             value={spaceCapacity}
             onChange={(e) => {
               setSpaceCapacity(e.target.value);
+            }}
+          />
+          <Input
+            name="description"
+            type="text"
+            placeholder="ひとこと、メモ"
+            value={description}
+            onChange={(e) => {
+              setDescription(e.target.value);
             }}
           />
         </div>

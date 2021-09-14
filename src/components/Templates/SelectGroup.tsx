@@ -6,10 +6,13 @@ import Modal from '../Atoms/Modal';
 import SearchBox from '../Organiams/SearchBox';
 import Input from '../Atoms/Input';
 import api from '../../utils/fetch';
+import Loading from '../Atoms/Loading';
 
 type orgProps = {
   id: number;
   name: string;
+  public: boolean;
+  description: string;
 };
 
 //TODO ここでグループを選ぶときに,そのグループのユーザー情報をcontextに持つようにする
@@ -36,7 +39,7 @@ const SelectGroup: React.FC = () => {
   };
 
   if (isLoading) {
-    return <div>loding</div>;
+    return <Loading />;
   }
   let userOrgId: number[] | undefined;
   if (organizations) {
@@ -54,25 +57,28 @@ const SelectGroup: React.FC = () => {
       {organizations.length > 0 ? (
         <div className="absolute top-44 h-4/6 overflow-y-auto">
           <div>参加しているグループ</div>
-          {organizations.map(({ id, name }: orgProps) => (
-            <div
-              className="max-w-md mx-auto bg-white rounded-xl  shadow-md overflow-hidden md:max-w-2xl  hover:bg-gray hover:shadow-lg hover:border-transparent mb-4 sm:w-screen"
-              onClick={() => {
-                router.push({
-                  pathname: '/calendar/[orgId]',
-                  query: { orgId: id },
-                });
-              }}
-              key={id}
-            >
-              <div className="md:flex">
-                <div className="p-8">
-                  <div className="tracking-wide text-sm text-indigo-500 font-semibold">
-                    グループ: {name}
+          {organizations.map(({ id, name, description }: orgProps) => (
+            <>
+              <div
+                className="max-w-md mx-auto bg-white rounded-xl  shadow-md overflow-hidden md:max-w-2xl  hover:bg-gray hover:shadow-lg hover:border-transparent mb-4 sm:w-screen"
+                onClick={() => {
+                  router.push({
+                    pathname: '/calendar/[orgId]',
+                    query: { orgId: id },
+                  });
+                }}
+                key={id}
+              >
+                <div className="md:flex">
+                  <div className="p-8">
+                    <div className="tracking-wide text-sm text-indigo-500 font-semibold">
+                      グループ: {name}
+                    </div>
+                    <div className="text-xs text-gray-500">{description}</div>
                   </div>
                 </div>
               </div>
-            </div>
+            </>
           ))}
         </div>
       ) : (
@@ -99,25 +105,29 @@ const SelectGroup: React.FC = () => {
         }}
       >
         {showOrgList ? (
-          searchedOrg.map(({ id, name }: orgProps) => (
-            <div
-              className={`${
-                !userOrgId?.includes(id) ? 'bg-white' : 'bg-gray-200'
-              } w-72 mx-auto rounded-xl  shadow-md overflow-hidden md:max-w-2xl  hover:bg-gray hover:shadow-lg hover:border-transparent mr-4 ml-4 mb-4`}
-              key={id}
-              onClick={() => {
-                setShowOrgList(false);
-                setSelectedOrg({ id: id, name: name });
-              }}
-            >
-              <div className="md:flex">
-                <div className="p-2">
-                  <div className="tracking-wide text-sm text-indigo-500 font-semibold">
-                    グループ: {name}
+          searchedOrg.map((s: orgProps) => (
+            <>
+              {s.public && (
+                <div
+                  className={`${
+                    !userOrgId?.includes(s.id) ? 'bg-white' : 'bg-gray-200'
+                  } w-72 mx-auto rounded-xl  shadow-md overflow-hidden md:max-w-2xl  hover:bg-gray hover:shadow-lg hover:border-transparent mr-4 ml-4 mb-4`}
+                  key={s.id}
+                  onClick={() => {
+                    setShowOrgList(false);
+                    setSelectedOrg({ id: s.id, name: s.name });
+                  }}
+                >
+                  <div className="md:flex">
+                    <div className="p-2">
+                      <div className="tracking-wide text-sm text-indigo-500 font-semibold">
+                        グループ: {s.name}
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </div>
+              )}
+            </>
           ))
         ) : (
           <>
