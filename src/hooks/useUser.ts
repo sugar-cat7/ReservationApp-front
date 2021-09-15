@@ -2,8 +2,8 @@ import useSWR from 'swr';
 import api from '../utils/fetch';
 
 type Props = {
-  user: { id: number; name: string; kana: string; email: string };
-  isLoading: boolean;
+  logInUser: { id: number; name: string; kana: string; email: string };
+  islogInUserLoading: boolean;
   isError: boolean;
 };
 
@@ -11,8 +11,8 @@ export const useUser = (): Props => {
   const { data, error } = useSWR(`/api/login/user`, api.get);
 
   return {
-    user: data,
-    isLoading: !error && !data,
+    logInUser: data,
+    islogInUserLoading: !error && !data,
     isError: error,
   };
 };
