@@ -1,7 +1,7 @@
 import ReactLoading from 'react-loading';
 
-const Roading = () => {
+const Loading = () => {
   return <ReactLoading type="spin" color="black" />;
 };
 
-export default Roading;
+export default Loading;

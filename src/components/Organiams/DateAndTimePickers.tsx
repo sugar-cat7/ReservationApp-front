@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 type Props = {
-  loggedInUserId: number;
+  loggedInUserId?: number;
   startDate: string;
   endDate: string;
   users?: any[];
@@ -299,7 +299,7 @@ const DateAndTimePickers: React.FC<Props> = ({
       {isEdit ? (
         <Button>予定を変更する</Button>
       ) : (
-        <Button disabled={!modalData.users.includes(loggedInUserId)}>予定を追加する</Button>
+        <Button disabled={!modalData.users.includes(loggedInUserId!)}>予定を追加する</Button>
       )}
     </form>
   );
