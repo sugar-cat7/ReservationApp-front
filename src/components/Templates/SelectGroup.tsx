@@ -13,6 +13,7 @@ type orgProps = {
   name: string;
   public: boolean;
   description: string;
+  rule: string;
 };
 
 //TODO ここでグループを選ぶときに,そのグループのユーザー情報をcontextに持つようにする
@@ -58,27 +59,25 @@ const SelectGroup: React.FC = () => {
         <div className="absolute top-44 h-4/6 overflow-y-auto">
           <div>参加しているグループ</div>
           {organizations.map(({ id, name, description }: orgProps) => (
-            <>
-              <div
-                className="max-w-md mx-auto bg-white rounded-xl  shadow-md overflow-hidden md:max-w-2xl  hover:bg-gray hover:shadow-lg hover:border-transparent mb-4 sm:w-screen"
-                onClick={() => {
-                  router.push({
-                    pathname: '/calendar/[orgId]',
-                    query: { orgId: id },
-                  });
-                }}
-                key={id}
-              >
-                <div className="md:flex">
-                  <div className="p-8">
-                    <div className="tracking-wide text-sm text-indigo-500 font-semibold">
-                      グループ: {name}
-                    </div>
-                    <div className="text-xs text-gray-500">{description}</div>
+            <div
+              className="max-w-md mx-auto bg-white rounded-xl  shadow-md overflow-hidden md:max-w-2xl  hover:bg-gray hover:shadow-lg hover:border-transparent mb-4 sm:w-screen"
+              onClick={() => {
+                router.push({
+                  pathname: '/calendar/[orgId]',
+                  query: { orgId: id },
+                });
+              }}
+              key={id}
+            >
+              <div className="md:flex">
+                <div className="p-8">
+                  <div className="tracking-wide text-sm text-indigo-500 font-semibold">
+                    グループ: {name}
                   </div>
+                  <div className="text-xs text-gray-500">{description}</div>
                 </div>
               </div>
-            </>
+            </div>
           ))}
         </div>
       ) : (
@@ -123,6 +122,7 @@ const SelectGroup: React.FC = () => {
                       <div className="tracking-wide text-sm text-indigo-500 font-semibold">
                         グループ: {s.name}
                       </div>
+                      <div className="tracking-wide text-xs text-gray-500 ">{s.description}</div>
                     </div>
                   </div>
                 </div>

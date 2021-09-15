@@ -8,6 +8,7 @@ import { ManagedSpaceConditionContext } from '../../context/ReservationStateCont
 import { useRouter } from 'next/router';
 import { getDateWithString } from '../../utils/selectedDateConverter';
 import Loading from '../../components/Atoms/Loading';
+import { useUser } from '../../hooks/useUser';
 
 type ReservationsProps = {
   user_id: number;
@@ -38,8 +39,10 @@ const Calendar = () => {
   //とりあえず１ヶ月先まで一括して取ってくる
   const { reservations, isLoading } = useReservations(strOrdId, s, e);
   const { org, isOrgLoading } = useOrg(strOrdId);
+  const { logInUser, islogInUserLoading } = useUser();
 
-  const isOverAllLoading = isLoading || isSpaceLoading || isOrgLoading || !orgId;
+  const isOverAllLoading =
+    isLoading || isSpaceLoading || isOrgLoading || islogInUserLoading || !orgId;
 
   if (isOverAllLoading) {
     return (
@@ -96,6 +99,7 @@ const Calendar = () => {
       <Layout title="予定カレンダー">
         <ManagedSpaceConditionContext>
           <FullCalendar
+            loggedInUserId={logInUser.id}
             users={org.users}
             reservations={rv}
             spaces={spaces}
@@ -110,6 +114,7 @@ const Calendar = () => {
     <Layout title="予定カレンダー">
       <ManagedSpaceConditionContext>
         <FullCalendar
+          loggedInUserId={logInUser.id}
           users={org.users}
           reservations={[]}
           color={[]}

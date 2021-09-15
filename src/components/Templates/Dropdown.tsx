@@ -16,26 +16,31 @@ const DropdownProps = [
   },
   {
     id: 2,
+    name: 'グループ選択',
+    url: '/select-group',
+  },
+  {
+    id: 3,
     name: '自分の予定を確認',
     url: '/my-reservation',
   },
   {
-    id: 3,
+    id: 4,
     name: '団体管理画面',
     url: `${process.env.NEXT_PUBLIC_PROD_API_ROOT}`,
   },
   {
-    id: 4,
+    id: 5,
     name: '設定',
     url: '/mypage',
   },
   {
-    id: 5,
+    id: 6,
     name: 'ヘルプ',
     url: '#',
   },
   {
-    id: 6,
+    id: 7,
     name: 'ログアウト',
     url: '/login',
   },

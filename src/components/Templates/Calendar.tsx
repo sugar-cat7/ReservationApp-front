@@ -51,8 +51,9 @@ type Props = {
     spaceId: number;
     bgColor: string;
   }[];
-  orgId: string | string[] | undefined;
-  orgName: string | string[] | undefined;
+  orgId?: string | string[];
+  orgName?: string | string[];
+  loggedInUserId: number;
 };
 type ReservationProps = {
   space_id: number;
@@ -76,7 +77,15 @@ type Data = {
   users: number[];
 };
 
-const FullCalendar: React.FC<Props> = ({ users, reservations, spaces, color, orgId, orgName }) => {
+const FullCalendar: React.FC<Props> = ({
+  users,
+  reservations,
+  spaces,
+  color,
+  orgId,
+  orgName,
+  loggedInUserId,
+}) => {
   const { state } = useSpaceCondition();
   let filteredReservations: ReservationProps;
   if (state.spaceId !== 0) {
@@ -186,6 +195,7 @@ const FullCalendar: React.FC<Props> = ({ users, reservations, spaces, color, org
             orgName={orgName}
             isEdit={false}
             spaces={spaces}
+            loggedInUserId={loggedInUserId}
           />
         )}
       </Modal>

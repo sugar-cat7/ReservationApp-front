@@ -14,13 +14,11 @@ const api = {
         Authorization: `${sessionStorage.getItem('access_token')}`,
       },
     });
-    if (response.status !== 200) {
-      const errMsg = FetchError(response.status);
-      throw new Error(errMsg);
-    }
+
     if (!response.ok) {
-      const err = await response.json();
-      throw new Error(err);
+      // const err = await response.json();
+      // throw new Error(err);
+      throw new Error(response.statusText);
     }
     return await response.json();
   },
@@ -46,13 +44,10 @@ const api = {
       headers: headers,
       body: JSON.stringify(data),
     });
-    if (response.status !== 200) {
-      const errMsg = FetchError(response.status);
-      throw new Error(errMsg);
-    }
+
     if (!response.ok) {
-      const err = await response.json();
-      throw new Error(err);
+      // const err = await response.json();
+      throw new Error(response.statusText);
     }
     return await response.json();
   },
@@ -67,13 +62,10 @@ const api = {
       body: JSON.stringify(data),
     });
 
-    if (response.status !== 200) {
-      const errMsg = FetchError(response.status);
-      throw new Error(errMsg);
-    }
     if (!response.ok) {
-      const err = await response.json();
-      throw new Error(err);
+      // const err = await response.json();
+      // throw new Error(err);
+      throw new Error(response.statusText);
     }
   },
 
@@ -85,13 +77,11 @@ const api = {
         Authorization: `${sessionStorage.getItem('access_token')}`,
       },
     });
-    if (response.status !== 200) {
-      const errMsg = FetchError(response.status);
-      throw new Error(errMsg);
-    }
+
     if (!response.ok) {
-      const err = await response.json();
-      throw new Error(err);
+      // const err = await response.json();
+      // throw new Error(err);
+      throw new Error(response.statusText);
     }
   },
 };

@@ -42,6 +42,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 type Props = {
+  loggedInUserId?: number;
   startDate: string;
   endDate: string;
   users?: any[];
@@ -87,6 +88,7 @@ const DateAndTimePickers: React.FC<Props> = ({
   isEdit,
   spaces,
   rSpaceId,
+  loggedInUserId,
 }) => {
   const classes = useStyles();
   const [modalData, setModalData] = useState<SetProps>({
@@ -294,7 +296,11 @@ const DateAndTimePickers: React.FC<Props> = ({
           setModalData({ ...modalData, memo: e.target.value });
         }}
       />
-      {isEdit ? <Button>予定を変更する</Button> : <Button>予定を追加する</Button>}
+      {isEdit ? (
+        <Button>予定を変更する</Button>
+      ) : (
+        <Button disabled={!modalData.users.includes(loggedInUserId!)}>予定を追加する</Button>
+      )}
     </form>
   );
 };
