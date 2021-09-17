@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint src/** --ext .ts,.tsx",
     "lint:fix": "eslint src/** --ext .ts,.tsx --fix && yarn format",
-    "format": "prettier --config .prettierrc.json --write '**/*.tsx'"
+    "format": "prettier --config .prettierrc.json --write '**/*.tsx'",
+    "emulators": "firebase emulators:start --import=./volume --export-on-exit --project=$(grep NEXT_PUBLIC_FIREBASE_PROJECT_ID .env.local | awk -F'[\"]' '{print $2}')"
   },
   "dependencies": {
     "@emotion/react": "^11.4.1",
@@ -22,6 +23,7 @@
     "@types/react-big-calendar": "^0.33.1",
     "@types/react-calendar": "^3.4.3",
     "date-fns": "^2.23.0",
+    "firebase": "^9.0.2",
     "moment": "^2.29.1",
     "next": "11.1.0",
     "query-string": "^7.0.1",
@@ -47,6 +49,7 @@
     "eslint-plugin-prettier": "^3.4.1",
     "eslint-plugin-react": "^7.24.0",
     "eslint-plugin-react-hooks": "^4.2.0",
+    "firebase-tools": "^9.18.0",
     "postcss": "^8.3.6",
     "prettier": "^2.3.2",
     "tailwindcss": "^2.2.7",
