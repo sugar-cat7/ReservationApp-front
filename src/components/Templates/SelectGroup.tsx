@@ -7,6 +7,7 @@ import SearchBox from '../Organiams/SearchBox';
 import Input from '../Atoms/Input';
 import api from '../../utils/fetch';
 import Loading from '../Atoms/Loading';
+import Avatar from '@mui/material/Avatar';
 
 type orgProps = {
   id: number;
@@ -70,11 +71,12 @@ const SelectGroup: React.FC = () => {
               key={id}
             >
               <div className="md:flex">
-                <div className="p-8">
+                <div className="p-8 flex items-center gap-5">
+                  <Avatar />
                   <div className="tracking-wide text-sm text-indigo-500 font-semibold">
                     グループ: {name}
+                    <div className="text-xs text-gray-500">{description}</div>
                   </div>
-                  <div className="text-xs text-gray-500">{description}</div>
                 </div>
               </div>
             </div>

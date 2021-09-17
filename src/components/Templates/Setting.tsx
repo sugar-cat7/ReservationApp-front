@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { PencilAltIcon } from '@heroicons/react/solid';
 import { CheckIcon } from '@heroicons/react/solid';
 import api from '../../utils/fetch';
+import Avatar from '@mui/material/Avatar';
+
 type Props = {
   user: { id: number; name: string; kana: string; email: string };
 };
@@ -22,7 +24,7 @@ const Setting: React.FC<Props> = ({ user }) => {
         <PencilAltIcon className="h-6" onClick={() => setIsEdit(!isEdit)} />
       </div>
       <div className="flex justify-center mt-4">
-        {/* <Image className="rounded-full" src="/avatar.jpg" width={60} height={60} alt="Avatar" /> */}
+        <Avatar />
       </div>
       <div className="mt-4">
         <p className="font-bold">名前</p>
