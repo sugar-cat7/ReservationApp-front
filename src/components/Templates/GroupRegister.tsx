@@ -4,6 +4,7 @@ import Button from '../Atoms/Button';
 import { useAuth } from '../../context/AuthContext';
 import { useRouter } from 'next/router';
 import api from '../../utils/fetch';
+import UpLoadTest from '../Organiams/UpLoad';
 
 const GroupRegister: React.FC = () => {
   const [group, setGroup] = useState({
@@ -85,7 +86,8 @@ const GroupRegister: React.FC = () => {
           <br />
           ※管理画面から変更できます
         </div>
-
+        {/* 作成中 */}
+        {process.env.NODE_ENV === 'development' && <UpLoadTest />}
         <Button>追加する</Button>
       </form>
     </div>

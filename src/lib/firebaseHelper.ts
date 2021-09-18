@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import { getStorage, ref } from 'firebase/storage';
+import { getStorage, ref, connectStorageEmulator } from 'firebase/storage';
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -14,5 +14,6 @@ const firebaseConfig = {
 initializeApp(firebaseConfig);
 
 export const storage = getStorage();
+connectStorageEmulator(storage, 'localhost', 9199);
 
-export const storageRef = ref;
+export const storageRef = ref(storage);
