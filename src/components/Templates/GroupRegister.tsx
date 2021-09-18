@@ -12,6 +12,7 @@ const GroupRegister: React.FC = () => {
     description: '',
     groupPassword: '',
     isPublic: false,
+    imageUrl: '',
   });
   const router = useRouter();
   const { user } = useAuth();
@@ -87,7 +88,7 @@ const GroupRegister: React.FC = () => {
           ※管理画面から変更できます
         </div>
         {/* 作成中 */}
-        {process.env.NODE_ENV === 'development' && <UpLoadTest />}
+        {process.env.NODE_ENV === 'development' && <UpLoadTest {...{ group, setGroup }} />}
         <Button>追加する</Button>
       </form>
     </div>

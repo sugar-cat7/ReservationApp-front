@@ -14,7 +14,12 @@ export type firebaseOnLoadProp = {
   state: TaskState;
 };
 
-const UpLoad: React.FC = () => {
+type Props = {
+  group: any;
+  setGroup: React.Dispatch<React.SetStateAction<any>>;
+};
+
+const UpLoad: React.FC<Props> = ({ group, setGroup }) => {
   const [myFiles, setMyFiles] = useState<File[]>([]);
   const [clickable, setClickable] = useState(false);
   const [src, setSrc] = useState('');
@@ -41,7 +46,6 @@ const UpLoad: React.FC = () => {
   });
 
   const handleUpload = (acceptedImg: File[]) => {
-    console.log(acceptedImg);
     try {
       // アップロード処理
       const storageRef = ref(storage, `/images/${acceptedImg[0].name}`);
@@ -85,6 +89,7 @@ const UpLoad: React.FC = () => {
           try {
             getDownloadURL(uploadTask.snapshot.ref).then((downloadURL: string) => {
               console.log('ダウンロードしたURL' + downloadURL);
+              setGroup({ ...group, imageUrl: downloadURL });
             });
           } catch (error: any) {
             switch (error.code) {
@@ -145,13 +150,16 @@ const UpLoad: React.FC = () => {
             disabled={!clickable}
             type="submit"
             className="px-4 py-2 my-4 bg-gray-300 rounded-md border border-1"
-            onClick={() => handleUpload(myFiles)}
+            onClick={(e) => {
+              e.preventDefault;
+              handleUpload(myFiles);
+            }}
           >
             画像UPLOAD
           </button>
         )}
       </div>
-      <Modal />
+      {/* <Modal /> */}
     </div>
   );
 };
