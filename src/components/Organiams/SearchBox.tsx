@@ -30,13 +30,13 @@ type Props = {
 };
 const SearchBox: React.FC<Props> = ({ setModal, setSearchedOrg }) => {
   const classes = useStyles();
-  const [serchOrg, setSerchOrg] = useState('');
+  const [searchOrg, setSearchOrg] = useState('');
 
   const fetchData = async (e: React.MouseEvent<HTMLDivElement>) => {
     e.preventDefault();
     setModal();
     await api
-      .get(`/api/organization?search=${serchOrg}`)
+      .get(`/api/organization?search=${searchOrg}`)
       .then((data) => {
         setSearchedOrg(data);
       })
@@ -49,9 +49,9 @@ const SearchBox: React.FC<Props> = ({ setModal, setSearchedOrg }) => {
         className={classes.input}
         placeholder="Search Group"
         inputProps={{ 'aria-label': 'search group' }}
-        value={serchOrg}
+        value={searchOrg}
         onChange={(e) => {
-          setSerchOrg(e.target.value);
+          setSearchOrg(e.target.value);
         }}
         // onClick={setModal}
       />

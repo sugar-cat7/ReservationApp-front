@@ -11,6 +11,7 @@ type InputProps = {
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   PassFlag?: boolean;
+  required?: boolean;
 };
 const Input: React.FC<InputProps> = ({
   name,
@@ -20,6 +21,7 @@ const Input: React.FC<InputProps> = ({
   placeholder,
   onChange,
   PassFlag,
+  required,
 }) => {
   const [isRevealPassword, setIsRevealPassword] = useState<boolean>(false);
   const togglePassword = () => {

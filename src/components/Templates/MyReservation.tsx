@@ -10,6 +10,7 @@ import Select from '@mui/material/Select';
 import { useUserOrg } from '../../hooks/useUserOrg';
 import api from '../../utils/fetch';
 import { getDateJPFull } from '../../utils/selectedDateConverter';
+import Loading from '../Atoms/Loading';
 
 type Props = {
   myReservations: {
@@ -39,7 +40,7 @@ const MyReservation: React.FC<Props> = ({ myReservations }) => {
   const { organizations, isLoading } = useUserOrg();
 
   if (isLoading) {
-    return <div>Loding</div>;
+    return <Loading />;
   }
 
   const deleteReservation = async (orgId: string, spaceId: number, rvId: number) => {
