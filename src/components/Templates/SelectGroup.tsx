@@ -73,14 +73,13 @@ const SelectGroup: React.FC = () => {
             >
               <div className="md:flex">
                 <div className="p-8 flex items-center gap-5">
-                  <div className="rounded-full border border-black justify-content">
-                    {/* <div> */}
-                    {image_url ? (
+                  {image_url ? (
+                    <div className="rounded-full border border-black justify-content">
                       <Icon name={image_url} className="w-6 h-6 m-2" />
-                    ) : (
-                      <Avatar>G</Avatar>
-                    )}
-                  </div>
+                    </div>
+                  ) : (
+                    <Avatar>{name[0]}</Avatar>
+                  )}
                   <div className="tracking-wide text-sm text-indigo-500 font-semibold">
                     グループ: {name}
                     <div className="text-xs text-gray-500">{description}</div>

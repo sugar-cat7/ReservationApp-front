@@ -18,6 +18,7 @@ const GroupRegister: React.FC = () => {
     groupPassword: '',
     isPublic: false,
     imageUrl: '',
+    rule: '',
   });
   const router = useRouter();
   const { user } = useAuth();
@@ -35,6 +36,7 @@ const GroupRegister: React.FC = () => {
         description: group.description,
         image_url: group.imageUrl,
         public: group.isPublic,
+        rule: group.rule,
       })
       .then((data) => {
         alert('グループを追加しました');
@@ -103,6 +105,15 @@ const GroupRegister: React.FC = () => {
             value={group.description}
             onChange={(e) => {
               setGroup({ ...group, description: e.target.value });
+            }}
+          />
+          <Input
+            name="description"
+            type="text"
+            placeholder="グループのルール"
+            value={group.rule}
+            onChange={(e) => {
+              setGroup({ ...group, rule: e.target.value });
             }}
           />
         </div>
