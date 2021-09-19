@@ -8,8 +8,7 @@
     "start": "next start",
     "lint": "eslint src/** --ext .ts,.tsx",
     "lint:fix": "eslint src/** --ext .ts,.tsx --fix && yarn format",
-    "format": "prettier --config .prettierrc.json --write '**/*.tsx'",
-    "emulators": "firebase emulators:start --import=./volume --export-on-exit --project=$(grep NEXT_PUBLIC_FIREBASE_PROJECT_ID .env.local | awk -F'[\"]' '{print $2}')"
+    "format": "prettier --config .prettierrc.json --write '**/*.tsx'"
   },
   "dependencies": {
     "@emotion/react": "^11.4.1",
@@ -23,7 +22,6 @@
     "@types/react-big-calendar": "^0.33.1",
     "@types/react-calendar": "^3.4.3",
     "date-fns": "^2.23.0",
-    "firebase": "^9.0.2",
     "moment": "^2.29.1",
     "next": "11.1.0",
     "query-string": "^7.0.1",
@@ -32,6 +30,7 @@
     "react-calendar": "^3.4.0",
     "react-cookie": "^4.1.1",
     "react-dom": "17.0.2",
+    "react-icons": "^4.2.0",
     "react-loading": "^2.0.3",
     "react-markdown": "^7.0.1",
     "swr": "^1.0.0"
