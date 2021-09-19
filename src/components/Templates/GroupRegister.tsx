@@ -4,6 +4,12 @@ import Button from '../Atoms/Button';
 import { useAuth } from '../../context/AuthContext';
 import { useRouter } from 'next/router';
 import api from '../../utils/fetch';
+import { Icon, iconMap } from '../Icon/Icon';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+
+const icons = Object.keys(iconMap) as (keyof typeof iconMap)[];
 
 const GroupRegister: React.FC = () => {
   const [group, setGroup] = useState({
@@ -11,6 +17,7 @@ const GroupRegister: React.FC = () => {
     description: '',
     groupPassword: '',
     isPublic: false,
+    imageUrl: '',
   });
   const router = useRouter();
   const { user } = useAuth();
@@ -26,6 +33,7 @@ const GroupRegister: React.FC = () => {
         name: group.groupName,
         password: group.groupPassword,
         description: group.description,
+        image_url: group.imageUrl,
       })
       .then((data) => {
         alert('グループを追加しました');
@@ -38,10 +46,34 @@ const GroupRegister: React.FC = () => {
         alert(err);
       });
   };
-
+  console.log(group);
   return (
     <div className="max-w-md w-full space-y-8 sm:w-screen">
-      <div>グループを追加しよう！</div>
+      <div className="flex items-center justify-between">
+        <div>グループを追加しよう！</div>
+        <FormControl sx={{ m: 1, minWidth: 60 }}>
+          <div>アイコンを選択</div>
+          <Select
+            labelId="icon"
+            id="icon"
+            value={group.imageUrl}
+            label="icon"
+            onChange={(e) => {
+              setGroup({ ...group, imageUrl: e.target.value });
+            }}
+          >
+            <MenuItem value="">
+              <em></em>
+            </MenuItem>
+            {icons &&
+              icons.map((i) => (
+                <MenuItem key={i} className="justify-center" value={i || ''}>
+                  <Icon name={i} className="w-8 h-8" />
+                </MenuItem>
+              ))}
+          </Select>
+        </FormControl>
+      </div>
       <form className="mt-8 space-y-6" onSubmit={registerGroup}>
         <div className="rounded-md shadow-sm -space-y-px">
           <Input
@@ -85,7 +117,6 @@ const GroupRegister: React.FC = () => {
           <br />
           ※管理画面から変更できます
         </div>
-
         <Button>追加する</Button>
       </form>
     </div>
