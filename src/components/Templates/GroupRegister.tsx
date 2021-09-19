@@ -34,6 +34,7 @@ const GroupRegister: React.FC = () => {
         password: group.groupPassword,
         description: group.description,
         image_url: group.imageUrl,
+        public: group.isPublic,
       })
       .then((data) => {
         alert('グループを追加しました');
@@ -46,7 +47,7 @@ const GroupRegister: React.FC = () => {
         alert(err);
       });
   };
-  console.log(group);
+
   return (
     <div className="max-w-md w-full space-y-8 sm:w-screen">
       <div className="flex items-center justify-between">

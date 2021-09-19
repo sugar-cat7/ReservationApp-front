@@ -7,8 +7,8 @@ import { GiTennisRacket } from 'react-icons/gi';
 export const iconMap = {
   'battle-net': FaBattleNet,
   baseball: BiBaseball,
-  'fc-home': FcHome,
-  'gi-tennis-racket': GiTennisRacket,
+  home: FcHome,
+  'tennis-racket': GiTennisRacket,
 };
 
 export type IconProps = {

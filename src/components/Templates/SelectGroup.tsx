@@ -8,6 +8,7 @@ import Input from '../Atoms/Input';
 import api from '../../utils/fetch';
 import Loading from '../Atoms/Loading';
 import Avatar from '@mui/material/Avatar';
+import { Icon, iconMap } from '../Icon/Icon';
 
 type orgProps = {
   id: number;
@@ -15,6 +16,7 @@ type orgProps = {
   public: boolean;
   description: string;
   rule: string;
+  image_url: keyof typeof iconMap;
 };
 
 //TODO ここでグループを選ぶときに,そのグループのユーザー情報をcontextに持つようにする
@@ -48,7 +50,6 @@ const SelectGroup: React.FC = () => {
     userOrgId = organizations.map(({ id }) => id);
   }
 
-  //TODO プライベートグループの表示出しわけ
   return (
     <>
       <div className="absolute top-20">
@@ -59,7 +60,7 @@ const SelectGroup: React.FC = () => {
       {organizations.length > 0 ? (
         <div className="absolute top-44 h-4/6 overflow-y-auto">
           <div>参加しているグループ</div>
-          {organizations.map(({ id, name, description }: orgProps) => (
+          {organizations.map(({ id, name, description, image_url }: orgProps) => (
             <div
               className="max-w-md mx-auto bg-white rounded-xl  shadow-md overflow-hidden md:max-w-2xl  hover:bg-gray hover:shadow-lg hover:border-transparent mb-4 sm:w-screen"
               onClick={() => {
@@ -72,7 +73,14 @@ const SelectGroup: React.FC = () => {
             >
               <div className="md:flex">
                 <div className="p-8 flex items-center gap-5">
-                  <Avatar />
+                  <div className="rounded-full border border-black justify-content">
+                    {/* <div> */}
+                    {image_url ? (
+                      <Icon name={image_url} className="w-6 h-6 m-2" />
+                    ) : (
+                      <Avatar>G</Avatar>
+                    )}
+                  </div>
                   <div className="tracking-wide text-sm text-indigo-500 font-semibold">
                     グループ: {name}
                     <div className="text-xs text-gray-500">{description}</div>
