@@ -123,7 +123,7 @@ const MyReservation: React.FC<Props> = ({ myReservations }) => {
               </div>
             </div>
             <div className="flex">
-              {r.users.length < 2 && (
+              {r.users && r.users.length < 2 && (
                 <PencilIcon
                   className="h-7 w-7"
                   onClick={() =>
