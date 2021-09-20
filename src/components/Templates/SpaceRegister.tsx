@@ -10,6 +10,7 @@ const RegisterSpace: React.FC = () => {
     name: '',
     capacity: '',
     description: '',
+    color: '',
   });
   const [isAddSpace, setIsAddSpace] = useState<boolean>(false);
   const router = useRouter();
@@ -27,11 +28,12 @@ const RegisterSpace: React.FC = () => {
         name: space.name,
         capacity: space.capacity,
         description: space.description,
+        color: space.color,
       })
       .then(() => {
         alert('スペースを追加しました');
         setIsAddSpace(true);
-        setSpace({ name: '', capacity: '', description: '' });
+        setSpace({ name: '', capacity: '', description: '', color: '' });
       })
       .catch((err) => {
         alert(err);
@@ -74,6 +76,14 @@ const RegisterSpace: React.FC = () => {
             onChange={(e) => {
               setSpace({ ...space, description: e.target.value });
             }}
+          />
+        </div>
+        <div className="flex items-center">
+          <div>スペースの予約を表示色を選べます</div>
+          <input
+            type="color"
+            onChange={(e) => setSpace({ ...space, color: e.target.value })}
+            required
           />
         </div>
         <Button>追加する</Button>

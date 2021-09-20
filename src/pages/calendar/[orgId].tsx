@@ -20,11 +20,6 @@ type ReservationsProps = {
   memo: string;
 }[];
 
-type CalenderBg = {
-  spaceId: number;
-  bgColor: string;
-}[];
-
 const Calendar = () => {
   const router = useRouter();
   const { orgId } = router.query;
@@ -71,30 +66,6 @@ const Calendar = () => {
       });
     });
 
-    const spaceColor: CalenderBg = [];
-    const tmp = Math.floor(255 / spaces.length);
-    let [r, g, b, i] = [0, 0, 0, 0];
-    spaces.map(({ id }) => {
-      if (i % 3 === 0) {
-        r += tmp;
-        i += 1;
-      } else if (i % 3 === 1) {
-        g += tmp;
-        i += 1;
-      } else {
-        b += tmp;
-        i += 1;
-      }
-
-      spaceColor.push({
-        spaceId: id,
-        bgColor: `rgba(${r}, ${g}, ${b}, 0.5)`,
-      });
-      if (i <= 2) {
-        [r, g, b] = [0, 0, 0];
-      }
-    });
-
     return (
       <Layout title="予定カレンダー">
         <ManagedSpaceConditionContext>
@@ -103,7 +74,6 @@ const Calendar = () => {
             users={org.users}
             reservations={rv}
             spaces={spaces}
-            color={spaceColor}
             orgId={orgId}
             orgName={org.name}
           />
@@ -117,7 +87,6 @@ const Calendar = () => {
           loggedInUserId={logInUser.id}
           users={org.users}
           reservations={[]}
-          color={[]}
           spaces={spaces}
           orgId={orgId}
           orgName={org.name}

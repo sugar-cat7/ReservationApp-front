@@ -28,6 +28,7 @@ type Props = {
   }[];
 };
 
+//色々冗長すぎるのでまとめる
 const MyReservation: React.FC<Props> = ({ myReservations }) => {
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
   const [showEditModal, setShowEditModal] = useState<boolean>(false);

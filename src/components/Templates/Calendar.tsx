@@ -46,10 +46,7 @@ type Props = {
     name: string;
     organization_id: number;
     // rule: null;
-  }[];
-  color: {
-    spaceId: number;
-    bgColor: string;
+    color: string;
   }[];
   orgId?: string | string[];
   orgName?: string | string[];
@@ -81,7 +78,6 @@ const FullCalendar: React.FC<Props> = ({
   users,
   reservations,
   spaces,
-  color,
   orgId,
   orgName,
   loggedInUserId,
@@ -140,7 +136,7 @@ const FullCalendar: React.FC<Props> = ({
 
   return (
     <>
-      <ViewCard spaces={spaces} color={color} orgName={orgName} />
+      <ViewCard spaces={spaces} orgName={orgName} />
       <Calendar
         selectable
         localizer={localizer}
@@ -166,11 +162,13 @@ const FullCalendar: React.FC<Props> = ({
           }
         }}
         eventPropGetter={(event) => {
-          const backgroundColor = color.filter((c) => c.spaceId === event.space_id);
+          const backgroundColor = spaces.filter((c) => c.id === event.space_id);
+
           return {
             style: {
               border: '0px',
-              backgroundColor: backgroundColor[0].bgColor,
+              backgroundColor: backgroundColor[0].color,
+              opacity: 0.8,
             },
           };
         }}
