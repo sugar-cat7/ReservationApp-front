@@ -10,6 +10,7 @@ import { useSpaceCondition } from '../../context/ReservationStateContext';
 import api from '../../utils/fetch';
 import { getNowSelectedDateWithString } from '../../utils/selectedDateConverter';
 import DetailReservation from '../Organiams/DetailReservation';
+import { useRouter } from 'next/router';
 
 const localizer = momentLocalizer(moment);
 const formats = {
@@ -82,6 +83,8 @@ const FullCalendar: React.FC<Props> = ({
   orgName,
   loggedInUserId,
 }) => {
+  window.addEventListener('hashchange', () => location.reload());
+
   const { state } = useSpaceCondition();
   let filteredReservations: ReservationProps;
   if (state.spaceId !== 0) {
@@ -89,11 +92,11 @@ const FullCalendar: React.FC<Props> = ({
   } else {
     filteredReservations = reservations;
   }
-
+  const router = useRouter();
   const [startDate, setStartDate] = useState<Date | string>(new Date());
   const [endDate, setEndDate] = useState<Date | string>(new Date());
   const [showModal, setShowModal] = useState<boolean>(false);
-  const [isMonthViewd, setIsMonthviewd] = useState<boolean>(true);
+  const [isMonthViewed, setIsMonthViewed] = useState<boolean>(true);
   const [isReservationGet, setIsReservationGet] = useState<boolean>(false);
   const [data, setData] = useState({
     memo: '',
@@ -105,7 +108,7 @@ const FullCalendar: React.FC<Props> = ({
   });
 
   const handleSelect = (s: SlotInfo) => {
-    if (!isMonthViewd) {
+    if (!isMonthViewed) {
       setStartDate(s.start);
       setEndDate(s.end);
       setShowModal(true);
@@ -148,7 +151,7 @@ const FullCalendar: React.FC<Props> = ({
           marginTop: 10,
         }}
         formats={formats}
-        defaultView="month"
+        defaultView={window.location.hash === '#month' ? 'month' : 'day'}
         views={['month', 'day']}
         className="bg-white p-4 sm:w-max"
         // @ts-expect-error 無理やりidを渡しているため
@@ -156,9 +159,13 @@ const FullCalendar: React.FC<Props> = ({
         onSelectSlot={(s) => handleSelect(s)}
         onView={(v) => {
           if (v === 'month') {
-            setIsMonthviewd(true);
+            setIsMonthViewed(true);
+            router.push({ hash: '#month' });
+            // location.hash = 'month';
           } else {
-            setIsMonthviewd(false);
+            setIsMonthViewed(false);
+            router.push({ hash: '#day' });
+            // location.hash = 'day';
           }
         }}
         eventPropGetter={(event) => {
