@@ -19,13 +19,12 @@ type orgProps = {
   image_url: keyof typeof iconMap;
 };
 
-//TODO ここでグループを選ぶときに,そのグループのユーザー情報をcontextに持つようにする
 const SelectGroup: React.FC = () => {
   const router = useRouter();
   const { organizations, isLoading } = useUserOrg();
   const [searchedOrg, setSearchedOrg] = useState([]);
   const [showModal, setShowModal] = useState<boolean>(false);
-  const [showOrgList, setShowOrgList] = useState<boolean>(true);
+  const [isShowOrgList, isSetShowOrgList] = useState<boolean>(true);
   const [selectedOrg, setSelectedOrg] = useState({ id: 0, name: '', rule: '' });
   const [orgPassword, setOrgPassword] = useState<string>('');
 
@@ -100,7 +99,7 @@ const SelectGroup: React.FC = () => {
       )}
       <Modal
         data={
-          showOrgList
+          isShowOrgList
             ? '検索結果'
             : `${selectedOrg.name}${
                 userOrgId?.includes(selectedOrg.id) ? 'にすでに参加しています' : 'に参加する？'
@@ -109,10 +108,11 @@ const SelectGroup: React.FC = () => {
         showModal={showModal}
         onClickNo={() => {
           setShowModal(false);
-          setShowOrgList(true);
+          isSetShowOrgList(true);
         }}
       >
-        {showOrgList ? (
+        {/* ページネーション & 別ファイルに分けても良さそう */}
+        {isShowOrgList ? (
           searchedOrg
             .filter(({ id }) => !userOrgId?.includes(id))
             .map((s: orgProps) => (
@@ -124,7 +124,7 @@ const SelectGroup: React.FC = () => {
                     } w-72 mx-auto rounded-xl  shadow-md overflow-hidden md:max-w-2xl  hover:bg-gray hover:shadow-lg hover:border-transparent mr-4 ml-4 mb-4`}
                     key={s.id}
                     onClick={() => {
-                      setShowOrgList(false);
+                      isSetShowOrgList(false);
                       setSelectedOrg({ id: s.id, name: s.name, rule: s.rule });
                     }}
                   >
