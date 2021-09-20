@@ -1,4 +1,4 @@
-import RegisterSpace from '../../components/Templates/RegisterSpace';
+import RegisterSpace from '../../components/Templates/SpaceRegister';
 import Layout from '../../components/Templates/Layout';
 const RegisterSpaces: React.FC = () => {
   return (
