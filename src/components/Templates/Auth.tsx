@@ -5,6 +5,12 @@ import Input from '../Atoms/Input';
 import Button from '../Atoms/Button';
 import { useAuth } from '../../context/AuthContext';
 import api from '../../utils/fetch';
+import Loading from '../Atoms/Loading';
+
+const loadingSize = {
+  width: 30,
+  height: 30,
+};
 
 const Auth: React.FC = () => {
   const router = useRouter();
@@ -16,7 +22,7 @@ const Auth: React.FC = () => {
   const [password, setPassword] = useState<string>('');
   const [isLogin, setIsLogin] = useState<boolean>(true);
 
-  // const [cookie, setCookie, removeCookie] = useCookies(['access_token']);
+  const [isLoading, setIsLoading] = useState(false);
 
   const login = async () => {
     await api
@@ -41,7 +47,7 @@ const Auth: React.FC = () => {
 
   const authUser = async (e: React.MouseEvent<HTMLFormElement>) => {
     e.preventDefault();
-
+    setIsLoading(true);
     if (isLogin) {
       login();
     } else {
@@ -50,6 +56,7 @@ const Auth: React.FC = () => {
         .then(() => login())
         .catch((err) => alert(err));
     }
+    setIsLoading(false);
   };
 
   return (
@@ -138,24 +145,30 @@ const Auth: React.FC = () => {
         </div>
 
         <div>
-          <Button>
-            <span className="absolute left-0 inset-y-0 flex items-center pl-3">
-              <svg
-                className="h-5 w-5 text-indigo-500 group-hover:text-indigo-400"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-                aria-hidden="true"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
-                  clipRule="evenodd"
-                />
-              </svg>
-            </span>
-            {isLogin ? 'Sign in' : 'Create new user'}
-          </Button>
+          {isLoading ? (
+            <div className="flex justify-center">
+              <Loading {...loadingSize} />
+            </div>
+          ) : (
+            <Button>
+              <span className="absolute left-0 inset-y-0 flex items-center pl-3">
+                <svg
+                  className="h-5 w-5 text-indigo-500 group-hover:text-indigo-400"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                  aria-hidden="true"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </span>
+              {isLogin ? 'Sign in' : 'Create new user'}
+            </Button>
+          )}
         </div>
       </form>
     </div>

@@ -1,7 +1,7 @@
-import ReactLoading from 'react-loading';
+import ReactLoading, { LoadingProps } from 'react-loading';
 
-const Loading = () => {
-  return <ReactLoading type="spin" color="black" />;
+const Loading: React.FC<LoadingProps> = (props) => {
+  return <ReactLoading type="spin" color="black" {...props} />;
 };
 
 export default Loading;
