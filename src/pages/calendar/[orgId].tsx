@@ -40,7 +40,7 @@ const Calendar = () => {
   const { reservations, isLoading } = useReservations(strOrdId, s, e);
   const { org, isOrgLoading } = useOrg(strOrdId);
   const { logInUser, islogInUserLoading } = useUser();
-
+  //この辺は全部書き直す
   const isOverAllLoading =
     isLoading || isSpaceLoading || isOrgLoading || islogInUserLoading || !orgId;
 
@@ -57,7 +57,7 @@ const Calendar = () => {
 
     let start: Date;
     let end: Date;
-    reservations.map(({ id, user_id, space_id, start_time, end_time, title, memo }) => {
+    reservations.map(({ id, user_id, space_id, start_time, end_time, memo }) => {
       start = new Date(start_time);
       end = new Date(end_time);
       rv.push({

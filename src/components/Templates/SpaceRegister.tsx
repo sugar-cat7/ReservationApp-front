@@ -6,9 +6,11 @@ import { useRouter } from 'next/router';
 import api from '../../utils/fetch';
 
 const RegisterSpace: React.FC = () => {
-  const [spaceName, setSpaceName] = useState<string>('');
-  const [spaceCapacity, setSpaceCapacity] = useState<string>('');
-  const [description, setDescription] = useState<string>('');
+  const [space, setSpace] = useState({
+    name: '',
+    capacity: '',
+    description: '',
+  });
   const [isAddSpace, setIsAddSpace] = useState<boolean>(false);
   const router = useRouter();
   const { user } = useAuth();
@@ -22,15 +24,14 @@ const RegisterSpace: React.FC = () => {
     e.preventDefault();
     await api
       .post(`/api/organization/${orgId}/space`, {
-        name: spaceName,
-        capacity: spaceCapacity,
-        description: description,
+        name: space.name,
+        capacity: space.capacity,
+        description: space.description,
       })
       .then(() => {
         alert('スペースを追加しました');
         setIsAddSpace(true);
-        setSpaceName('');
-        setSpaceCapacity('');
+        setSpace({ name: '', capacity: '', description: '' });
       })
       .catch((err) => {
         alert(err);
@@ -50,9 +51,9 @@ const RegisterSpace: React.FC = () => {
             type="text"
             autoComplete="spaceName"
             placeholder="スペース名"
-            value={spaceName}
+            value={space.name}
             onChange={(e) => {
-              setSpaceName(e.target.value);
+              setSpace({ ...space, name: e.target.value });
             }}
           />
           <Input
@@ -60,18 +61,18 @@ const RegisterSpace: React.FC = () => {
             type="number"
             autoComplete="spaceCapacity"
             placeholder="スペースの制限人数(半角数字)"
-            value={spaceCapacity}
+            value={space.capacity}
             onChange={(e) => {
-              setSpaceCapacity(e.target.value);
+              setSpace({ ...space, capacity: e.target.value });
             }}
           />
           <Input
             name="description"
             type="text"
             placeholder="ひとこと、メモ"
-            value={description}
+            value={space.description}
             onChange={(e) => {
-              setDescription(e.target.value);
+              setSpace({ ...space, description: e.target.value });
             }}
           />
         </div>

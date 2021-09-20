@@ -19,7 +19,7 @@ const formats = {
   dayHeaderFormat: 'M月D日(ddd)',
   dayRangeHeaderFormat: () => 'YYYY年M月',
 };
-
+//色々ぐちゃぐちゃなので直す
 type SlotInfo = {
   start: string | Date;
   end: string | Date;
