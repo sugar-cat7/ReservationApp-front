@@ -1,5 +1,5 @@
 start:
 	yarn install && yarn dev
 
-test:
+lint:
 	yarn lint:fix
