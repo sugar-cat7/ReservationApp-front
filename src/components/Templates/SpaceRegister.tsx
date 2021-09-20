@@ -4,6 +4,9 @@ import Button from '../Atoms/Button';
 import { useAuth } from '../../context/AuthContext';
 import { useRouter } from 'next/router';
 import api from '../../utils/fetch';
+import dynamic from 'next/dynamic';
+
+const ColorPicker = dynamic(() => import('../Organiams/ColorPicker'), { ssr: false });
 
 const RegisterSpace: React.FC = () => {
   const [space, setSpace] = useState({
@@ -13,13 +16,10 @@ const RegisterSpace: React.FC = () => {
     color: '',
   });
   const [isAddSpace, setIsAddSpace] = useState<boolean>(false);
-  const router = useRouter();
-  const { user } = useAuth();
-  const { orgId } = router.query;
 
-  if (!user) {
-    return <div>ログインし直してください</div>;
-  }
+  const router = useRouter();
+
+  const { orgId } = router.query;
 
   const registerSpace = async (e: React.MouseEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -78,14 +78,9 @@ const RegisterSpace: React.FC = () => {
             }}
           />
         </div>
-        <div className="flex items-center">
-          <div>スペースの予約を表示色を選べます</div>
-          <input
-            type="color"
-            onChange={(e) => setSpace({ ...space, color: e.target.value })}
-            required
-          />
-        </div>
+        <div>予定を表示する時のカラーを選択</div>
+        <ColorPicker onChange={(e) => setSpace({ ...space, color: e.hex })} color={space.color} />
+
         <Button>追加する</Button>
       </form>
       {isAddSpace && (
