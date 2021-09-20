@@ -26,7 +26,7 @@ const SelectGroup: React.FC = () => {
   const [searchedOrg, setSearchedOrg] = useState([]);
   const [showModal, setShowModal] = useState<boolean>(false);
   const [showOrgList, setShowOrgList] = useState<boolean>(true);
-  const [selectedOrg, setSelectedOrg] = useState({ id: 0, name: '' });
+  const [selectedOrg, setSelectedOrg] = useState({ id: 0, name: '', rule: '' });
   const [orgPassword, setOrgPassword] = useState<string>('');
 
   const registerGroup = async (e: React.MouseEvent<HTMLFormElement>) => {
@@ -113,37 +113,40 @@ const SelectGroup: React.FC = () => {
         }}
       >
         {showOrgList ? (
-          searchedOrg.map((s: orgProps) => (
-            <>
-              {s.public && (
-                <div
-                  className={`${
-                    !userOrgId?.includes(s.id) ? 'bg-white' : 'bg-gray-200'
-                  } w-72 mx-auto rounded-xl  shadow-md overflow-hidden md:max-w-2xl  hover:bg-gray hover:shadow-lg hover:border-transparent mr-4 ml-4 mb-4`}
-                  key={s.id}
-                  onClick={() => {
-                    setShowOrgList(false);
-                    setSelectedOrg({ id: s.id, name: s.name });
-                  }}
-                >
-                  <div className="md:flex">
-                    <div className="p-2">
-                      <div className="tracking-wide text-sm text-indigo-500 font-semibold">
-                        グループ: {s.name}
+          searchedOrg
+            .filter(({ id }) => !userOrgId?.includes(id))
+            .map((s: orgProps) => (
+              <>
+                {s.public && (
+                  <div
+                    className={`${
+                      !userOrgId?.includes(s.id) ? 'bg-white' : 'bg-gray-200'
+                    } w-72 mx-auto rounded-xl  shadow-md overflow-hidden md:max-w-2xl  hover:bg-gray hover:shadow-lg hover:border-transparent mr-4 ml-4 mb-4`}
+                    key={s.id}
+                    onClick={() => {
+                      setShowOrgList(false);
+                      setSelectedOrg({ id: s.id, name: s.name, rule: s.rule });
+                    }}
+                  >
+                    <div className="md:flex">
+                      <div className="p-2">
+                        <div className="tracking-wide text-sm text-indigo-500 font-semibold">
+                          グループ: {s.name}
+                        </div>
+                        <div className="tracking-wide text-xs text-gray-500 ">{s.description}</div>
                       </div>
-                      <div className="tracking-wide text-xs text-gray-500 ">{s.description}</div>
                     </div>
                   </div>
-                </div>
-              )}
-            </>
-          ))
+                )}
+              </>
+            ))
         ) : (
           <>
             {userOrgId?.includes(selectedOrg.id) ? (
               <div></div>
             ) : (
               <form className="ml-8 mr-8 mb-8 space-y-6" onSubmit={registerGroup}>
+                <div className="w-48 sm:w-96 break-words">[ルール] {selectedOrg.rule}</div>
                 <div className="rounded-md shadow-sm -space-y-px">
                   <Input
                     name="orgPassword"
