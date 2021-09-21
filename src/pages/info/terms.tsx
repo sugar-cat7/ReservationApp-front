@@ -13,7 +13,9 @@ const Terms: NextPage<StaticProps> = (props) => {
   return (
     <>
       <Layout title="利用規約">
-        <ReactMarkdown className="sm:w-96">{terms}</ReactMarkdown>
+        <div className="sm:w-screen justify-center flex mt-12">
+          <ReactMarkdown className="sm:w-10/12">{terms}</ReactMarkdown>
+        </div>
       </Layout>
     </>
   );
