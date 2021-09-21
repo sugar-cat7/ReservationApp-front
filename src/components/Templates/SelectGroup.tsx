@@ -61,11 +61,12 @@ const SelectGroup: React.FC = () => {
           <div>参加しているグループ</div>
           {organizations.map(({ id, name, description, image_url }: orgProps) => (
             <div
-              className="max-w-md mx-auto bg-white rounded-xl  shadow-md overflow-hidden md:max-w-2xl  hover:bg-gray hover:shadow-lg hover:border-transparent mb-4 sm:w-screen"
+              className="max-w-md mx-auto bg-white rounded-xl  shadow-md overflow-hidden md:max-w-2xl  hover:bg-gray hover:shadow-lg hover:border-transparent mb-4"
               onClick={() => {
                 router.push({
                   pathname: '/calendar/[orgId]',
                   query: { orgId: id },
+                  hash: '#month',
                 });
               }}
               key={id}
