@@ -11,6 +11,7 @@ import { useUserOrg } from '../../hooks/useUserOrg';
 import api from '../../utils/fetch';
 import { getDateJPFull } from '../../utils/selectedDateConverter';
 import Loading from '../Atoms/Loading';
+import DetailReservation from '../Organiams/DetailReservation';
 
 type Props = {
   myReservations: {
@@ -24,6 +25,7 @@ type Props = {
     updated_at: string;
     organization_id: string;
     organization_name: string;
+    memo: string;
     users: number[];
   }[];
 };
@@ -32,13 +34,23 @@ type Props = {
 const MyReservation: React.FC<Props> = ({ myReservations }) => {
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
   const [showEditModal, setShowEditModal] = useState<boolean>(false);
+  const [showDetailModal, setShowDetailModal] = useState<boolean>(false);
   const [orgId, setOrgId] = useState<string>('');
   const [spaceId, setSpaceId] = useState<number>(0);
   const [rvId, setRvId] = useState<number>(0);
+  // const [rvMemo, setRvMemo] = useState<string>('');
   const [startDate, setStartDate] = useState<string>('');
   const [endDate, setEndDate] = useState<string>('');
   const [groupId, setGroupId] = useState<number | string>(0);
   const { organizations, isLoading } = useUserOrg();
+  const [data, setData] = useState({
+    memo: '',
+    orgName: '',
+    spaceName: '',
+    startTime: '',
+    endTime: '',
+    users: [{ id: 0, name: '', kana: '' }],
+  });
 
   if (isLoading) {
     return <Loading />;
@@ -61,6 +73,7 @@ const MyReservation: React.FC<Props> = ({ myReservations }) => {
     isEdit: boolean,
     start_time?: string,
     end_time?: string,
+    // memo?: string,
   ) => {
     if (isEdit) {
       const [s] = start_time!.split('+');
@@ -74,6 +87,7 @@ const MyReservation: React.FC<Props> = ({ myReservations }) => {
     setOrgId(orgId);
     setSpaceId(spaceId);
     setRvId(rvId);
+    // setRvMemo(memo!);
   };
   let filteredMyReservations: Props['myReservations'];
   if (groupId === 0) {
@@ -81,6 +95,22 @@ const MyReservation: React.FC<Props> = ({ myReservations }) => {
   } else {
     filteredMyReservations = myReservations.filter((m) => m.organization_id === groupId);
   }
+  console.log(myReservations);
+
+  const toggleHandler = async (r: Props['myReservations'][0]) => {
+    await api.get(`/api/organization/${r.organization_id}`).then((data) => {
+      console.log('data', data);
+      setData({
+        memo: r.memo,
+        orgName: r.organization_name,
+        spaceName: r.space_name,
+        startTime: r.start_time,
+        endTime: r.end_time,
+        users: data.users.filter((u: Props['myReservations'][0]) => r.users.includes(u.id)),
+      });
+      setShowDetailModal(true);
+    });
+  };
 
   return (
     <>
@@ -115,7 +145,7 @@ const MyReservation: React.FC<Props> = ({ myReservations }) => {
             key={r.id}
             className="flex w-80 border-b-2 border-gray-400 justify-between items-center mb-2 sm:w-96"
           >
-            <div>
+            <div onClick={() => toggleHandler(r)}>
               {r.organization_name}
               <div className="text-gray-400">
                 <div>場所:{r.space_name}</div>
@@ -134,6 +164,7 @@ const MyReservation: React.FC<Props> = ({ myReservations }) => {
                       true,
                       r.start_time,
                       r.end_time,
+                      // r.memo,
                     )
                   }
                 />
@@ -166,6 +197,13 @@ const MyReservation: React.FC<Props> = ({ myReservations }) => {
             isEdit={true}
             // users={users}
           />
+        </Modal>
+        <Modal
+          data="詳細情報"
+          showModal={showDetailModal}
+          onClickNo={() => setShowDetailModal(false)}
+        >
+          <DetailReservation {...data} />
         </Modal>
       </div>
     </>
