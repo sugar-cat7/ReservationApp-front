@@ -13,26 +13,31 @@ type Props = {
 const DetailReservation: React.FC<Props> = (props) => {
   return (
     <div className="w-80 pr-4 pl-4 pb-4">
-      <div className="flex pb-2">
+      <div className="flex pb-2 items-center">
         <ClockIcon className="w-5 mr-4" />
-        {getDateJPMonth(props.startTime)}~{getDateJPHour(props.endTime)}
+        <div>
+          {getDateJPMonth(props.startTime)}~{getDateJPHour(props.endTime)}
+        </div>
       </div>
-      <div className="flex pb-2">
-        <HomeIcon className="w-5 mr-4" />
-        {props.orgName}[{props.spaceName}]
+      <div className="flex pb-2 items-center">
+        <HomeIcon className="w-4 mr-4" />
+        <div>
+          {props.orgName}[{props.spaceName}]
+        </div>
       </div>
-      <div className="flex pb-2">
+      <div className="flex pb-2 items-center">
         <MenuAlt2Icon className="w-5 mr-4" />
-        {props.memo}
+        <div>{props.memo}</div>
       </div>
-      <div className="flex">
+      <div className="flex items-center">
         <UserIcon className="w-5 mr-4" />
-
-        {props.users.map(({ id, name }) => (
-          <span key={id} className="mr-2 border rounded-full border-indigo-900 pr-1 pl-1">
-            {name}
-          </span>
-        ))}
+        <div>
+          {props.users.map(({ id, name }) => (
+            <span key={id} className="mr-2 border rounded-full border-indigo-900 pr-1 pl-1">
+              {name}
+            </span>
+          ))}
+        </div>
       </div>
     </div>
   );

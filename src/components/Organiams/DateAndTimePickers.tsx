@@ -10,6 +10,8 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import api from '../../utils/fetch';
+import { BasicDateTimePicker } from '../Atoms/DatePicker';
+import { getNowSelectedDateWithString } from '../../utils/selectedDateConverter';
 
 const range = (start: number, end: number) =>
   Array.from({ length: end - start + 1 }, (v, k) => k + start);
@@ -157,55 +159,29 @@ const DateAndTimePickers: React.FC<Props> = ({
       noValidate
       onSubmit={isEdit ? editReservation : registerDate}
     >
-      {/* <TextField
-        id="title"
-        label="タイトル"
-        type="text"
-        defaultValue={modalData.title}
-        value={modalData.title}
-        className={classes.textField}
-        InputLabelProps={{
-          shrink: true,
-        }}
-        onChange={(e) => {
-          setModalData({ ...modalData, title: e.target.value });
-        }}
-        required
-      /> */}
       <br />
-      <TextField
-        id="datetime-local"
+      {/* @ts-expect-error ごめんなさい */}
+      <BasicDateTimePicker
         label="開始時間"
-        type="datetime-local"
-        // defaultValue="2017-05-24T10:30"
-        defaultValue={modalData.startDate}
         value={modalData.startDate}
-        className={classes.textField}
-        InputLabelProps={{
-          shrink: true,
+        onChange={(startDate: Date | null) => {
+          const formatDate = getNowSelectedDateWithString(startDate!);
+          setModalData({ ...modalData, startDate: formatDate });
         }}
-        onChange={(e) => {
-          setModalData({ ...modalData, startDate: e.target.value });
-        }}
-        required
       />
       <br />
-      <TextField
-        id="datetime-local"
+      <br />
+      {/* @ts-expect-error ごめんなさい */}
+      <BasicDateTimePicker
         label="終了時間"
-        type="datetime-local"
-        // defaultValue="2017-05-24T10:30"
-        defaultValue={modalData.endDate}
         value={modalData.endDate}
-        className={classes.textField}
-        InputLabelProps={{
-          shrink: true,
+        onChange={(endDate: Date | null) => {
+          const formatDate = getNowSelectedDateWithString(endDate!);
+          setModalData({ ...modalData, endDate: formatDate });
         }}
-        onChange={(e) => {
-          setModalData({ ...modalData, endDate: e.target.value });
-        }}
-        required
       />
+      <br />
+      <br />
       {users && (
         <>
           {spaces && (

@@ -85,9 +85,8 @@ const MyReservation: React.FC<Props> = ({ myReservations }) => {
   return (
     <>
       <div className="absolute top-20 flex items-center">
-        <div>予約の絞り込み</div>
-        <FormControl sx={{ m: 1, minWidth: 120 }}>
-          <InputLabel id="select-group-label">グループを選択</InputLabel>
+        <FormControl sx={{ m: 1, minWidth: 120, maxWidth: 250 }}>
+          <InputLabel id="select-group-label">予約の絞り込み</InputLabel>
           <Select
             labelId="select-group-label"
             id="select-group-label"
