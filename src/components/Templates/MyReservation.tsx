@@ -1,5 +1,3 @@
-import { PencilIcon } from '@heroicons/react/solid';
-import { XCircleIcon } from '@heroicons/react/solid';
 import Modal from '../Atoms/Modal';
 import { useState } from 'react';
 import DateAndTimePickers from '../Organiams/DateAndTimePickers';
@@ -9,9 +7,10 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { useUserOrg } from '../../hooks/useUserOrg';
 import api from '../../utils/fetch';
-import { getDateJPFull } from '../../utils/selectedDateConverter';
 import Loading from '../Atoms/Loading';
 import DetailReservation from '../Organiams/DetailReservation';
+import PagenatedList from '../Organiams/PagenatedList';
+import ReservationListItem from '../Modules/ReservationListItem';
 
 type Props = {
   myReservations: {
@@ -51,6 +50,7 @@ const MyReservation: React.FC<Props> = ({ myReservations }) => {
     endTime: '',
     users: [{ id: 0, name: '', kana: '' }],
   });
+  const [update, setUpdate] = useState(false);
 
   if (isLoading) {
     return <Loading />;
@@ -89,12 +89,6 @@ const MyReservation: React.FC<Props> = ({ myReservations }) => {
     setRvId(rvId);
     // setRvMemo(memo!);
   };
-  let filteredMyReservations: Props['myReservations'];
-  if (groupId === 0) {
-    filteredMyReservations = myReservations;
-  } else {
-    filteredMyReservations = myReservations.filter((m) => m.organization_id === groupId);
-  }
   console.log(myReservations);
 
   const toggleHandler = async (r: Props['myReservations'][0]) => {
@@ -123,6 +117,10 @@ const MyReservation: React.FC<Props> = ({ myReservations }) => {
             value={groupId}
             label="group"
             onChange={(e) => {
+              setUpdate(true);
+              // reactだとpropsの変更を検知できないので変な方法をとっている
+              // もっと良い方法があればそっちにする
+              setTimeout(() => setUpdate(false), 1);
               setGroupId(e.target.value);
             }}
           >
@@ -140,43 +138,23 @@ const MyReservation: React.FC<Props> = ({ myReservations }) => {
       </div>
       <div className="absolute top-44 h-4/6 overflow-y-auto">
         <div className="mb-2">※複数人での予約の場合、編集はできません</div>
-        {filteredMyReservations.map((r) => (
-          <div
-            key={r.id}
-            className="flex w-80 border-b-2 border-gray-400 justify-between items-center mb-2 sm:w-96"
-          >
-            <div onClick={() => toggleHandler(r)}>
-              {r.organization_name}
-              <div className="text-gray-400">
-                <div>場所:{r.space_name}</div>
-                <div>時間:{getDateJPFull(r.start_time)}</div>
-              </div>
-            </div>
-            <div className="flex">
-              {r.users && r.users.length < 2 && (
-                <PencilIcon
-                  className="h-7 w-7"
-                  onClick={() =>
-                    onChangeProps(
-                      r.organization_id,
-                      r.space_id,
-                      r.id,
-                      true,
-                      r.start_time,
-                      r.end_time,
-                      // r.memo,
-                    )
-                  }
-                />
-              )}
-              {/* TODO orgId変える */}
-              <XCircleIcon
-                className="h-7 w-7"
-                onClick={() => onChangeProps(r.organization_id, r.space_id, r.id, false)}
+        {!update ? (
+          <PagenatedList
+            itemPerPage={20}
+            apiPath={
+              groupId == 0
+                ? `/api/user/reservation?organizationId=`
+                : `/api/user/reservation?organizationId=${groupId}`
+            }
+            childComponent={(props: any) => (
+              <ReservationListItem
+                {...props}
+                onClick={toggleHandler}
+                onChangeProps={onChangeProps}
               />
-            </div>
-          </div>
-        ))}
+            )}
+          />
+        ) : null}
         <Modal
           data="予定を削除しますか？"
           showModal={showDeleteModal}

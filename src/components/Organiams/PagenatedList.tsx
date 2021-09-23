@@ -6,7 +6,7 @@ type Props = {
   childComponent: (props: any) => React.ReactNode;
   itemPerPage: number;
   apiPath: string;
-  onClickItem: (value: any) => void;
+  onClickItem?: (value: any) => void;
 };
 
 const PagenatedList: React.FC<Props> = ({ childComponent, itemPerPage, apiPath, onClickItem }) => {
@@ -32,7 +32,9 @@ const PagenatedList: React.FC<Props> = ({ childComponent, itemPerPage, apiPath, 
     <>
       {items.map((value: any, idx: number) => {
         const props = {
-          onClick: () => onClickItem(value),
+          onClick: () => {
+            if (typeof onClickItem == 'function') onClickItem(value);
+          },
           key: idx,
           value: value,
         };
