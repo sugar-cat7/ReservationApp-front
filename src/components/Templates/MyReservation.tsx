@@ -9,7 +9,7 @@ import { useUserOrg } from '../../hooks/useUserOrg';
 import api from '../../utils/fetch';
 import Loading from '../Atoms/Loading';
 import DetailReservation from '../Organiams/DetailReservation';
-import PagenatedList from '../Organiams/PagenatedList';
+import PaginatedList from '../Organiams/PaginatedList';
 import ReservationListItem from '../Modules/ReservationListItem';
 
 type Props = {
@@ -139,7 +139,7 @@ const MyReservation: React.FC<Props> = ({ myReservations }) => {
       <div className="absolute top-44 h-4/6 overflow-y-auto">
         <div className="mb-2">※複数人での予約の場合、編集はできません</div>
         {!update ? (
-          <PagenatedList
+          <PaginatedList
             itemPerPage={20}
             apiPath={
               groupId == 0

@@ -9,7 +9,7 @@ type Props = {
   onClickItem?: (value: any) => void;
 };
 
-const PagenatedList: React.FC<Props> = ({ childComponent, itemPerPage, apiPath, onClickItem }) => {
+const PaginatedList: React.FC<Props> = ({ childComponent, itemPerPage, apiPath, onClickItem }) => {
   const [page, setPage] = useState(1);
   const [itemLength, setItemLength] = useState(0);
   const [items, setItems] = useState([]);
@@ -47,4 +47,4 @@ const PagenatedList: React.FC<Props> = ({ childComponent, itemPerPage, apiPath, 
   );
 };
 
-export default PagenatedList;
+export default PaginatedList;

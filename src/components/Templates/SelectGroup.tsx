@@ -9,7 +9,7 @@ import api from '../../utils/fetch';
 import Loading from '../Atoms/Loading';
 import Avatar from '@mui/material/Avatar';
 import { Icon, iconMap } from '../Icon/Icon';
-import PagenatedList from '../Organiams/PagenatedList';
+import PaginatedList from '../Organiams/PaginatedList';
 import OrgListItem from '../Modules/OrgListItem';
 
 type orgProps = {
@@ -116,7 +116,7 @@ const SelectGroup: React.FC = () => {
       >
         {/* ページネーション & 別ファイルに分けても良さそう */}
         {isShowOrgList ? (
-          <PagenatedList
+          <PaginatedList
             itemPerPage={5}
             apiPath={`/api/organization?search=${searchedOrg}`}
             childComponent={(props: any) => <OrgListItem {...props} />}
@@ -124,7 +124,7 @@ const SelectGroup: React.FC = () => {
               isSetShowOrgList(false);
               setSelectedOrg({ id: s.id, name: s.name, rule: s.rule });
             }}
-          ></PagenatedList>
+          />
         ) : (
           <>
             {userOrgId?.includes(selectedOrg.id) ? (
