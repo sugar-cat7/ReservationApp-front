@@ -4,7 +4,6 @@ import InputBase from '@material-ui/core/InputBase';
 import IconButton from '@material-ui/core/IconButton';
 import SearchIcon from '@material-ui/icons/Search';
 import { useState } from 'react';
-import api from '../../utils/fetch';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -26,25 +25,20 @@ const useStyles = makeStyles((theme: Theme) =>
 
 type Props = {
   setModal: () => void;
-  setSearchedOrg: React.Dispatch<React.SetStateAction<any>>;
+  setSearchedOrg: React.Dispatch<React.SetStateAction<string>>;
 };
 const SearchBox: React.FC<Props> = ({ setModal, setSearchedOrg }) => {
   const classes = useStyles();
   const [searchOrg, setSearchOrg] = useState('');
 
-  const fetchData = async (e: React.MouseEvent<HTMLDivElement>) => {
+  const onSubmit = (e: React.MouseEvent<HTMLDivElement>) => {
     e.preventDefault();
+    setSearchedOrg(searchOrg);
     setModal();
-    await api
-      .get(`/api/organization?search=${searchOrg}`)
-      .then((data) => {
-        setSearchedOrg(data);
-      })
-      .catch((e) => alert(e));
   };
 
   return (
-    <Paper component="form" className={classes.root} onSubmit={fetchData}>
+    <Paper component="form" className={classes.root} onSubmit={onSubmit}>
       <InputBase
         className={classes.input}
         placeholder="Search Group"
