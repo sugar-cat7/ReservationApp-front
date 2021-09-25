@@ -9,6 +9,8 @@ import api from '../../utils/fetch';
 import Loading from '../Atoms/Loading';
 import Avatar from '@mui/material/Avatar';
 import { Icon, iconMap } from '../Icon/Icon';
+import PaginatedList from '../Organiams/PaginatedList';
+import OrgListItem from '../Modules/OrgListItem';
 
 type orgProps = {
   id: number;
@@ -22,7 +24,7 @@ type orgProps = {
 const SelectGroup: React.FC = () => {
   const router = useRouter();
   const { organizations, isLoading } = useUserOrg();
-  const [searchedOrg, setSearchedOrg] = useState([]);
+  const [searchedOrg, setSearchedOrg] = useState('');
   const [showModal, setShowModal] = useState<boolean>(false);
   const [isShowOrgList, isSetShowOrgList] = useState<boolean>(true);
   const [selectedOrg, setSelectedOrg] = useState({ id: 0, name: '', rule: '' });
@@ -114,33 +116,15 @@ const SelectGroup: React.FC = () => {
       >
         {/* ページネーション & 別ファイルに分けても良さそう */}
         {isShowOrgList ? (
-          searchedOrg
-            .filter(({ id }) => !userOrgId?.includes(id))
-            .map((s: orgProps) => (
-              <>
-                {s.public && (
-                  <div
-                    className={`${
-                      !userOrgId?.includes(s.id) ? 'bg-white' : 'bg-gray-200'
-                    } w-72 mx-auto rounded-xl  shadow-md overflow-hidden md:max-w-2xl  hover:bg-gray hover:shadow-lg hover:border-transparent mr-4 ml-4 mb-4`}
-                    key={s.id}
-                    onClick={() => {
-                      isSetShowOrgList(false);
-                      setSelectedOrg({ id: s.id, name: s.name, rule: s.rule });
-                    }}
-                  >
-                    <div className="md:flex">
-                      <div className="p-2">
-                        <div className="tracking-wide text-sm text-indigo-500 font-semibold">
-                          グループ: {s.name}
-                        </div>
-                        <div className="tracking-wide text-xs text-gray-500 ">{s.description}</div>
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </>
-            ))
+          <PaginatedList
+            itemPerPage={5}
+            apiPath={`/api/organization?search=${searchedOrg}`}
+            childComponent={(props: any) => <OrgListItem {...props} />}
+            onClickItem={(s: any) => {
+              isSetShowOrgList(false);
+              setSelectedOrg({ id: s.id, name: s.name, rule: s.rule });
+            }}
+          />
         ) : (
           <>
             {userOrgId?.includes(selectedOrg.id) ? (
